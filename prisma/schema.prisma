@@ -1,0 +1,243 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  INSTRUCTOR
+  STUDENT
+}
+
+enum EnrollmentStatus {
+  ACTIVE
+  BLOCKED
+  COMPLETED
+}
+
+enum CertificateStatus {
+  PENDING_PAYMENT
+  ISSUED
+  CANCELLED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String
+  name          String
+  cpf           String?   @unique
+  birthDate     DateTime?
+  whatsapp      String?
+  city          String?
+  state         String?
+  role          Role      @default(STUDENT)
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  enrollments   Enrollment[]
+  progress      Progress[]
+  quizAttempts  QuizAttempt[]
+  certificates  Certificate[]
+  auditLogs     AuditLog[]    @relation("Actor")
+  createdCourses Course[]     @relation("CourseCreator")
+}
+
+model Course {
+  id              String   @id @default(cuid())
+  title           String
+  subtitle        String?
+  description     String?
+  workloadHours   Int      @default(160)
+  minScore        Float    @default(7.0)
+  isPublished     Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  createdById     String?
+  createdBy       User?    @relation("CourseCreator", fields: [createdById], references: [id])
+
+  modules         Module[]
+  enrollments     Enrollment[]
+  certificates    Certificate[]
+  quizzes         Quiz[]
+}
+
+model Module {
+  id          String   @id @default(cuid())
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  order       Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  lessons     Lesson[]
+  quizzes     Quiz[]
+}
+
+model Lesson {
+  id          String   @id @default(cuid())
+  moduleId    String
+  module      Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  videoUrl    String?
+  durationMin Int?
+  order       Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  materials   Material[]
+  progress    Progress[]
+}
+
+model Material {
+  id          String   @id @default(cuid())
+  lessonId    String
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  title       String
+  type        String   // pdf, link, text, image
+  url         String?
+  content     String?
+  createdAt   DateTime @default(now())
+}
+
+model Enrollment {
+  id          String           @id @default(cuid())
+  userId      String
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId    String
+  course      Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  status      EnrollmentStatus @default(ACTIVE)
+  enrolledAt  DateTime         @default(now())
+  completedAt DateTime?
+
+  @@unique([userId, courseId])
+}
+
+model Progress {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId    String
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  completed   Boolean  @default(false)
+  completedAt DateTime?
+  lastAccess  DateTime @default(now())
+  watchPercent Float   @default(0)
+
+  @@unique([userId, lessonId])
+}
+
+model Quiz {
+  id            String   @id @default(cuid())
+  courseId      String?
+  course        Course?  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  moduleId      String?
+  module        Module?  @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  title         String
+  description   String?
+  minScore      Float    @default(7.0)
+  maxAttempts   Int      @default(3)
+  timeLimitMin  Int?
+  isFinal       Boolean  @default(false)
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  questions     Question[]
+  attempts      QuizAttempt[]
+}
+
+model Question {
+  id            String   @id @default(cuid())
+  quizId        String
+  quiz          Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  text          String
+  type          String   // multiple_choice, true_false
+  explanation   String?
+  order         Int
+  createdAt     DateTime @default(now())
+
+  options       Option[]
+}
+
+model Option {
+  id          String   @id @default(cuid())
+  questionId  String
+  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  text        String
+  isCorrect   Boolean  @default(false)
+  order       Int
+}
+
+model QuizAttempt {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quizId      String
+  quiz        Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  score       Float
+  maxScore    Float
+  passed      Boolean
+  answersJson String   // JSON of answers
+  attemptNum  Int
+  startedAt   DateTime @default(now())
+  finishedAt  DateTime?
+}
+
+model Certificate {
+  id              String            @id @default(cuid())
+  userId          String
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId        String
+  course          Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  code            String            @unique
+  status          CertificateStatus @default(PENDING_PAYMENT)
+  issuedAt        DateTime?
+  cancelledAt     DateTime?
+  paymentAmount   Float             @default(75.0)
+  paymentRef      String?
+  qrData          String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@unique([userId, courseId])
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  actorId     String?
+  actor       User?    @relation("Actor", fields: [actorId], references: [id])
+  action      String
+  entity      String?
+  entityId    String?
+  details     String?
+  createdAt   DateTime @default(now())
+}
+
+model Settings {
+  id              String   @id @default("main")
+  institutionName String   @default("Bene Curati Cuidados")
+  logoUrl         String?
+  phone           String?
+  whatsapp        String?
+  email           String?
+  address         String?
+  courseName      String   @default("CURSO PROFISSIONAL DE CUIDADOR")
+  workloadHours   Int      @default(160)
+  minScore        Float    @default(7.0)
+  certificateFee  Float    @default(75.0)
+  institutionalPhrase String @default("NOSSA PAIXÃO É CUIDAR DE QUEM VOCÊ AMA!")
+  cnpj            String   @default("60.725.201/0001-88")
+  updatedAt       DateTime @updatedAt
+}
