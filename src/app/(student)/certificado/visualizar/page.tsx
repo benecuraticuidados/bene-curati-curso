@@ -178,8 +178,14 @@ export default async function VisualizarCertificadoPage() {
                   <p className="mt-1">Valide em /validar</p>
                 </div>
               </div>
-              <div className="text-center min-w-[55mm]">
-                <div className="h-8" />
+              <div className="text-center min-w-[72mm]">
+                <Image
+                  src="/assinatura-digital-diretor.jpg"
+                  alt="Assinatura digital do diretor"
+                  width={280}
+                  height={70}
+                  className="object-contain mx-auto mb-1"
+                />
                 <div className="border-t border-gray-800 pt-1">
                   <p className="font-bold text-sm tracking-wide">MARCELO RIOS</p>
                   <p className="text-[10px] uppercase text-gray-600">Diretor</p>
@@ -247,7 +253,16 @@ export default async function VisualizarCertificadoPage() {
             Validação pública do código {certificate.code}. Aluno: {certificate.user.name} •
             Emitido em {formatDate(certificate.issuedAt)}.
           </p>
-          <div className="mt-auto h-3 bg-[#5b1320] -mx-8 text-center text-[9px] text-white leading-[12px] tracking-widest uppercase">
+          <div className="mt-3 border-t border-gray-200 pt-2 text-[9px] text-gray-700 leading-snug uppercase">
+            Embasamento legal: os cursos oferecidos pela Bene Curati Cuidados têm base legal
+            constituída pelo Decreto Presidencial nº 5.154 e a metodologia segue as normas do MEC
+            através da Resolução CNE nº 04/99.
+          </div>
+          <div className="mt-auto flex items-center justify-between text-[10px] text-gray-600 px-1 py-1">
+            <span>bene-curati-curso.vercel.app</span>
+            <span>CNPJ 60.725.201/0001-88</span>
+          </div>
+          <div className="h-3 bg-[#5b1320] -mx-8 text-center text-[9px] text-white leading-[12px] tracking-widest uppercase">
             Bene Curati Cuidados • Nossa Paixão é Cuidar de Quem Você Ama!
           </div>
         </div>
