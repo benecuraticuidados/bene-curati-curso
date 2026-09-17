@@ -70,4 +70,6 @@ export const authOptions: NextAuthOptions = {
     },
   },
   secret: process.env.NEXTAUTH_SECRET || 'bene-curati-dev-secret-change-me',
+  // Evita CSRF/URL inválida quando o app é acessado por domínio .vercel.app
+  useSecureCookies: process.env.NODE_ENV === 'production',
 }

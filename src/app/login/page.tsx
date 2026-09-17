@@ -20,15 +20,20 @@ export default function LoginPage() {
     setLoading(true)
 
     const res = await signIn("credentials", {
-      email,
+      email: email.toLowerCase().trim(),
       password,
       redirect: false,
+      callbackUrl: "/dashboard",
     })
 
     setLoading(false)
 
     if (res?.error) {
-      setError("E-mail ou senha incorretos. Tente novamente.")
+      const hint =
+        res.error === "CredentialsSignin"
+          ? "E-mail ou senha incorretos."
+          : `Falha no login (${res.error}). Use o endereço https://bene-curati-curso.vercel.app/login`
+      setError(hint)
       return
     }
 
@@ -109,9 +114,33 @@ export default function LoginPage() {
           </Link>
         </p>
 
-        <p className="text-center text-xs text-gray-400 mt-8">
-          Demo: aluno@teste.com / aluno123
-        </p>
+        <div className="mt-6 space-y-2">
+          <p className="text-center text-xs text-gray-400">Preencher conta de teste:</p>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              className="flex-1 text-xs border border-wine/30 text-wine rounded-lg py-2"
+              onClick={() => {
+                setEmail("aluno@teste.com")
+                setPassword("aluno123")
+                setError("")
+              }}
+            >
+              Aluno demo
+            </button>
+            <button
+              type="button"
+              className="flex-1 text-xs border border-wine/30 text-wine rounded-lg py-2"
+              onClick={() => {
+                setEmail("admin@benecurati.com.br")
+                setPassword("admin123")
+                setError("")
+              }}
+            >
+              Admin demo
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   )
