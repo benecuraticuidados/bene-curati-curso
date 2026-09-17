@@ -113,14 +113,14 @@ export async function GET(req: Request) {
     {
       order: 1,
       title: "Higiene íntima e base para troca de fralda",
-      video: "https://www.youtube.com/embed/XOj0hXAegT4",
+      video: "https://www.youtube.com/embed/MhGAFzpE8pA",
       reading:
         "<h2>Higiene íntima e base para troca de fralda</h2><p>Aula prática obrigatória para concluir o curso. Não entra na nota da prova. Prepare o material, proteja a intimidade e siga a sequência adequada. O vídeo demonstra a higiene íntima no leito, base para a troca de fralda.</p><p>Não arraste o paciente no lençol. Peça ajuda se houver risco de queda. Registre lesão ou recusa.</p>",
     },
     {
       order: 2,
       title: "Transferência da cama para a cadeira",
-      video: "https://www.youtube.com/embed/2c5F2DwAMOc",
+      video: "https://www.youtube.com/embed/PkrGeju7EDg",
       reading:
         "<h2>Transferência da cama para a cadeira</h2><p>Aula prática obrigatória, independente da pontuação da avaliação. Trave a cadeira, sente a pessoa na beira da cama, conte até três e gire o corpo. Não puxe pelos braços.</p><p>Se a pessoa desabar, conduza ao chão com controle. Use as pernas, não a lombar.</p>",
     },
