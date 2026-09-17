@@ -82,6 +82,19 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ error: "Usuário não encontrado" }, { status: 404 })
   }
 
+  const issued = await prisma.certificate.findFirst({
+    where: { userId, status: "ISSUED" },
+  })
+  if (issued) {
+    return NextResponse.json(
+      {
+        error:
+          "Este aluno possui certificado emitido e não pode ser excluído. Ele precisa poder baixar o certificado novamente.",
+      },
+      { status: 400 }
+    )
+  }
+
   if (user.role === "ADMIN") {
     const adminCount = await prisma.user.count({ where: { role: "ADMIN" } })
     if (adminCount <= 1) {

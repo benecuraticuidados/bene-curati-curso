@@ -109,6 +109,98 @@ export async function GET(req: Request) {
     })
   }
 
+  const PRACTICA = [
+    {
+      order: 1,
+      title: "Higiene íntima e base para troca de fralda",
+      video: "https://www.youtube.com/embed/XOj0hXAegT4",
+      reading:
+        "<h2>Higiene íntima e base para troca de fralda</h2><p>Aula prática obrigatória para concluir o curso. Não entra na nota da prova. Prepare o material, proteja a intimidade e siga a sequência adequada. O vídeo demonstra a higiene íntima no leito, base para a troca de fralda.</p><p>Não arraste o paciente no lençol. Peça ajuda se houver risco de queda. Registre lesão ou recusa.</p>",
+    },
+    {
+      order: 2,
+      title: "Transferência da cama para a cadeira",
+      video: "https://www.youtube.com/embed/2c5F2DwAMOc",
+      reading:
+        "<h2>Transferência da cama para a cadeira</h2><p>Aula prática obrigatória, independente da pontuação da avaliação. Trave a cadeira, sente a pessoa na beira da cama, conte até três e gire o corpo. Não puxe pelos braços.</p><p>Se a pessoa desabar, conduza ao chão com controle. Use as pernas, não a lombar.</p>",
+    },
+    {
+      order: 3,
+      title: "Mudança de decúbito e manejo no leito",
+      video: "https://www.youtube.com/embed/cW3qxZRsQZI",
+      reading:
+        "<h2>Mudança de decúbito e manejo no leito</h2><p>Aula prática obrigatória. Reposicione no leito para prevenir lesão por pressão. Alinhe cabeça e tronco e evite arrastar.</p><p>A referência usual é a virada a cada duas horas, salvo orientação da equipe.</p>",
+    },
+  ]
+
+  const praticaMod = await prisma.module.upsert({
+    where: { id: "mod-pratica-obrigatoria" },
+    update: {
+      title: "22. Manejo prático obrigatório",
+      order: 22,
+      description:
+        "Vídeos práticos obrigatórios para concluir o curso. Não pontuam na prova.",
+      courseId: course.id,
+    },
+    create: {
+      id: "mod-pratica-obrigatoria",
+      courseId: course.id,
+      title: "22. Manejo prático obrigatório",
+      order: 22,
+      description:
+        "Vídeos práticos obrigatórios para concluir o curso. Não pontuam na prova.",
+    },
+  })
+
+  for (const item of PRACTICA) {
+    const lesson = await prisma.lesson.upsert({
+      where: { id: `lesson-pratica-${item.order}` },
+      update: {
+        title: `P${item.order} — ${item.title}`,
+        description:
+          "Vídeo prático obrigatório. Não entra na nota da avaliação final.",
+        videoUrl: item.video,
+        moduleId: praticaMod.id,
+        order: item.order,
+      },
+      create: {
+        id: `lesson-pratica-${item.order}`,
+        moduleId: praticaMod.id,
+        title: `P${item.order} — ${item.title}`,
+        description:
+          "Vídeo prático obrigatório. Não entra na nota da avaliação final.",
+        videoUrl: item.video,
+        order: item.order,
+        durationMin: 15,
+      },
+    })
+    const existingP = await prisma.material.findFirst({
+      where: { lessonId: lesson.id, type: "text" },
+    })
+    if (existingP) {
+      await prisma.material.update({
+        where: { id: existingP.id },
+        data: { title: "Leitura da aula", content: item.reading },
+      })
+    } else {
+      await prisma.material.create({
+        data: {
+          lessonId: lesson.id,
+          title: "Leitura da aula",
+          type: "text",
+          content: item.reading,
+        },
+      })
+    }
+    lessonsUpdated++
+    materialsUpserted++
+  }
+
+  await prisma.quiz.updateMany({
+    where: { courseId: course.id, isFinal: true },
+    data: { maxAttempts: 0 },
+  })
+
   return NextResponse.json({
     ok: true,
     courseId: course.id,

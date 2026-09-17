@@ -32,8 +32,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Avaliação não encontrada" }, { status: 404 })
   }
 
-  // Verificar tentativas
-  if (quiz.attempts.length >= quiz.maxAttempts) {
+  const unlimited = quiz.maxAttempts <= 0
+  if (!unlimited && quiz.attempts.length >= quiz.maxAttempts) {
     return NextResponse.json(
       { error: "Número máximo de tentativas atingido" },
       { status: 403 }

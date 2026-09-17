@@ -47,7 +47,8 @@ export default async function AvaliacoesPage() {
           {quizzes.map((quiz) => {
             const lastAttempt = quiz.attempts[0]
             const attemptsUsed = quiz.attempts.length
-            const canTry = attemptsUsed < quiz.maxAttempts
+            const unlimited = quiz.maxAttempts <= 0
+            const canTry = unlimited || attemptsUsed < quiz.maxAttempts
             const passed = lastAttempt?.passed
 
             return (
@@ -75,8 +76,10 @@ export default async function AvaliacoesPage() {
                     </div>
                     <p className="text-sm text-gray-500 mb-2">
                       {quiz._count.questions} questões • Nota mínima:{" "}
-                      {(quiz.minScore * 10).toFixed(0)}% • Até{" "}
-                      {quiz.maxAttempts} tentativa(s)
+                      {(quiz.minScore * 10).toFixed(0)}% •{" "}
+                      {quiz.maxAttempts <= 0
+                        ? "Tentativas ilimitadas"
+                        : `Até ${quiz.maxAttempts} tentativa(s)`}
                     </p>
 
                     {lastAttempt && (

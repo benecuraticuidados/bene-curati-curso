@@ -49,9 +49,9 @@ export default async function QuizPage({
   const attemptsUsed = quiz.attempts.length
   const lastAttempt = quiz.attempts[0]
   const alreadyPassed = lastAttempt?.passed === true
-  const maxReached = attemptsUsed >= quiz.maxAttempts
+  const unlimited = quiz.maxAttempts <= 0
+  const maxReached = !unlimited && attemptsUsed >= quiz.maxAttempts
 
-  // Se já passou ou esgotou tentativas, mostrar resultado
   if (alreadyPassed || maxReached) {
     return (
       <div className="min-h-screen bg-gray-50">
@@ -110,7 +110,9 @@ export default async function QuizPage({
           <h1 className="text-2xl font-bold text-gray-900">{quiz.title}</h1>
           <p className="text-gray-500 text-sm mt-1">{quiz.description}</p>
           <p className="text-sm text-gray-400 mt-2">
-            Tentativa {attemptsUsed + 1} de {quiz.maxAttempts} •{" "}
+            Tentativa {attemptsUsed + 1}
+            {quiz.maxAttempts <= 0 ? " (ilimitadas)" : ` de ${quiz.maxAttempts}`}{" "}
+            •{" "}
             {quiz.questions.length} questões • Nota mínima:{" "}
             {(quiz.minScore * 10).toFixed(0)}%
           </p>
