@@ -6,6 +6,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { formatDate } from "@/lib/utils"
 import PrintButton from "@/components/PrintButton"
+import { canReleaseCertificate } from "@/lib/certificate-guard"
 
 const CONTEUDO_PROGRAMATICO = [
   { titulo: "1. Papel do Cuidador", horas: 8 },
@@ -37,18 +38,28 @@ export default async function VisualizarCertificadoPage() {
 
   const userId = (session.user as any).id as string
 
-  const certificate = await prisma.certificate.findFirst({
-    where: { userId, status: "ISSUED" },
+  const raw = await prisma.certificate.findFirst({
+    where: { userId },
     include: {
       user: true,
       course: true,
     },
-    orderBy: { issuedAt: "desc" },
+    orderBy: { createdAt: "desc" },
   })
 
-  if (!certificate) {
+  if (!raw) {
     redirect("/certificado")
   }
+
+  const access = await canReleaseCertificate({
+    userId,
+    certificateId: raw.id,
+  })
+  if (!access.ok || raw.status !== "ISSUED") {
+    redirect("/certificado")
+  }
+
+  const certificate = raw
 
   const totalHoras =
     CONTEUDO_PROGRAMATICO.reduce((acc, m) => acc + m.horas, 0) ||
@@ -56,7 +67,13 @@ export default async function VisualizarCertificadoPage() {
     200
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4 print:bg-white print:py-0">
+    <div className="min-h-screen bg-gray-100 py-8 px-4 print:bg-white print:py-0 certificate-print">
+      <style>{`
+        @media print {
+          @page { size: A4 landscape; margin: 10mm; }
+          .print\\:break-after-page { page-break-after: always; }
+        }
+      `}</style>
       {/* Controles — não imprimem */}
       <div className="max-w-4xl mx-auto mb-6 print:hidden flex flex-wrap gap-3">
         <Link href="/certificado" className="btn-outline text-sm">
@@ -128,14 +145,21 @@ export default async function VisualizarCertificadoPage() {
             </div>
           </div>
 
-          <div className="border-t border-gray-200 pt-8 mt-4">
-            <p className="font-semibold text-gray-900">Bene Curati Cuidados</p>
-            <p className="text-sm text-gray-500 mt-1">
+          <div className="border-t border-gray-200 pt-8 mt-4 max-w-sm mx-auto">
+            <div className="h-14 flex items-end justify-center">
+              {/* Área reservada: substituir por /public/assinatura-diretor.png quando houver imagem oficial */}
+              <span className="sr-only">Assinatura do diretor</span>
+            </div>
+            <div className="border-t border-gray-800 w-56 mx-auto mt-1 pt-2">
+              <p className="font-semibold text-gray-900 tracking-wide">MARCELO RIOS</p>
+              <p className="text-xs text-gray-600 uppercase">Diretor</p>
+              <p className="text-xs text-gray-500">Bene Curati Cuidados</p>
+            </div>
+            <p className="text-sm text-gray-500 mt-4">
               CNPJ: 60.725.201/0001-88
             </p>
             <p className="text-xs text-gray-400 mt-2">
-              Documento válido somente com o verso contendo o conteúdo
-              programático • Validação em /validar
+              Documento válido somente com o verso • Validação em /validar
             </p>
           </div>
         </div>

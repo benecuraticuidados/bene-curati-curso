@@ -60,13 +60,16 @@ export default async function CertificadoPage() {
 
   const canRequestCertificate = allLessonsDone && finalPassed
 
-  let certificate = await prisma.certificate.findUnique({
-    where: {
-      userId_courseId: { userId, courseId: course.id },
-    },
+  const settings = await prisma.settings.findUnique({ where: { id: "main" } })
+  const fee = settings?.certificateFee ?? 75
+  const feeLabel = fee.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+
+  let certificate = await prisma.certificate.findFirst({
+    where: { userId, courseId: course.id, status: { not: "CANCELLED" } },
+    include: { payments: { orderBy: { createdAt: "desc" }, take: 3 } },
+    orderBy: { createdAt: "desc" },
   })
 
-  // Se ainda não existe e o aluno terminou tudo, cria com status PENDING_PAYMENT
   if (!certificate && canRequestCertificate) {
     const { generateCertificateCode } = await import("@/lib/utils")
     certificate = await prisma.certificate.create({
@@ -75,8 +78,9 @@ export default async function CertificadoPage() {
         courseId: course.id,
         code: generateCertificateCode(),
         status: "PENDING_PAYMENT",
-        paymentAmount: 75.0,
+        paymentAmount: fee,
       },
+      include: { payments: true },
     })
   }
 
@@ -145,7 +149,7 @@ export default async function CertificadoPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Taxa de manutenção</p>
-                  <p className="text-2xl font-bold text-wine">R$ 75,00</p>
+                  <p className="text-2xl font-bold text-wine">{feeLabel}</p>
                 </div>
                 <CreditCard className="w-10 h-10 text-wine/60" />
               </div>
@@ -155,7 +159,16 @@ export default async function CertificadoPage() {
               </p>
             </div>
 
-            <PayCertificateButton certificateId={certificate.id} />
+            <PayCertificateButton amountLabel={feeLabel} />
+          </div>
+        )}
+
+        {certificate?.status === "CANCELLED" && (
+          <div className="card text-center">
+            <h2 className="font-semibold text-gray-900 mb-2">Certificado invalidado</h2>
+            <p className="text-sm text-gray-600">
+              Este certificado foi cancelado. Procure a administração da Bene Curati Cuidados.
+            </p>
           </div>
         )}
 

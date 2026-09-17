@@ -20,6 +20,7 @@ function ValidarForm() {
     issuedAt?: string
     code?: string
     message?: string
+    invalidated?: boolean
   }>(null)
 
   async function handleValidate(e: React.FormEvent) {
@@ -156,7 +157,9 @@ function ValidarForm() {
               <>
                 <div className="flex items-center gap-2 text-red-700 mb-3">
                   <XCircle className="w-6 h-6" />
-                  <span className="font-bold text-lg">CERTIFICADO NÃO ENCONTRADO</span>
+                  <span className="font-bold text-lg">
+                    {result.invalidated ? "CERTIFICADO INVALIDADO" : "CERTIFICADO NÃO ENCONTRADO"}
+                  </span>
                 </div>
                 <p className="text-sm text-gray-600">
                   {result.message ||

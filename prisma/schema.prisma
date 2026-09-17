@@ -29,6 +29,14 @@ enum CertificateStatus {
   CANCELLED
 }
 
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  CANCELLED
+  REFUNDED
+}
+
 model User {
   id            String    @id @default(cuid())
   email         String    @unique
@@ -48,6 +56,7 @@ model User {
   progress      Progress[]
   quizAttempts  QuizAttempt[]
   certificates  Certificate[]
+  payments      CertificatePayment[]
   auditLogs     AuditLog[]    @relation("Actor")
   createdCourses Course[]     @relation("CourseCreator")
 }
@@ -209,10 +218,32 @@ model Certificate {
   paymentAmount   Float             @default(75.0)
   paymentRef      String?
   qrData          String?
+  cancelReason    String?
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
+  payments        CertificatePayment[]
+}
 
-  @@unique([userId, courseId])
+model CertificatePayment {
+  id                 String        @id @default(cuid())
+  userId             String
+  user               User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  certificateId      String
+  certificate        Certificate   @relation(fields: [certificateId], references: [id], onDelete: Cascade)
+  courseId           String
+  amount             Float
+  currency           String        @default("BRL")
+  status             PaymentStatus @default(PENDING)
+  provider           String        @default("mercadopago")
+  providerPaymentId  String?       @unique
+  checkoutUrl        String?
+  paidAt             DateTime?
+  failedAt           DateTime?
+  cancelledAt        DateTime?
+  refundedAt         DateTime?
+  rawStatus          String?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
 }
 
 model AuditLog {

@@ -103,13 +103,9 @@ export default async function DashboardPage() {
   }
 
   // Certificado
-  const certificate = await prisma.certificate.findUnique({
-    where: {
-      userId_courseId: {
-        userId,
-        courseId: course.id,
-      },
-    },
+  const certificate = await prisma.certificate.findFirst({
+    where: { userId, courseId: course.id, status: { not: "CANCELLED" } },
+    orderBy: { createdAt: "desc" },
   })
 
   const canRequestCertificate =

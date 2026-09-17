@@ -20,9 +20,30 @@ export async function GET(req: Request) {
     },
   })
 
-  if (!certificate || certificate.status !== "ISSUED") {
+  if (!certificate) {
     return NextResponse.json({
       valid: false,
+      invalidated: false,
+      message:
+        "O código informado não corresponde a nenhum certificado emitido pela Bene Curati Cuidados.",
+    })
+  }
+
+  if (certificate.status === "CANCELLED") {
+    return NextResponse.json({
+      valid: false,
+      invalidated: true,
+      studentName: certificate.user.name,
+      courseName: certificate.course.title,
+      code: certificate.code,
+      message: "CERTIFICADO INVALIDADO",
+    })
+  }
+
+  if (certificate.status !== "ISSUED") {
+    return NextResponse.json({
+      valid: false,
+      invalidated: false,
       message:
         "O código informado não corresponde a nenhum certificado válido emitido pela Bene Curati Cuidados.",
     })
