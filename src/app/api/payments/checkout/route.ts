@@ -102,9 +102,10 @@ export async function POST() {
           title: "Taxa de emissão de certificado — Bene Curati Cuidados",
           quantity: 1,
           currency_id: "BRL",
-          unit_price: amount,
+          unit_price: Number(amount),
         },
       ],
+      statement_descriptor: "BENE CURATI",
       external_reference: payment.id,
       notification_url: `${appUrl}/api/payments/webhook`,
       back_urls: {
@@ -113,6 +114,12 @@ export async function POST() {
         pending: `${appUrl}/certificado?pagamento=pendente`,
       },
       auto_return: "approved",
+      payment_methods: {
+        excluded_payment_methods: [],
+        excluded_payment_types: [],
+        default_payment_method_id: "pix",
+        installments: 1,
+      },
     }),
   })
 
