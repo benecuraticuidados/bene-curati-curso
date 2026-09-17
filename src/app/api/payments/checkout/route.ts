@@ -109,13 +109,15 @@ export async function POST(req: Request) {
         "X-Idempotency-Key": payment.id,
       },
       body: JSON.stringify({
-        transaction_amount: Number(amount),
+        transaction_amount: Number(Number(amount).toFixed(2)),
         description: "Taxa de emissao de certificado Bene Curati",
         payment_method_id: "pix",
         notification_url: `${appUrl}/api/payments/webhook`,
         external_reference: payment.id,
+        date_of_expiration: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
         payer: {
           email: payerEmail || "aluno@bene-curati-curso.vercel.app",
+          first_name: String((session.user as { name?: string }).name || "Aluno").split(" ")[0],
         },
       }),
     })
@@ -127,7 +129,7 @@ export async function POST(req: Request) {
       pixJson = {}
     }
     const tx = pixJson?.point_of_interaction?.transaction_data || {}
-    if (pixRes.ok && (tx.qr_code || tx.ticket_url)) {
+    if (pixRes.ok && (tx.qr_code || tx.qr_code_base64 || tx.ticket_url)) {
       await prisma.certificatePayment.update({
         where: { id: payment.id },
         data: {
@@ -147,7 +149,28 @@ export async function POST(req: Request) {
         ticketUrl: tx.ticket_url || null,
       })
     }
-    // se Pix direto falhar, segue para Checkout Pro
+
+    const cause = Array.isArray(pixJson.cause)
+      ? pixJson.cause.map((c: { description?: string; code?: string }) => c.description || c.code).join("; ")
+      : ""
+    const mpMsg = String(pixJson.message || pixJson.error || cause || pixRaw).slice(0, 280)
+    await prisma.certificatePayment.update({
+      where: { id: payment.id },
+      data: { status: "FAILED", rawStatus: mpMsg.slice(0, 180), failedAt: new Date() },
+    })
+    const tokenHint = token.startsWith("TEST-")
+      ? "O token na Vercel é de TESTE. Pix em produção precisa do Access Token APP_USR- (não a Public Key)."
+      : token.startsWith("APP_USR-")
+        ? "Token de produção aceito, mas o Mercado Pago não gerou o Pix. Confira se a conta pode receber Pix como vendedor."
+        : "MERCADOPAGO_ACCESS_TOKEN não parece Access Token."
+    return NextResponse.json(
+      {
+        error: "Não foi possível gerar o Pix.",
+        hint: tokenHint,
+        details: mpMsg,
+      },
+      { status: 502 }
+    )
   }
   const items = [
     {
