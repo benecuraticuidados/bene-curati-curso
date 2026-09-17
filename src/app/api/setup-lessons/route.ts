@@ -112,24 +112,24 @@ export async function GET(req: Request) {
   const PRACTICA = [
     {
       order: 1,
-      title: "Higiene íntima e base para troca de fralda",
-      video: "https://www.youtube.com/embed/MhGAFzpE8pA",
+      title: "Transferência para a cadeira",
+      video: "https://www.youtube.com/embed/Gcoj_yG2Y1U",
       reading:
-        "<h2>Higiene íntima e base para troca de fralda</h2><p>Aula prática obrigatória para concluir o curso. Não entra na nota da prova. Prepare o material, proteja a intimidade e siga a sequência adequada. O vídeo demonstra a higiene íntima no leito, base para a troca de fralda.</p><p>Não arraste o paciente no lençol. Peça ajuda se houver risco de queda. Registre lesão ou recusa.</p>",
+        "<h2>Transferência para a cadeira</h2><p>Aula prática obrigatória. O vídeo é exibido neste aplicativo. Trave a cadeira, retire o apoio de pés e transfira sem puxar pelos braços.</p>",
     },
     {
       order: 2,
-      title: "Transferência da cama para a cadeira",
-      video: "https://www.youtube.com/embed/PkrGeju7EDg",
+      title: "Trocar lençol com acamados",
+      video: "https://www.youtube.com/embed/F_J2ZiDjBgY",
       reading:
-        "<h2>Transferência da cama para a cadeira</h2><p>Aula prática obrigatória, independente da pontuação da avaliação. Trave a cadeira, sente a pessoa na beira da cama, conte até três e gire o corpo. Não puxe pelos braços.</p><p>Se a pessoa desabar, conduza ao chão com controle. Use as pernas, não a lombar.</p>",
+        "<h2>Trocar lençol com acamados</h2><p>Aula prática obrigatória. O vídeo é exibido neste aplicativo. Lateralize a pessoa, enrole o lençol sujo e coloque o limpo sem arrastar o paciente.</p>",
     },
     {
       order: 3,
-      title: "Mudança de decúbito e manejo no leito",
-      video: "https://www.youtube.com/embed/WXvyHrn90eQ",
+      title: "Vestir roupas em acamados",
+      video: "https://www.youtube.com/embed/4qKbNpcKuXM",
       reading:
-        "<h2>Mudança de decúbito e manejo no leito</h2><p>Aula prática obrigatória. Reposicione no leito para prevenir lesão por pressão. Alinhe cabeça e tronco e evite arrastar.</p><p>A referência usual é a virada a cada duas horas, salvo orientação da equipe.</p>",
+        "<h2>Vestir roupas em acamados</h2><p>Aula prática obrigatória. O vídeo é exibido neste aplicativo. Vista primeiro o lado mais comprometido e não force articulações.</p>",
     },
   ]
 

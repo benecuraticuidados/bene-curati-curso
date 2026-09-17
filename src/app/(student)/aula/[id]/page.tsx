@@ -107,7 +107,9 @@ export default async function AulaPage({
           {lesson.videoUrl && (
             <div className="mb-6">
               <p className="text-xs font-semibold tracking-widest uppercase text-wine mb-2">
-                Vídeo de encerramento do módulo
+                {lesson.module.order === 22
+                  ? "Vídeo prático obrigatório"
+                  : "Vídeo de encerramento do módulo"}
               </p>
               <div className="aspect-video bg-gray-900 rounded-lg overflow-hidden">
                 <iframe
