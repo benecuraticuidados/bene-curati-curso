@@ -31,7 +31,14 @@ export async function GET(req: Request) {
     include: { lessons: { orderBy: { order: "asc" } } },
   })
 
-  const audit: { module: string; titles: string[]; duplicateText: boolean }[] = []
+  const audit: {
+    module: string
+    titles: string[]
+    duplicateText: boolean
+    wordCounts: number[]
+    videoId: string | null
+  }[] = []
+  const videoIds: string[] = []
   let lessonsUpdated = 0
   let materialsUpserted = 0
 
@@ -48,11 +55,21 @@ export async function GET(req: Request) {
     })
 
     const texts: string[] = []
+    const wordCounts: number[] = []
+    const youtubeId = pack.closingVideo.url.split("/embed/")[1] || null
+    if (youtubeId && videoIds.includes(youtubeId)) {
+      return NextResponse.json(
+        { error: "Vídeo duplicado bloqueado", youtubeId, module: pack.title },
+        { status: 409 }
+      )
+    }
+    if (youtubeId) videoIds.push(youtubeId)
     for (let i = 0; i < mod.lessons.length; i++) {
       const lesson = mod.lessons[i]
       const unit = pack.lessons[i] || pack.lessons[pack.lessons.length - 1]
       const isLast = i === mod.lessons.length - 1
       texts.push(unit.reading)
+      wordCounts.push((unit.reading || "").replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length)
 
       await prisma.lesson.update({
         where: { id: lesson.id },
@@ -87,6 +104,8 @@ export async function GET(req: Request) {
       module: pack.title,
       titles: pack.lessons.map((l) => l.title),
       duplicateText: new Set(texts).size !== texts.length,
+      wordCounts,
+      videoId: youtubeId,
     })
   }
 
@@ -98,5 +117,12 @@ export async function GET(req: Request) {
     materialsUpserted,
     audit,
     duplicates: audit.filter((a) => a.duplicateText).map((a) => a.module),
+    uniqueVideos: videoIds.length,
+    duplicateVideos: videoIds.length !== new Set(videoIds).size,
+    aulasCurtas: audit.flatMap((a) =>
+      a.wordCounts
+        .map((w, i) => (w < 650 ? `${a.module} aula ${i + 1} (${w} palavras)` : null))
+        .filter(Boolean)
+    ),
   })
 }
