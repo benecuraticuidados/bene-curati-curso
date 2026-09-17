@@ -117,36 +117,45 @@ export default async function AulaPage({
             </div>
           )}
 
-          {/* Descrição */}
           {lesson.description && (
-            <div className="prose prose-sm max-w-none text-gray-700 mb-6">
-              <p>{lesson.description}</p>
-            </div>
+            <p className="text-sm text-gray-600 mb-4">{lesson.description}</p>
           )}
 
-          {/* Materiais complementares */}
-          {lesson.materials.length > 0 && (
+          {lesson.materials
+            .filter((mat) => mat.type === "text" && mat.content)
+            .map((mat) => (
+              <article
+                key={mat.id}
+                className="border border-wine/15 bg-wine/[0.03] rounded-xl p-5 mb-6 lesson-reading"
+              >
+                <p className="text-xs font-semibold tracking-widest uppercase text-wine mb-3">
+                  {mat.title} • Bene Curati Cuidados
+                </p>
+                <div
+                  className="text-gray-800 text-sm leading-relaxed space-y-3 [&_h2]:text-lg [&_h2]:font-bold [&_h2]:text-wine [&_h3]:font-semibold [&_h3]:text-gray-900 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
+                  dangerouslySetInnerHTML={{ __html: mat.content || "" }}
+                />
+              </article>
+            ))}
+
+          {lesson.materials.filter((mat) => mat.url).length > 0 && (
             <div className="border-t border-gray-100 pt-4 mb-6">
-              <h3 className="font-semibold text-gray-900 mb-3">
-                Material Complementar
-              </h3>
+              <h3 className="font-semibold text-gray-900 mb-3">Material complementar</h3>
               <ul className="space-y-2">
-                {lesson.materials.map((mat) => (
-                  <li key={mat.id}>
-                    {mat.url ? (
+                {lesson.materials
+                  .filter((mat) => mat.url)
+                  .map((mat) => (
+                    <li key={mat.id}>
                       <a
-                        href={mat.url}
+                        href={mat.url || "#"}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-wine hover:underline text-sm"
                       >
                         {mat.title}
                       </a>
-                    ) : (
-                      <span className="text-sm text-gray-700">{mat.title}</span>
-                    )}
-                  </li>
-                ))}
+                    </li>
+                  ))}
               </ul>
             </div>
           )}

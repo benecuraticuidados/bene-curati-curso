@@ -93,7 +93,7 @@ async function main() {
       title: 'Curso Profissional de Cuidador',
       subtitle: 'Formação em Home Care, Cuidados Domiciliares e Assistência ao Paciente',
       description:
-        'Apostila Oficial Ampliada Bene Curati Cuidados — 200 horas. Formação em Home Care, Cuidados Domiciliares e Assistência ao Paciente. Base 160h (padrão SENAC) + 40h de aprofundamento técnico em enfermagem e primeiros socorros. Vídeos de referência, estudos de caso e prova final (aprovação 70%).',
+        'Apostila Oficial Ampliada Bene Curati Cuidados — formação em Home Care, Cuidados Domiciliares e Assistência ao Paciente. Texto de leitura por módulo, vídeos de referência no YouTube e prova final (aprovação 70%).',
       workloadHours: 200,
       minScore: 7.0,
       isPublished: true,
