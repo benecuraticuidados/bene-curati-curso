@@ -70,14 +70,15 @@ export default async function VisualizarCertificadoPage() {
     <div className="min-h-screen bg-gray-100 py-8 px-4 print:bg-white print:py-0 print:px-0">
       <style>{`
         @media print {
-          @page { size: A4 portrait; margin: 8mm; }
+          @page { size: A4 landscape; margin: 8mm; }
           html, body { margin: 0; background: white; }
           .no-print { display: none !important; }
           .sheet {
             width: auto !important;
             max-width: none !important;
+            min-height: 0 !important;
             box-shadow: none !important;
-            border-width: 6px !important;
+            border-width: 5px !important;
             page-break-inside: avoid;
             break-inside: avoid;
           }
@@ -87,18 +88,18 @@ export default async function VisualizarCertificadoPage() {
         }
       `}</style>
       {/* Controles — não imprimem */}
-      <div className="max-w-[210mm] mx-auto mb-6 no-print flex flex-wrap gap-3">
+      <div className="max-w-[297mm] mx-auto mb-6 no-print flex flex-wrap gap-3">
         <Link href="/certificado" className="btn-outline text-sm">
           ← Voltar
         </Link>
         <PrintButton />
         <p className="text-xs text-gray-500 self-center">
-          Dica: ao imprimir, use “frente e verso” (duplex) ou imprima página 1 e 2 separadamente.
+          Ao imprimir: A4 • Paisagem (horizontal) • 2 páginas (frente e verso).
         </p>
       </div>
 
       {/* ========== FRENTE DO CERTIFICADO ========== */}
-      <div className="sheet sheet-front max-w-[210mm] mx-auto bg-white shadow-xl border-8 border-wine">
+      <div className="sheet sheet-front max-w-[297mm] mx-auto bg-white shadow-xl border-8 border-wine">
         <div className="bg-wine h-3" />
 
         <div className="px-8 py-6 md:px-12 md:py-8 text-center">
@@ -181,7 +182,7 @@ export default async function VisualizarCertificadoPage() {
 
       <div className="h-8 no-print" />
 
-      <div className="sheet sheet-back max-w-[210mm] mx-auto bg-white shadow-xl border-8 border-wine">
+      <div className="sheet sheet-back max-w-[297mm] mx-auto bg-white shadow-xl border-8 border-wine">
         <div className="bg-wine h-3" />
 
         <div className="px-5 py-5 md:px-8 md:py-6">
