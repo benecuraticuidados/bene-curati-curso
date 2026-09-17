@@ -127,7 +127,7 @@ export async function GET(req: Request) {
     {
       order: 3,
       title: "Mudança de decúbito e manejo no leito",
-      video: "https://www.youtube.com/embed/cW3qxZRsQZI",
+      video: "https://www.youtube.com/embed/pyQKZaz8boQ",
       reading:
         "<h2>Mudança de decúbito e manejo no leito</h2><p>Aula prática obrigatória. Reposicione no leito para prevenir lesão por pressão. Alinhe cabeça e tronco e evite arrastar.</p><p>A referência usual é a virada a cada duas horas, salvo orientação da equipe.</p>",
     },
