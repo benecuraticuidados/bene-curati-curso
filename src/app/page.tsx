@@ -90,7 +90,7 @@ export default function HomePage() {
             Conteúdo Programático
           </h3>
           <p className="text-center text-gray-600 mb-10 max-w-xl mx-auto">
-            21 módulos oficiais da Apostila Bene Curati (160h / 200h ampliada) — padrão SENAC.
+            22 módulos da formação Bene Curati Cuidados (210 horas), incluindo manejo prático obrigatório.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {[
@@ -115,6 +115,7 @@ export default function HomePage() {
               "Autocuidado e Burnout",
               "Ética e Legislação",
               "Código de Excelência + Prova Final",
+              "Manejo prático obrigatório",
             ].map((title, i) => (
               <div key={i} className="flex items-start gap-3 bg-white p-3 rounded-lg border border-gray-100">
                 <span className="flex-shrink-0 w-7 h-7 rounded-full bg-wine text-white text-xs font-bold flex items-center justify-center">

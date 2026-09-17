@@ -30,6 +30,15 @@ const CONTEUDO_PROGRAMATICO = [
   { titulo: "19. Autocuidado e Burnout", horas: 8 },
   { titulo: "20. Ética e Legislação", horas: 8 },
   { titulo: "21. Código de Excelência + Técnicas Avançadas", horas: 8 },
+  { titulo: "22. Manejo prático obrigatório", horas: 6 },
+]
+
+const AULAS_PRATICAS = [
+  "Transferência para a cadeira",
+  "Trocar lençol com acamados",
+  "Vestir roupas em acamados",
+  "Mudança de decúbito",
+  "Higiene íntima e troca de fralda",
 ]
 
 export default async function VisualizarCertificadoPage() {
@@ -57,9 +66,9 @@ export default async function VisualizarCertificadoPage() {
   const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(validateUrl)}`
   const started = certificate.user.createdAt
 
-  const colA = CONTEUDO_PROGRAMATICO.slice(0, 7)
-  const colB = CONTEUDO_PROGRAMATICO.slice(7, 14)
-  const colC = CONTEUDO_PROGRAMATICO.slice(14)
+  const colA = CONTEUDO_PROGRAMATICO.slice(0, 8)
+  const colB = CONTEUDO_PROGRAMATICO.slice(8, 16)
+  const colC = CONTEUDO_PROGRAMATICO.slice(16)
 
   return (
     <div className="min-h-screen bg-[#3a0f16] py-6 px-3 print:bg-white print:p-0">
@@ -249,9 +258,11 @@ export default async function VisualizarCertificadoPage() {
 
           <p className="text-right font-bold text-[#5b1320] mt-2">TOTAL: {totalHoras}h</p>
           <p className="text-[10px] text-gray-600 mt-2 leading-snug">
-            Modalidade teórica e técnica em Home Care. Avaliação: prova final (mínimo 70%).
-            Validação pública do código {certificate.code}. Aluno: {certificate.user.name} •
-            Emitido em {formatDate(certificate.issuedAt)}.
+            Modalidade teórica, técnica e prática em Home Care. Avaliação: prova final
+            (mínimo 70%, tentativas ilimitadas). Conclusão exige as 5 aulas práticas
+            obrigatórias ({AULAS_PRATICAS.join("; ")}). Validação pública do código{" "}
+            {certificate.code}. Aluno: {certificate.user.name} • Emitido em{" "}
+            {formatDate(certificate.issuedAt)}.
           </p>
           <div className="mt-3 border-t border-gray-200 pt-2 text-[9px] text-gray-700 leading-snug uppercase">
             Embasamento legal: os cursos oferecidos pela Bene Curati Cuidados têm base legal
