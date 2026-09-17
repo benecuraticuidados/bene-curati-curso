@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma"
 import { formatDate } from "@/lib/utils"
-import IssueCertificateButton from "./IssueCertificateButton"
 
 export default async function AdminCertificadosPage({
   searchParams,
@@ -104,10 +103,7 @@ export default async function AdminCertificadosPage({
                 </td>
                 <td className="py-3 px-4 text-right">
                   {c.status === "PENDING_PAYMENT" && (
-                    <IssueCertificateButton
-                      certificateId={c.id}
-                      studentName={c.user.name}
-                    />
+                    <span className="text-xs text-amber-700">Aguardando pagamento</span>
                   )}
                   {c.status === "ISSUED" && (
                     <a

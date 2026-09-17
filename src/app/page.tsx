@@ -10,11 +10,11 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Image
-              src="/logo-bene-curati.png"
+              src="/logo-bene-curati-v2.png"
               alt="Bene Curati Cuidados"
               width={52}
               height={52}
-              className="rounded-full"
+              className="object-contain"
               priority
             />
             <div>

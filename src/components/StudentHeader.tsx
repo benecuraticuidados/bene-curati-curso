@@ -15,11 +15,11 @@ export default function StudentHeader() {
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         <Link href="/dashboard" className="flex items-center gap-3">
           <Image
-            src="/logo-bene-curati.png"
+            src="/logo-bene-curati-v2.png"
             alt="Bene Curati Cuidados"
             width={44}
             height={44}
-            className="rounded-full"
+            className="object-contain"
           />
           <div className="hidden sm:block">
             <p className="font-bold text-wine text-sm leading-tight">Bene Curati Cuidados</p>

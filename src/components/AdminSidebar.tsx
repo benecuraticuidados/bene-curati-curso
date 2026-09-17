@@ -61,11 +61,11 @@ export default function AdminSidebar() {
       <div className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Image
-            src="/logo-bene-curati.png"
+            src="/logo-bene-curati-v2.png"
             alt="Bene Curati"
             width={36}
             height={36}
-            className="rounded-full"
+            className="object-contain"
           />
           <span className="font-bold text-wine text-sm">Admin</span>
         </div>
@@ -106,11 +106,11 @@ export default function AdminSidebar() {
         <div className="p-5 border-b border-gray-100">
           <div className="flex items-center gap-3">
             <Image
-              src="/logo-bene-curati.png"
+              src="/logo-bene-curati-v2.png"
               alt="Bene Curati"
               width={44}
               height={44}
-              className="rounded-full"
+              className="object-contain"
             />
             <div>
               <p className="font-bold text-wine text-sm">Bene Curati</p>

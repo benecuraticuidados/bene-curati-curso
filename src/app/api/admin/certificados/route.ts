@@ -23,27 +23,13 @@ export async function POST(req: Request) {
   }
 
   if (action === "ISSUE") {
-    const settings = await prisma.settings.findUnique({ where: { id: "main" } })
-    await prisma.certificatePayment.create({
-      data: {
-        userId: cert.userId,
-        certificateId: cert.id,
-        courseId: cert.courseId,
-        amount: settings?.certificateFee ?? cert.paymentAmount,
-        status: "PAID",
-        provider: "manual-admin",
-        providerPaymentId: `ADMIN-${Date.now()}`,
-        paidAt: new Date(),
-        rawStatus: "admin_manual",
+    return NextResponse.json(
+      {
+        error:
+          "Emissão sem pagamento bloqueada. O certificado só é liberado após confirmação PAID do Mercado Pago.",
       },
-    })
-    const updated = await markCertificateIssued({
-      certificateId: cert.id,
-      paymentRef: "ADMIN_CONFIRMED",
-      actorId,
-      details: "Emissão manual registrada pelo administrador",
-    })
-    return NextResponse.json({ ok: true, code: updated.code })
+      { status: 403 }
+    )
   }
 
   if (action === "CANCEL") {

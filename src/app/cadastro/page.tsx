@@ -72,7 +72,7 @@ export default function CadastroPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Image
-            src="/logo-bene-curati.png"
+            src="/logo-bene-curati-v2.png"
             alt="Bene Curati"
             width={64}
             height={64}

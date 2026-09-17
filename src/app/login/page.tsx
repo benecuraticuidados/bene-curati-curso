@@ -67,11 +67,11 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Image
-            src="/logo-bene-curati.png"
+            src="/logo-bene-curati-v2.png"
             alt="Bene Curati Cuidados"
             width={72}
             height={72}
-            className="mx-auto rounded-full mb-4"
+            className="mx-auto object-contain mb-4"
             priority
           />
           <h1 className="text-2xl font-bold text-gray-900">Entrar</h1>

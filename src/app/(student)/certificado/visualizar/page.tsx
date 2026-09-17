@@ -92,11 +92,11 @@ export default async function VisualizarCertificadoPage() {
         <div className="px-8 py-10 md:px-16 md:py-14 text-center">
           <div className="flex justify-center mb-6">
             <Image
-              src="/logo-bene-curati.png"
+              src="/logo-bene-curati-v2.png"
               alt="Bene Curati Cuidados"
               width={100}
               height={100}
-              className="rounded-full"
+              className="object-contain"
             />
           </div>
 
@@ -179,11 +179,11 @@ export default async function VisualizarCertificadoPage() {
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-wine/20">
             <div className="flex items-center gap-3">
               <Image
-                src="/logo-bene-curati.png"
+                src="/logo-bene-curati-v2.png"
                 alt="Bene Curati Cuidados"
                 width={48}
                 height={48}
-                className="rounded-full"
+                className="object-contain"
               />
               <div>
                 <p className="font-bold text-wine text-sm">

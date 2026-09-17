@@ -49,11 +49,11 @@ function ValidarForm() {
         <div className="max-w-3xl mx-auto px-4 py-4 flex items-center gap-3">
           <Link href="/">
             <Image
-              src="/logo-bene-curati.png"
+              src="/logo-bene-curati-v2.png"
               alt="Bene Curati Cuidados"
               width={48}
               height={48}
-              className="rounded-full"
+              className="object-contain"
             />
           </Link>
           <div>

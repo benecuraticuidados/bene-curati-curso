@@ -27,15 +27,13 @@ export async function courseCompleted(userId: string, courseId: string) {
 
 export async function paymentConfirmed(certificateId: string) {
   const paid = await prisma.certificatePayment.findFirst({
-    where: { certificateId, status: "PAID" },
+    where: {
+      certificateId,
+      status: "PAID",
+      NOT: { provider: { in: ["manual-admin", "simulated"] } },
+    },
   })
-  if (paid) return true
-  const cert = await prisma.certificate.findUnique({
-    where: { id: certificateId },
-    select: { status: true, paymentRef: true },
-  })
-  // emissão manual registrada pelo admin
-  return Boolean(cert?.status === "ISSUED" && cert.paymentRef)
+  return Boolean(paid)
 }
 
 export async function canReleaseCertificate(params: {
