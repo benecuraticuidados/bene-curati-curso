@@ -69,22 +69,26 @@ export default async function VisualizarCertificadoPage() {
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4 print:bg-white print:py-0 print:px-0">
       <style>{`
+        .sheet {
+          width: 297mm;
+          min-height: 190mm;
+        }
         @media print {
-          @page { size: A4 landscape; margin: 8mm; }
+          @page { size: A4 landscape; margin: 6mm; }
           html, body { margin: 0; background: white; }
           .no-print { display: none !important; }
           .sheet {
-            width: auto !important;
-            max-width: none !important;
+            width: 285mm !important;
             min-height: 0 !important;
+            max-height: 198mm !important;
+            overflow: hidden !important;
             box-shadow: none !important;
-            border-width: 5px !important;
+            border-width: 4px !important;
             page-break-inside: avoid;
             break-inside: avoid;
           }
           .sheet-front { page-break-after: always; break-after: page; }
           .sheet-back { page-break-after: auto; }
-          table { page-break-inside: avoid; }
         }
       `}</style>
       {/* Controles — não imprimem */}

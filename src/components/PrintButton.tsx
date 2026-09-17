@@ -6,7 +6,7 @@ export default function PrintButton() {
       onClick={() => window.print()}
       className="btn-primary text-sm"
     >
-      Imprimir / Salvar PDF
+      Imprimir / Salvar PDF (A4 paisagem)
     </button>
   )
 }
