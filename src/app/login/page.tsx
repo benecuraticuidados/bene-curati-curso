@@ -19,33 +19,50 @@ export default function LoginPage() {
     setError("")
     setLoading(true)
 
-    const res = await signIn("credentials", {
-      email: email.toLowerCase().trim(),
-      password,
-      redirect: false,
-      callbackUrl: "/dashboard",
-    })
+    try {
+      // Login sem CSRF do NextAuth (evita erro no Vercel/celular)
+      const apiRes = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.toLowerCase().trim(),
+          password,
+        }),
+      })
+      const data = await apiRes.json()
 
-    setLoading(false)
+      if (!apiRes.ok) {
+        setError(data.error || "E-mail ou senha incorretos.")
+        setLoading(false)
+        return
+      }
 
-    if (res?.error) {
-      const hint =
-        res.error === "CredentialsSignin"
-          ? "E-mail ou senha incorretos."
-          : `Falha no login (${res.error}). Use o endereço https://bene-curati-curso.vercel.app/login`
-      setError(hint)
-      return
-    }
-
-    // Admin vai para /admin; aluno para /dashboard
-    const sessionRes = await fetch("/api/auth/session")
-    const sessionData = await sessionRes.json()
-    if (sessionData?.user?.role === "ADMIN") {
-      router.push("/admin")
-    } else {
+      if (data.role === "ADMIN") {
+        router.push("/admin")
+      } else {
+        router.push("/dashboard")
+      }
+      router.refresh()
+    } catch {
+      // Fallback NextAuth (pode falhar com CSRF em domínio diferente)
+      const res = await signIn("credentials", {
+        email: email.toLowerCase().trim(),
+        password,
+        redirect: false,
+      })
+      if (res?.error) {
+        setError(
+          res.error === "CredentialsSignin"
+            ? "E-mail ou senha incorretos."
+            : `Falha no login (${res.error}). Abra https://bene-curati-curso.vercel.app/login`
+        )
+        setLoading(false)
+        return
+      }
       router.push("/dashboard")
+      router.refresh()
     }
-    router.refresh()
+    setLoading(false)
   }
 
   return (

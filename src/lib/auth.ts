@@ -3,13 +3,6 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
 import { prisma } from './prisma'
 
-// Evita "Invalid URL" no build do Vercel quando NEXTAUTH_URL ainda não está definida
-if (!process.env.NEXTAUTH_URL) {
-  process.env.NEXTAUTH_URL = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:3000'
-}
-
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -58,6 +51,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id
         token.role = (user as { role?: string }).role
+        token.sub = user.id
       }
       return token
     },
@@ -70,6 +64,4 @@ export const authOptions: NextAuthOptions = {
     },
   },
   secret: process.env.NEXTAUTH_SECRET || 'bene-curati-dev-secret-change-me',
-  // Evita CSRF/URL inválida quando o app é acessado por domínio .vercel.app
-  useSecureCookies: process.env.NODE_ENV === 'production',
 }
