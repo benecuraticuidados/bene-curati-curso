@@ -67,15 +67,27 @@ export default async function VisualizarCertificadoPage() {
     200
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4 print:bg-white print:py-0 certificate-print">
+    <div className="min-h-screen bg-gray-100 py-8 px-4 print:bg-white print:py-0 print:px-0">
       <style>{`
         @media print {
-          @page { size: A4 landscape; margin: 10mm; }
-          .print\\:break-after-page { page-break-after: always; }
+          @page { size: A4 portrait; margin: 8mm; }
+          html, body { margin: 0; background: white; }
+          .no-print { display: none !important; }
+          .sheet {
+            width: auto !important;
+            max-width: none !important;
+            box-shadow: none !important;
+            border-width: 6px !important;
+            page-break-inside: avoid;
+            break-inside: avoid;
+          }
+          .sheet-front { page-break-after: always; break-after: page; }
+          .sheet-back { page-break-after: auto; }
+          table { page-break-inside: avoid; }
         }
       `}</style>
       {/* Controles — não imprimem */}
-      <div className="max-w-4xl mx-auto mb-6 print:hidden flex flex-wrap gap-3">
+      <div className="max-w-[210mm] mx-auto mb-6 no-print flex flex-wrap gap-3">
         <Link href="/certificado" className="btn-outline text-sm">
           ← Voltar
         </Link>
@@ -86,16 +98,16 @@ export default async function VisualizarCertificadoPage() {
       </div>
 
       {/* ========== FRENTE DO CERTIFICADO ========== */}
-      <div className="max-w-4xl mx-auto bg-white shadow-xl border-8 border-wine print:shadow-none print:border-4 print:break-after-page">
-        <div className="bg-wine h-4" />
+      <div className="sheet sheet-front max-w-[210mm] mx-auto bg-white shadow-xl border-8 border-wine">
+        <div className="bg-wine h-3" />
 
-        <div className="px-8 py-10 md:px-16 md:py-14 text-center">
-          <div className="flex justify-center mb-6">
+        <div className="px-8 py-6 md:px-12 md:py-8 text-center">
+          <div className="flex justify-center mb-3">
             <Image
               src="/logo-bene-curati-v2.png"
               alt="Bene Curati Cuidados"
-              width={100}
-              height={100}
+              width={88}
+              height={88}
               className="object-contain"
             />
           </div>
@@ -106,16 +118,16 @@ export default async function VisualizarCertificadoPage() {
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">
             CERTIFICADO DE CONCLUSÃO
           </h1>
-          <p className="text-gray-500 text-sm mb-8">
+          <p className="text-gray-500 text-sm mb-5">
             Curso Profissional de Cuidador • {totalHoras} horas
           </p>
 
           <p className="text-gray-700 text-lg mb-2">Certificamos que</p>
-          <p className="text-2xl md:text-3xl font-bold text-wine mb-6 border-b-2 border-wine/20 pb-3 inline-block px-8">
+          <p className="text-2xl md:text-3xl font-bold text-wine mb-4 border-b-2 border-wine/20 pb-2 inline-block px-8">
             {certificate.user.name}
           </p>
 
-          <p className="text-gray-700 max-w-2xl mx-auto leading-relaxed mb-8">
+          <p className="text-gray-700 max-w-2xl mx-auto leading-relaxed mb-6 text-sm md:text-base">
             concluiu com êxito o{" "}
             <strong>Curso Profissional de Cuidador</strong> da Bene Curati
             Cuidados, com carga horária total de{" "}
@@ -126,7 +138,7 @@ export default async function VisualizarCertificadoPage() {
             constante no verso deste certificado.
           </p>
 
-          <div className="grid grid-cols-2 gap-6 max-w-md mx-auto text-sm text-gray-600 mb-10">
+          <div className="grid grid-cols-2 gap-6 max-w-md mx-auto text-sm text-gray-600 mb-6">
             <div>
               <p className="text-gray-400 text-xs uppercase">
                 Data de conclusão
@@ -145,8 +157,8 @@ export default async function VisualizarCertificadoPage() {
             </div>
           </div>
 
-          <div className="border-t border-gray-200 pt-8 mt-4 max-w-sm mx-auto">
-            <div className="h-14 flex items-end justify-center">
+          <div className="border-t border-gray-200 pt-5 mt-2 max-w-sm mx-auto">
+            <div className="h-10 flex items-end justify-center">
               {/* Área reservada: substituir por /public/assinatura-diretor.png quando houver imagem oficial */}
               <span className="sr-only">Assinatura do diretor</span>
             </div>
@@ -164,17 +176,15 @@ export default async function VisualizarCertificadoPage() {
           </div>
         </div>
 
-        <div className="bg-wine h-4" />
+        <div className="bg-wine h-3" />
       </div>
 
-      {/* Espaçamento na tela */}
-      <div className="h-10 print:hidden" />
+      <div className="h-8 no-print" />
 
-      {/* ========== VERSO DO CERTIFICADO — Conteúdo Programático ========== */}
-      <div className="max-w-4xl mx-auto bg-white shadow-xl border-8 border-wine print:shadow-none print:border-4">
-        <div className="bg-wine h-4" />
+      <div className="sheet sheet-back max-w-[210mm] mx-auto bg-white shadow-xl border-8 border-wine">
+        <div className="bg-wine h-3" />
 
-        <div className="px-6 py-8 md:px-12 md:py-10">
+        <div className="px-5 py-5 md:px-8 md:py-6">
           {/* Cabeçalho do verso */}
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-wine/20">
             <div className="flex items-center gap-3">
@@ -202,53 +212,40 @@ export default async function VisualizarCertificadoPage() {
             </div>
           </div>
 
-          <h2 className="text-xl font-bold text-gray-900 text-center mb-1">
+          <h2 className="text-lg font-bold text-gray-900 text-center mb-1">
             CONTEÚDO PROGRAMÁTICO
           </h2>
-          <p className="text-center text-sm text-gray-500 mb-6">
+          <p className="text-center text-xs text-gray-500 mb-3">
             Curso Profissional de Cuidador — Carga horária total:{" "}
             <strong>{totalHoras} horas</strong>
           </p>
 
-          {/* Tabela de módulos */}
-          <div className="border border-gray-200 rounded-lg overflow-hidden">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="bg-wine text-white">
-                  <th className="text-left py-2.5 px-3 font-semibold">
-                    Módulo / Conteúdo
-                  </th>
-                  <th className="text-right py-2.5 px-3 font-semibold w-24">
-                    Carga horária
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {CONTEUDO_PROGRAMATICO.map((mod, i) => (
-                  <tr
-                    key={mod.titulo}
-                    className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}
-                  >
-                    <td className="py-1.5 px-3 text-gray-800">{mod.titulo}</td>
-                    <td className="py-1.5 px-3 text-right text-gray-700 font-medium">
-                      {mod.horas}h
-                    </td>
+          <div className="grid grid-cols-2 gap-2">
+            {[CONTEUDO_PROGRAMATICO.slice(0, 11), CONTEUDO_PROGRAMATICO.slice(11)].map((col, ci) => (
+              <table key={ci} className="w-full text-[11px] border border-gray-200">
+                <thead>
+                  <tr className="bg-wine text-white">
+                    <th className="text-left py-1 px-2 font-semibold">Módulo</th>
+                    <th className="text-right py-1 px-2 font-semibold w-10">Horas</th>
                   </tr>
-                ))}
-                <tr className="bg-wine/10 border-t-2 border-wine">
-                  <td className="py-2.5 px-3 font-bold text-gray-900">
-                    CARGA HORÁRIA TOTAL
-                  </td>
-                  <td className="py-2.5 px-3 text-right font-bold text-wine">
-                    {totalHoras}h
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {col.map((mod, i) => (
+                    <tr key={mod.titulo} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                      <td className="py-0.5 px-2 text-gray-800">{mod.titulo}</td>
+                      <td className="py-0.5 px-2 text-right font-medium">{mod.horas}h</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ))}
           </div>
+          <p className="text-right text-sm font-bold text-wine mt-2">
+            CARGA HORÁRIA TOTAL: {totalHoras}h
+          </p>
 
           {/* Observações */}
-          <div className="mt-6 text-xs text-gray-600 space-y-2 leading-relaxed">
+          <div className="mt-3 text-[11px] text-gray-600 space-y-1 leading-snug">
             <p>
               <strong>Modalidade:</strong> formação teórica e técnica em Home
               Care, Cuidados Domiciliares e Assistência ao Paciente, com vídeos
@@ -268,7 +265,7 @@ export default async function VisualizarCertificadoPage() {
           </div>
 
           {/* Rodapé do verso */}
-          <div className="mt-8 pt-4 border-t border-gray-200 text-center">
+          <div className="mt-3 pt-2 border-t border-gray-200 text-center">
             <p className="text-xs text-gray-400">
               Bene Curati Cuidados • “NOSSA PAIXÃO É CUIDAR DE QUEM VOCÊ AMA!”
             </p>
@@ -279,10 +276,10 @@ export default async function VisualizarCertificadoPage() {
           </div>
         </div>
 
-        <div className="bg-wine h-4" />
+        <div className="bg-wine h-3" />
       </div>
 
-      <p className="text-center text-xs text-gray-400 mt-6 print:hidden">
+      <p className="text-center text-xs text-gray-400 mt-6 no-print">
         Certificado frente e verso • Valide em /validar • CNPJ
         60.725.201/0001-88
       </p>
