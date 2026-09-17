@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import { formatDate } from "@/lib/utils"
 import ToggleStudentButton from "./ToggleStudentButton"
+import DeleteUserButton from "./DeleteUserButton"
 
 export default async function AdminAlunosPage({
   searchParams,
@@ -149,11 +150,14 @@ export default async function AdminAlunosPage({
                     </span>
                   </td>
                   <td className="py-3 px-4 text-right">
-                    <ToggleStudentButton
-                      userId={s.id}
-                      isActive={s.isActive}
-                      name={s.name}
-                    />
+                    <div className="flex justify-end gap-2">
+                      <ToggleStudentButton
+                        userId={s.id}
+                        isActive={s.isActive}
+                        name={s.name}
+                      />
+                      <DeleteUserButton userId={s.id} name={s.name} />
+                    </div>
                   </td>
                 </tr>
               )

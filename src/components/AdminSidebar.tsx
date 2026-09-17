@@ -10,6 +10,7 @@ import {
   Award,
   BookOpen,
   Settings,
+  Shield,
   LogOut,
   Menu,
   X,
@@ -21,6 +22,7 @@ const links = [
   { href: "/admin/alunos", label: "Alunos", icon: Users },
   { href: "/admin/curso", label: "Curso", icon: BookOpen },
   { href: "/admin/certificados", label: "Certificados", icon: Award },
+  { href: "/admin/equipe", label: "Equipe", icon: Shield },
   { href: "/admin/configuracoes", label: "Configurações", icon: Settings },
 ]
 

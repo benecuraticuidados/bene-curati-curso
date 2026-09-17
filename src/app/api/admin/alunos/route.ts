@@ -60,3 +60,48 @@ export async function PATCH(req: Request) {
 
   return NextResponse.json({ ok: true })
 }
+
+export async function DELETE(req: Request) {
+  const session = await requireAdmin()
+  if (!session) {
+    return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+  }
+
+  const { userId } = await req.json()
+  if (!userId) {
+    return NextResponse.json({ error: "userId obrigatório" }, { status: 400 })
+  }
+
+  const actorId = (session.user as { id?: string }).id
+  if (userId === actorId) {
+    return NextResponse.json({ error: "Você não pode excluir a própria conta." }, { status: 400 })
+  }
+
+  const user = await prisma.user.findUnique({ where: { id: userId } })
+  if (!user) {
+    return NextResponse.json({ error: "Usuário não encontrado" }, { status: 404 })
+  }
+
+  if (user.role === "ADMIN") {
+    const adminCount = await prisma.user.count({ where: { role: "ADMIN" } })
+    if (adminCount <= 1) {
+      return NextResponse.json(
+        { error: "Não é possível excluir o último administrador." },
+        { status: 400 }
+      )
+    }
+  }
+
+  await prisma.auditLog.create({
+    data: {
+      actorId,
+      action: "USER_DELETED",
+      entity: "User",
+      entityId: userId,
+      details: `Excluído: ${user.name} (${user.email}) role=${user.role}`,
+    },
+  })
+
+  await prisma.user.delete({ where: { id: userId } })
+  return NextResponse.json({ ok: true })
+}
