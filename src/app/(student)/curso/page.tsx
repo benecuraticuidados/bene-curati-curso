@@ -50,6 +50,14 @@ export default async function CursoPage() {
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900">{course.title}</h1>
           <p className="text-gray-500 mt-1">{course.subtitle}</p>
+          <a
+            href="/apostila-oficial-bene-curati.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex mt-3 text-sm font-medium text-wine hover:underline"
+          >
+            Baixar apostila oficial (PDF)
+          </a>
         </div>
 
         <div className="space-y-4">

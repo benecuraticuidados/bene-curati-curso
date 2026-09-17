@@ -89,7 +89,7 @@ Desenvolvido para a Bene Curati Cuidados.
 - Logo oficial: `public/logo-bene-curati.png`
 - Apostila Oficial (200h ampliada): `public/apostila-oficial-200h.pdf`
 - Estrutura de módulos 100% alinhada ao sumário da apostila oficial (21 módulos + Prova Final)
-- Carga horária: 160h (padrão SENAC) / versão ampliada 200h
+- Carga horária: 204 horas (21 módulos)
 - Nota mínima de aprovação: 70%
 - Taxa de emissão/manutenção do certificado: R$ 75,00
 
