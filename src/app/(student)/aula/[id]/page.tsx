@@ -104,16 +104,28 @@ export default async function AulaPage({
             {lesson.title}
           </h1>
 
-          {/* Vídeo */}
           {lesson.videoUrl && (
-            <div className="aspect-video bg-gray-900 rounded-lg overflow-hidden mb-6">
-              <iframe
-                src={lesson.videoUrl}
-                title={lesson.title}
-                className="w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+            <div className="mb-6">
+              <p className="text-xs font-semibold tracking-widest uppercase text-wine mb-2">
+                Vídeo de encerramento do módulo
+              </p>
+              <div className="aspect-video bg-gray-900 rounded-lg overflow-hidden">
+                <iframe
+                  src={lesson.videoUrl}
+                  title={lesson.title}
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+              <a
+                href={lesson.videoUrl.replace("/embed/", "/watch?v=")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline text-sm mt-3 inline-flex"
+              >
+                Assistir no YouTube
+              </a>
             </div>
           )}
 

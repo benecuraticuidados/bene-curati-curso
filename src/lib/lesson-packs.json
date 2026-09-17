@@ -1,0 +1,996 @@
+[
+  {
+    "order": 1,
+    "title": "1. Papel do Cuidador",
+    "hours": 8,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/Y0woaElMsXA",
+      "title": "Vídeo de encerramento do módulo — banho no leito / técnica"
+    },
+    "lessons": [
+      {
+        "title": "Conceito e papel do cuidador",
+        "objectives": [
+          "Definir o cuidador no home care",
+          "Diferenciar apoio de tratamento"
+        ],
+        "points": [
+          "AVDs",
+          "Observação",
+          "Dignidade"
+        ],
+        "reading": "<h2>Conceito e papel do cuidador</h2><p>O cuidador da Bene Curati Cuidados apoia a vida diária no domicílio: higiene, alimentação assistida, mobilização e presença.</p><p>Não diagnostica nem prescreve. Preserva conforto, segurança e dignidade.</p><p>O cuidado acontece na casa da pessoa. Respeito à privacidade é parte da função.</p><h3>Objetivos da aula</h3><ul><li>Definir o cuidador no home care</li><li>Diferenciar apoio de tratamento</li></ul><h3>Principais pontos</h3><ul><li>AVDs</li><li>Observação</li><li>Dignidade</li></ul>"
+      },
+      {
+        "title": "Responsabilidades no domicílio",
+        "objectives": [
+          "Cumprir o plantão com rotina",
+          "Entregar informações objetivas"
+        ],
+        "points": [
+          "Pontualidade",
+          "Observação",
+          "Registro"
+        ],
+        "reading": "<h2>Responsabilidades no domicílio</h2><p>Chegue no horário, apresente-se, lave as mãos e confirme o plano do dia.</p><p>Observe cor, respiração, apetite, humor e pele. Anote fatos, não opiniões.</p><p>Ao sair, diga o que fez, o que a pessoa recusou e quem foi avisado.</p><h3>Objetivos da aula</h3><ul><li>Cumprir o plantão com rotina</li><li>Entregar informações objetivas</li></ul><h3>Principais pontos</h3><ul><li>Pontualidade</li><li>Observação</li><li>Registro</li></ul>"
+      },
+      {
+        "title": "Limites de atuação do cuidador",
+        "objectives": [
+          "Reconhecer o que é vedado",
+          "Acionar ajuda na hora certa"
+        ],
+        "points": [
+          "Não prescrever",
+          "Não procedimento invasivo",
+          "Comunicar"
+        ],
+        "reading": "<h2>Limites de atuação do cuidador</h2><p>O cuidador não substitui médico nem enfermeiro. Não muda dose nem introduz sonda.</p><p>Curativo complexo e decisão clínica pertencem à equipe de saúde.</p><p>Na dúvida: proteja, registre e avise. Achismo coloca o paciente em risco.</p><h3>Objetivos da aula</h3><ul><li>Reconhecer o que é vedado</li><li>Acionar ajuda na hora certa</li></ul><h3>Principais pontos</h3><ul><li>Não prescrever</li><li>Não procedimento invasivo</li><li>Comunicar</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 2,
+    "title": "2. Ética e Humanização",
+    "hours": 10,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/9BEwb30x4RQ",
+      "title": "Vídeo de encerramento do módulo — ética e sigilo"
+    },
+    "lessons": [
+      {
+        "title": "Princípios éticos no cuidado",
+        "objectives": [
+          "Aplicar respeito e não maleficência"
+        ],
+        "points": [
+          "Autonomia",
+          "Beneficência",
+          "Humanização"
+        ],
+        "reading": "<h2>Princípios éticos no cuidado</h2><p>Ética no domicílio aparece no tom de voz, no toque e no que se cala.</p><p>Explique o que vai fazer e peça o consentimento possível.</p><p>Humanizar é tratar a pessoa, não a doença ou a idade.</p><h3>Objetivos da aula</h3><ul><li>Aplicar respeito e não maleficência</li></ul><h3>Principais pontos</h3><ul><li>Autonomia</li><li>Beneficência</li><li>Humanização</li></ul>"
+      },
+      {
+        "title": "Sigilo, privacidade e imagem",
+        "objectives": [
+          "Proteger dados e imagens"
+        ],
+        "points": [
+          "Sem foto sem autorização",
+          "Discrição",
+          "Celular com critério"
+        ],
+        "reading": "<h2>Sigilo, privacidade e imagem</h2><p>Dado de saúde não vai para grupo de mensagem nem rede social.</p><p>Foto ou vídeo só com autorização e finalidade profissional.</p><p>Não deixe prontuário ou medicamento à vista de visitas.</p><h3>Objetivos da aula</h3><ul><li>Proteger dados e imagens</li></ul><h3>Principais pontos</h3><ul><li>Sem foto sem autorização</li><li>Discrição</li><li>Celular com critério</li></ul>"
+      },
+      {
+        "title": "Postura profissional e dilemas",
+        "objectives": [
+          "Manter limite com a família"
+        ],
+        "points": [
+          "Linguagem",
+          "Sem fofoca",
+          "Maus-tratos se comunicam"
+        ],
+        "reading": "<h2>Postura profissional e dilemas</h2><p>Pontualidade, apresentação e recusa educada a fofoca são postura.</p><p>Pedido para esconder queda ou remédio na comida exige critério de segurança e registro.</p><p>Maus-tratos não são assunto de bastidor.</p><h3>Objetivos da aula</h3><ul><li>Manter limite com a família</li></ul><h3>Principais pontos</h3><ul><li>Linguagem</li><li>Sem fofoca</li><li>Maus-tratos se comunicam</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 3,
+    "title": "3. Anatomia e Fisiologia",
+    "hours": 10,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/6EFG_u41LpE",
+      "title": "Vídeo de encerramento do módulo — higienização das mãos"
+    },
+    "lessons": [
+      {
+        "title": "Sistemas do corpo úteis ao cuidador",
+        "objectives": [
+          "Ligar órgão ao que se observa"
+        ],
+        "points": [
+          "Pele",
+          "Cardiorrespiratório",
+          "Nervoso"
+        ],
+        "reading": "<h2>Sistemas do corpo úteis ao cuidador</h2><p>O cuidador liga o que vê ao sistema que pode estar sofrendo.</p><p>Pele mostra hidratação. Lábios e inchaço falam de circulação. Respiração mostra esforço.</p><p>Fala, força e equilíbrio falam do sistema nervoso.</p><h3>Objetivos da aula</h3><ul><li>Ligar órgão ao que se observa</li></ul><h3>Principais pontos</h3><ul><li>Pele</li><li>Cardiorrespiratório</li><li>Nervoso</li></ul>"
+      },
+      {
+        "title": "Pele, circulação e respiração no idoso",
+        "objectives": [
+          "Identificar fragilidade"
+        ],
+        "points": [
+          "Pele fina",
+          "Edema",
+          "Dispneia"
+        ],
+        "reading": "<h2>Pele, circulação e respiração no idoso</h2><p>Pele envelhecida raspa fácil no lençol.</p><p>Inchaço de pernas e cansaço ao falar merecem anotação com horário.</p><p>Lábios azulados ou falta de ar em repouso pedem ajuda imediata.</p><h3>Objetivos da aula</h3><ul><li>Identificar fragilidade</li></ul><h3>Principais pontos</h3><ul><li>Pele fina</li><li>Edema</li><li>Dispneia</li></ul>"
+      },
+      {
+        "title": "Sinais de alerta ligados ao corpo",
+        "objectives": [
+          "Comunicar mudança súbita"
+        ],
+        "points": [
+          "Fraqueza de um lado",
+          "Dor no peito",
+          "Parada de xixi"
+        ],
+        "reading": "<h2>Sinais de alerta ligados ao corpo</h2><p>Pergunte: isso é novo? É súbito?</p><p>Boca torta, fala embolada ou braço fraco sugerem emergência neurológica.</p><p>O cuidador descreve o sinal. Quem interpreta é a equipe de saúde.</p><h3>Objetivos da aula</h3><ul><li>Comunicar mudança súbita</li></ul><h3>Principais pontos</h3><ul><li>Fraqueza de um lado</li><li>Dor no peito</li><li>Parada de xixi</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 4,
+    "title": "4. Envelhecimento e Doenças",
+    "hours": 12,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/3hl92GPFIN0",
+      "title": "Vídeo de encerramento do módulo — primeiros socorros no idoso"
+    },
+    "lessons": [
+      {
+        "title": "Envelhecimento e funcionalidade",
+        "objectives": [
+          "Separar idade de dependência"
+        ],
+        "points": [
+          "Função",
+          "Estímulo",
+          "Dignidade"
+        ],
+        "reading": "<h2>Envelhecimento e funcionalidade</h2><p>Nem todo idoso é dependente. O que importa é o que a pessoa ainda faz.</p><p>Estimular escolher a roupa ou ir ao banheiro com supervisão preserva função.</p><p>Estereótipo de “velinho incapaz” piora o cuidado.</p><h3>Objetivos da aula</h3><ul><li>Separar idade de dependência</li></ul><h3>Principais pontos</h3><ul><li>Função</li><li>Estímulo</li><li>Dignidade</li></ul>"
+      },
+      {
+        "title": "Doenças frequentes no domicílio",
+        "objectives": [
+          "Reconhecer descompensação discreta"
+        ],
+        "points": [
+          "HAS e diabetes",
+          "ITU",
+          "Artrose"
+        ],
+        "reading": "<h2>Doenças frequentes no domicílio</h2><p>Hipertensão, diabetes, artrose e infecção urinária são comuns.</p><p>ITU no idoso pode aparecer como confusão, não só queimação.</p><p>Menos água, mais sono e marcha insegura já são pistas.</p><h3>Objetivos da aula</h3><ul><li>Reconhecer descompensação discreta</li></ul><h3>Principais pontos</h3><ul><li>HAS e diabetes</li><li>ITU</li><li>Artrose</li></ul>"
+      },
+      {
+        "title": "Piora e quando acionar ajuda",
+        "objectives": [
+          "Diferenciar súbito de gradual"
+        ],
+        "points": [
+          "Queda na cabeça",
+          "Falta de ar",
+          "Registrar o aviso"
+        ],
+        "reading": "<h2>Piora e quando acionar ajuda</h2><p>Piora em minutos pede ação agora. Piora em dias se comunica no mesmo dia.</p><p>Desmaio, dor forte ou confusão nova: acione ajuda.</p><p>Anote hora, contexto, o que fez e quem atendeu.</p><h3>Objetivos da aula</h3><ul><li>Diferenciar súbito de gradual</li></ul><h3>Principais pontos</h3><ul><li>Queda na cabeça</li><li>Falta de ar</li><li>Registrar o aviso</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 5,
+    "title": "5. Biossegurança",
+    "hours": 10,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/6EFG_u41LpE",
+      "title": "Vídeo de encerramento do módulo — higienização das mãos"
+    },
+    "lessons": [
+      {
+        "title": "Cadeia de infecção no domicílio",
+        "objectives": [
+          "Quebrar o caminho do microrganismo"
+        ],
+        "points": [
+          "Mãos",
+          "Panos",
+          "Do limpo ao sujo"
+        ],
+        "reading": "<h2>Cadeia de infecção no domicílio</h2><p>No domicílio a infecção viaja por mãos, panos úmidos e banheiro.</p><p>Trabalhe do mais limpo para o mais contaminado.</p><p>Toalha de rosto não é a mesma da região íntima.</p><h3>Objetivos da aula</h3><ul><li>Quebrar o caminho do microrganismo</li></ul><h3>Principais pontos</h3><ul><li>Mãos</li><li>Panos</li><li>Do limpo ao sujo</li></ul>"
+      },
+      {
+        "title": "Mãos e EPIs",
+        "objectives": [
+          "Executar os cinco momentos"
+        ],
+        "points": [
+          "Água e sabão",
+          "Álcool 70%",
+          "Luva com mão limpa"
+        ],
+        "reading": "<h2>Mãos e EPIs</h2><p>Lave as mãos antes e depois do contato, e após risco de fluido.</p><p>Sujeira visível pede água e sabão. Luva não limpa mão suja.</p><p>Calce luva só depois da higienização.</p><h3>Objetivos da aula</h3><ul><li>Executar os cinco momentos</li></ul><h3>Principais pontos</h3><ul><li>Água e sabão</li><li>Álcool 70%</li><li>Luva com mão limpa</li></ul>"
+      },
+      {
+        "title": "Descarte e ambiente seguro",
+        "objectives": [
+          "Evitar acidente pérfuro"
+        ],
+        "points": [
+          "Lixo separado",
+          "Não recapar agulha",
+          "Piso seco"
+        ],
+        "reading": "<h2>Descarte e ambiente seguro</h2><p>Material com sangue não vai solto no lixo da cozinha.</p><p>Pérfuro-cortante em recipiente rígido. Nunca recape agulha.</p><p>Produto de limpeza longe da comida e de pessoa confusa.</p><h3>Objetivos da aula</h3><ul><li>Evitar acidente pérfuro</li></ul><h3>Principais pontos</h3><ul><li>Lixo separado</li><li>Não recapar agulha</li><li>Piso seco</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 6,
+    "title": "6. Sinais Vitais",
+    "hours": 12,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/3hl92GPFIN0",
+      "title": "Vídeo de encerramento do módulo — primeiros socorros no idoso"
+    },
+    "lessons": [
+      {
+        "title": "O que são sinais vitais",
+        "objectives": [
+          "Nomear e registrar com horário"
+        ],
+        "points": [
+          "Temperatura",
+          "Pulso",
+          "Respiração",
+          "Pressão",
+          "Dor"
+        ],
+        "reading": "<h2>O que são sinais vitais</h2><p>Sinal vital sem horário e contexto perde valor.</p><p>O cuidador observa e anota. Não fecha diagnóstico.</p><p>Dor é o quinto sinal: pergunte local e intensidade.</p><h3>Objetivos da aula</h3><ul><li>Nomear e registrar com horário</li></ul><h3>Principais pontos</h3><ul><li>Temperatura</li><li>Pulso</li><li>Respiração</li><li>Pressão</li><li>Dor</li></ul>"
+      },
+      {
+        "title": "Temperatura, pulso e respiração",
+        "objectives": [
+          "Medir em repouso"
+        ],
+        "points": [
+          "Evitar pós-banho quente",
+          "Contar 60s se irregular",
+          "Não anunciar a contagem da respiração"
+        ],
+        "reading": "<h2>Temperatura, pulso e respiração</h2><p>Banho quente altera temperatura. Espere repouso.</p><p>Pulso: dois dedos, nunca o polegar.</p><p>Respiração com esforço ou ruído novo se comunica.</p><h3>Objetivos da aula</h3><ul><li>Medir em repouso</li></ul><h3>Principais pontos</h3><ul><li>Evitar pós-banho quente</li><li>Contar 60s se irregular</li><li>Não anunciar a contagem da respiração</li></ul>"
+      },
+      {
+        "title": "Pressão, dor e emergência",
+        "objectives": [
+          "Juntar número e sintoma"
+        ],
+        "points": [
+          "Braço apoiado",
+          "Dor no peito",
+          "Não esperar o fim do plantão"
+        ],
+        "reading": "<h2>Pressão, dor e emergência</h2><p>Pessoa sentada e quieta na medida de pressão, se autorizada.</p><p>Número + tontura ou dor no peito é urgência.</p><p>Dor súbita intensa não se trata com espera.</p><h3>Objetivos da aula</h3><ul><li>Juntar número e sintoma</li></ul><h3>Principais pontos</h3><ul><li>Braço apoiado</li><li>Dor no peito</li><li>Não esperar o fim do plantão</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 7,
+    "title": "7. Higiene e Banho no Leito",
+    "hours": 14,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/Y0woaElMsXA",
+      "title": "Vídeo de encerramento do módulo — banho no leito / técnica"
+    },
+    "lessons": [
+      {
+        "title": "Preparação e intimidade",
+        "objectives": [
+          "Organizar material",
+          "Proteger o corpo"
+        ],
+        "points": [
+          "Ambiente aquecido",
+          "Explicar o passo",
+          "Cobrir o que não lava"
+        ],
+        "reading": "<h2>Preparação e intimidade</h2><p>Separe toalhas, roupa limpa e saco de roupa suja antes da água.</p><p>Explique cada etapa. Frio e pressa humilham.</p><p>Cubra o corpo. Higiene é cuidado, não tarefa mecânica.</p><h3>Objetivos da aula</h3><ul><li>Organizar material</li><li>Proteger o corpo</li></ul><h3>Principais pontos</h3><ul><li>Ambiente aquecido</li><li>Explicar o passo</li><li>Cobrir o que não lava</li></ul>"
+      },
+      {
+        "title": "Técnica de banho no leito",
+        "objectives": [
+          "Seguir limpo para sujo"
+        ],
+        "points": [
+          "Rosto primeiro",
+          "Íntima por último",
+          "Secar dobras"
+        ],
+        "reading": "<h2>Técnica de banho no leito</h2><p>Rosto, tronco, membros e região íntima por último com pano próprio.</p><p>Seque axilas, abaixo das mamas e virilha.</p><p>Não arraste no lençol molhado. Role ou peça ajuda.</p><h3>Objetivos da aula</h3><ul><li>Seguir limpo para sujo</li></ul><h3>Principais pontos</h3><ul><li>Rosto primeiro</li><li>Íntima por último</li><li>Secar dobras</li></ul>"
+      },
+      {
+        "title": "Higiene íntima e intercorrências",
+        "objectives": [
+          "Técnica segura",
+          "Registrar recusa ou lesão"
+        ],
+        "points": [
+          "Frente para trás",
+          "Não forçar banho",
+          "Avisar ferida nova"
+        ],
+        "reading": "<h2>Higiene íntima e intercorrências</h2><p>Na mulher, limpe da frente para trás. No homem, retorne o prepúcio ao final.</p><p>Recusa persistente se registra. Não imponha banho completo a qualquer custo.</p><p>Sangramento ou dor intensa: interrompa e avise.</p><h3>Objetivos da aula</h3><ul><li>Técnica segura</li><li>Registrar recusa ou lesão</li></ul><h3>Principais pontos</h3><ul><li>Frente para trás</li><li>Não forçar banho</li><li>Avisar ferida nova</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 8,
+    "title": "8. Decúbito e Prevenção de LPP",
+    "hours": 10,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/Y0woaElMsXA",
+      "title": "Vídeo de encerramento do módulo — banho no leito / técnica"
+    },
+    "lessons": [
+      {
+        "title": "O que é lesão por pressão",
+        "objectives": [
+          "Definir LPP",
+          "Pontos de risco"
+        ],
+        "points": [
+          "Sacro",
+          "Calcanhar",
+          "Não massagear vermelhidão"
+        ],
+        "reading": "<h2>O que é lesão por pressão</h2><p>LPP surge de pressão + tempo + umidade + arrasto.</p><p>Sacro, calcanhares e quadril são clássicos no acamado.</p><p>Vermelhidão que não some após alívio já é alerta.</p><h3>Objetivos da aula</h3><ul><li>Definir LPP</li><li>Pontos de risco</li></ul><h3>Principais pontos</h3><ul><li>Sacro</li><li>Calcanhar</li><li>Não massagear vermelhidão</li></ul>"
+      },
+      {
+        "title": "Mudança de decúbito",
+        "objectives": [
+          "Virar sem arrastar"
+        ],
+        "points": [
+          "A cada 2 horas",
+          "Travesseiro entre joelhos",
+          "Cabeceira sem excesso"
+        ],
+        "reading": "<h2>Mudança de decúbito</h2><p>A referência usual é duas em duas horas, salvo orientação da equipe.</p><p>Alinhe cabeça e tronco. Travesseiro entre joelhos no lado.</p><p>Cabeceira alta o tempo todo raspa o sacro.</p><h3>Objetivos da aula</h3><ul><li>Virar sem arrastar</li></ul><h3>Principais pontos</h3><ul><li>A cada 2 horas</li><li>Travesseiro entre joelhos</li><li>Cabeceira sem excesso</li></ul>"
+      },
+      {
+        "title": "Umidade e comunicação da lesão",
+        "objectives": [
+          "Manter pele seca",
+          "Descrever sem inventar estágio"
+        ],
+        "points": [
+          "Lençol esticado",
+          "Fralda checada",
+          "Cor, tamanho, odor"
+        ],
+        "reading": "<h2>Umidade e comunicação da lesão</h2><p>Urina e suor amolecem a pele. Troque e seque sem esfregar.</p><p>Diga local, tamanho, cor e se molha o curativo.</p><p>Curativo de LPP estabelecida é da enfermagem.</p><h3>Objetivos da aula</h3><ul><li>Manter pele seca</li><li>Descrever sem inventar estágio</li></ul><h3>Principais pontos</h3><ul><li>Lençol esticado</li><li>Fralda checada</li><li>Cor, tamanho, odor</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 9,
+    "title": "9. Nutrição, Hidratação e Disfagia",
+    "hours": 10,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/3hl92GPFIN0",
+      "title": "Vídeo de encerramento do módulo — primeiros socorros no idoso"
+    },
+    "lessons": [
+      {
+        "title": "Alimentação assistida",
+        "objectives": [
+          "Preparar a refeição segura"
+        ],
+        "points": [
+          "Sentado",
+          "Volumes pequenos",
+          "Não apressar"
+        ],
+        "reading": "<h2>Alimentação assistida</h2><p>Cabeceira elevada. Sem conversa atravessada na hora de engolir.</p><p>Ofereça pouco e espere. Descreva o prato.</p><p>Recusar comida pode ser dor, náusea ou medo de engasgar.</p><h3>Objetivos da aula</h3><ul><li>Preparar a refeição segura</li></ul><h3>Principais pontos</h3><ul><li>Sentado</li><li>Volumes pequenos</li><li>Não apressar</li></ul>"
+      },
+      {
+        "title": "Hidratação e desidratação",
+        "objectives": [
+          "Oferecer líquidos com critério"
+        ],
+        "points": [
+          "Boca seca",
+          "Urina escura",
+          "Goles pequenos"
+        ],
+        "reading": "<h2>Hidratação e desidratação</h2><p>Idoso sente menos sede. Ofereça goles ao longo do dia se não houver restrição.</p><p>Língua seca, urina escura e confusão nova sugerem desidratação.</p><p>Não force copo cheio em quem tosse para beber.</p><h3>Objetivos da aula</h3><ul><li>Oferecer líquidos com critério</li></ul><h3>Principais pontos</h3><ul><li>Boca seca</li><li>Urina escura</li><li>Goles pequenos</li></ul>"
+      },
+      {
+        "title": "Disfagia e engasgo",
+        "objectives": [
+          "Reconhecer e agir"
+        ],
+        "points": [
+          "Tosse na refeição",
+          "Voz molhada",
+          "Nada na boca se inconsciente"
+        ],
+        "reading": "<h2>Disfagia e engasgo</h2><p>Disfagia é dificuldade de engolir. Tosse e voz molhada são sinais.</p><p>Siga a consistência prescrita. Nunca deite para oferecer água.</p><p>Inconsciente: não coloque dedo cego na boca. Chame ajuda.</p><h3>Objetivos da aula</h3><ul><li>Reconhecer e agir</li></ul><h3>Principais pontos</h3><ul><li>Tosse na refeição</li><li>Voz molhada</li><li>Nada na boca se inconsciente</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 10,
+    "title": "10. Medicamentos – Limites",
+    "hours": 8,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/9BEwb30x4RQ",
+      "title": "Vídeo de encerramento do módulo — ética e sigilo"
+    },
+    "lessons": [
+      {
+        "title": "O que pode e não pode na medicação",
+        "objectives": [
+          "Auxiliar só a prescrição"
+        ],
+        "points": [
+          "Não muda dose",
+          "Não empresta remédio",
+          "Não esconde sem ordem"
+        ],
+        "reading": "<h2>O que pode e não pode na medicação</h2><p>O cuidador lembra horário e observa se a pessoa aceitou o medicamento prescrito.</p><p>Não troca comprimido “parecido” nem atrasa por conta própria.</p><p>Esconder remédio na comida só com estratégia formal da equipe.</p><h3>Objetivos da aula</h3><ul><li>Auxiliar só a prescrição</li></ul><h3>Principais pontos</h3><ul><li>Não muda dose</li><li>Não empresta remédio</li><li>Não esconde sem ordem</li></ul>"
+      },
+      {
+        "title": "Os cinco certos",
+        "objectives": [
+          "Conferir antes de oferecer"
+        ],
+        "points": [
+          "Pessoa",
+          "Fármaco",
+          "Dose",
+          "Via",
+          "Hora"
+        ],
+        "reading": "<h2>Os cinco certos</h2><p>Leia o rótulo. Embalagem ilegível não se adivinha.</p><p>Anote oferta e recusa. Recusa repetida é dado clínico.</p><p>Via certa: oral não se inventa como triturada sem ordem.</p><h3>Objetivos da aula</h3><ul><li>Conferir antes de oferecer</li></ul><h3>Principais pontos</h3><ul><li>Pessoa</li><li>Fármaco</li><li>Dose</li><li>Via</li><li>Hora</li></ul>"
+      },
+      {
+        "title": "Reações e erros",
+        "objectives": [
+          "Agir sem esconder"
+        ],
+        "points": [
+          "Urticária",
+          "Falta de ar",
+          "Avisar o erro"
+        ],
+        "reading": "<h2>Reações e erros</h2><p>Coceira súbita, inchaço de lábio ou chiado: interrompa e chame ajuda.</p><p>Erro de horário ou comprimido se comunica na hora.</p><p>Não induza vômito por conta própria.</p><h3>Objetivos da aula</h3><ul><li>Agir sem esconder</li></ul><h3>Principais pontos</h3><ul><li>Urticária</li><li>Falta de ar</li><li>Avisar o erro</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 11,
+    "title": "11. Sondas e Ostomias",
+    "hours": 8,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/Y0woaElMsXA",
+      "title": "Vídeo de encerramento do módulo — banho no leito / técnica"
+    },
+    "lessons": [
+      {
+        "title": "Sondas e o papel do cuidador",
+        "objectives": [
+          "Observar sem tracionar"
+        ],
+        "points": [
+          "Fixação",
+          "Cabeceira na dieta",
+          "Não reintroduzir"
+        ],
+        "reading": "<h2>Sondas e o papel do cuidador</h2><p>Sonda enteral e vesical exigem olhar para vazamento, dor e cor do débito.</p><p>Não empurre sonda que saiu. Não irrigue sem ordem.</p><p>Tosse durante a dieta pede pausa e aviso.</p><h3>Objetivos da aula</h3><ul><li>Observar sem tracionar</li></ul><h3>Principais pontos</h3><ul><li>Fixação</li><li>Cabeceira na dieta</li><li>Não reintroduzir</li></ul>"
+      },
+      {
+        "title": "Ostomias no cotidiano",
+        "objectives": [
+          "Cuidar da bolsa e da pele"
+        ],
+        "points": [
+          "Esvaziar a tempo",
+          "Pele periestomal",
+          "Sem tesoura improvisada"
+        ],
+        "reading": "<h2>Ostomias no cotidiano</h2><p>Esvazie a bolsa antes de encher demais.</p><p>Vermelhidão ao redor do estoma se comunica.</p><p>Troca da placa segue a enfermagem e o treino recebido.</p><h3>Objetivos da aula</h3><ul><li>Cuidar da bolsa e da pele</li></ul><h3>Principais pontos</h3><ul><li>Esvaziar a tempo</li><li>Pele periestomal</li><li>Sem tesoura improvisada</li></ul>"
+      },
+      {
+        "title": "Complicações e limites técnicos",
+        "objectives": [
+          "Reconhecer emergência do dispositivo"
+        ],
+        "points": [
+          "Sonda fora",
+          "Sangramento",
+          "Febre"
+        ],
+        "reading": "<h2>Complicações e limites técnicos</h2><p>Sonda que sai ou sangra é intercorrência.</p><p>Febre e dor abdominal forte pedem avaliação profissional.</p><p>Passagem de sonda não é atribuição do cuidador.</p><h3>Objetivos da aula</h3><ul><li>Reconhecer emergência do dispositivo</li></ul><h3>Principais pontos</h3><ul><li>Sonda fora</li><li>Sangramento</li><li>Febre</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 12,
+    "title": "12. Curativos e Pele",
+    "hours": 8,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/6EFG_u41LpE",
+      "title": "Vídeo de encerramento do módulo — higienização das mãos"
+    },
+    "lessons": [
+      {
+        "title": "Prevenção da pele íntegra",
+        "objectives": [
+          "Hidatar e reduzir fricção"
+        ],
+        "points": [
+          "Dobras secas",
+          "Unhas curtas",
+          "Roupa adequada"
+        ],
+        "reading": "<h2>Prevenção da pele íntegra</h2><p>A melhor ferida é a que não existe.</p><p>Seque dobras. Hidrate pele seca sem encharcar.</p><p>Unha longa do cuidador lesiona.</p><h3>Objetivos da aula</h3><ul><li>Hidatar e reduzir fricção</li></ul><h3>Principais pontos</h3><ul><li>Dobras secas</li><li>Unhas curtas</li><li>Roupa adequada</li></ul>"
+      },
+      {
+        "title": "Curativo simples versus complexo",
+        "objectives": [
+          "Saber o limite"
+        ],
+        "points": [
+          "Arranhão limpo",
+          "Pus e odor",
+          "Sem pomada caseira"
+        ],
+        "reading": "<h2>Curativo simples versus complexo</h2><p>Proteção simples pode seguir a orientação da equipe.</p><p>Pus, tecido escuro ou sangramento é enfermagem.</p><p>Café, pasta ou algodão desfiando na ferida são erro.</p><h3>Objetivos da aula</h3><ul><li>Saber o limite</li></ul><h3>Principais pontos</h3><ul><li>Arranhão limpo</li><li>Pus e odor</li><li>Sem pomada caseira</li></ul>"
+      },
+      {
+        "title": "Como descrever a ferida",
+        "objectives": [
+          "Relato útil para a equipe"
+        ],
+        "points": [
+          "Local",
+          "Tamanho",
+          "Secreção"
+        ],
+        "reading": "<h2>Como descrever a ferida</h2><p>Diga local, tamanho aproximado, cor e se molha a gaze.</p><p>“Está feia” não ajuda o plantão seguinte.</p><p>Foto só no canal autorizado.</p><h3>Objetivos da aula</h3><ul><li>Relato útil para a equipe</li></ul><h3>Principais pontos</h3><ul><li>Local</li><li>Tamanho</li><li>Secreção</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 13,
+    "title": "13. Mobilização e Prevenção de Quedas",
+    "hours": 12,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/Y0woaElMsXA",
+      "title": "Vídeo de encerramento do módulo — banho no leito / técnica"
+    },
+    "lessons": [
+      {
+        "title": "Por que o idoso cai",
+        "objectives": [
+          "Mapear risco da casa e do corpo"
+        ],
+        "points": [
+          "Tapete",
+          "Tontura ao levantar",
+          "Calçado"
+        ],
+        "reading": "<h2>Por que o idoso cai</h2><p>Queda junta corpo frágil e casa perigosa.</p><p>Sente na beira da cama antes de ficar de pé.</p><p>Andador e óculos só protegem se estiverem à mão.</p><h3>Objetivos da aula</h3><ul><li>Mapear risco da casa e do corpo</li></ul><h3>Principais pontos</h3><ul><li>Tapete</li><li>Tontura ao levantar</li><li>Calçado</li></ul>"
+      },
+      {
+        "title": "Transferência cama-cadeira",
+        "objectives": [
+          "Proteger a coluna"
+        ],
+        "points": [
+          "Travar a cadeira",
+          "Flexionar joelhos",
+          "Não puxar o braço"
+        ],
+        "reading": "<h2>Transferência cama-cadeira</h2><p>Explique o movimento. Trave rodas. Aproxime a cadeira.</p><p>Use as pernas, não a lombar.</p><p>Se desabar, conduza ao chão. Não segure no ar.</p><h3>Objetivos da aula</h3><ul><li>Proteger a coluna</li></ul><h3>Principais pontos</h3><ul><li>Travar a cadeira</li><li>Flexionar joelhos</li><li>Não puxar o braço</li></ul>"
+      },
+      {
+        "title": "Depois da queda",
+        "objectives": [
+          "Avaliar antes de levantar"
+        ],
+        "points": [
+          "Consciência",
+          "Perna rodada",
+          "Registrar"
+        ],
+        "reading": "<h2>Depois da queda</h2><p>Não ergue na pressa. Veja se responde e se move as pernas.</p><p>Suspeita de fratura ou batida na cabeça: chame ajuda.</p><p>Toda queda entra no diário.</p><h3>Objetivos da aula</h3><ul><li>Avaliar antes de levantar</li></ul><h3>Principais pontos</h3><ul><li>Consciência</li><li>Perna rodada</li><li>Registrar</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 14,
+    "title": "14. Alzheimer, Parkinson, AVC, DM, HAS",
+    "hours": 12,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/3hl92GPFIN0",
+      "title": "Vídeo de encerramento do módulo — primeiros socorros no idoso"
+    },
+    "lessons": [
+      {
+        "title": "Alzheimer e rotina",
+        "objectives": [
+          "Frases curtas e ambiente seguro"
+        ],
+        "points": [
+          "Não discutir o delírio",
+          "Horário estável",
+          "Fogão e porta"
+        ],
+        "reading": "<h2>Alzheimer e rotina</h2><p>Repetição da pergunta pede calma, não irritação.</p><p>Acolha a emoção e redirecione a atividade.</p><p>Objetos perigosos fora de alcance.</p><h3>Objetivos da aula</h3><ul><li>Frases curtas e ambiente seguro</li></ul><h3>Principais pontos</h3><ul><li>Não discutir o delírio</li><li>Horário estável</li><li>Fogão e porta</li></ul>"
+      },
+      {
+        "title": "Parkinson e AVC",
+        "objectives": [
+          "Dar tempo e reconhecer emergência"
+        ],
+        "points": [
+          "Queda e engasgo",
+          "Face-braço-fala",
+          "Hora de início"
+        ],
+        "reading": "<h2>Parkinson e AVC</h2><p>No Parkinson não empurre. Tempo e apoio.</p><p>Boca torta, braço fraco e fala estranha: emergência.</p><p>Anote a hora. Sem água nem comida.</p><h3>Objetivos da aula</h3><ul><li>Dar tempo e reconhecer emergência</li></ul><h3>Principais pontos</h3><ul><li>Queda e engasgo</li><li>Face-braço-fala</li><li>Hora de início</li></ul>"
+      },
+      {
+        "title": "Diabetes e hipertensão",
+        "objectives": [
+          "Reconhecer hipoglicemia"
+        ],
+        "points": [
+          "Suor frio",
+          "Dor no peito",
+          "Não ajustar insulina"
+        ],
+        "reading": "<h2>Diabetes e hipertensão</h2><p>Tremor, suor frio e confusão sugerem hipoglicemia. Inconsciente: nada na boca.</p><p>Dor no peito ou visão embasada se comunica já.</p><p>O cuidador não regula insulina nem anti-hipertensivo.</p><h3>Objetivos da aula</h3><ul><li>Reconhecer hipoglicemia</li></ul><h3>Principais pontos</h3><ul><li>Suor frio</li><li>Dor no peito</li><li>Não ajustar insulina</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 15,
+    "title": "15. Primeiros Socorros",
+    "hours": 14,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/3hl92GPFIN0",
+      "title": "Vídeo de encerramento do módulo — primeiros socorros no idoso"
+    },
+    "lessons": [
+      {
+        "title": "Cena segura e pedido de ajuda",
+        "objectives": [
+          "Não se acidentar",
+          "Ligar com dados"
+        ],
+        "points": [
+          "Endereço",
+          "Se respira",
+          "O que aconteceu"
+        ],
+        "reading": "<h2>Cena segura e pedido de ajuda</h2><p>Sua segurança vem primeiro.</p><p>Na ligação: endereço, idade aproximada, se responde e respira.</p><p>Alguém da casa espera o socorro na porta.</p><h3>Objetivos da aula</h3><ul><li>Não se acidentar</li><li>Ligar com dados</li></ul><h3>Principais pontos</h3><ul><li>Endereço</li><li>Se respira</li><li>O que aconteceu</li></ul>"
+      },
+      {
+        "title": "Inconsciência, respiração e engasgo",
+        "objectives": [
+          "Checar e agir"
+        ],
+        "points": [
+          "Chamar pelo nome",
+          "Tosse eficaz",
+          "Sem objeto na boca"
+        ],
+        "reading": "<h2>Inconsciência, respiração e engasgo</h2><p>Toque nos ombros. Veja o peito.</p><p>Tosse forte no engasgo: incentive. Sem ar: manobra treinada.</p><p>Não jogue água no rosto de inconsciente.</p><h3>Objetivos da aula</h3><ul><li>Checar e agir</li></ul><h3>Principais pontos</h3><ul><li>Chamar pelo nome</li><li>Tosse eficaz</li><li>Sem objeto na boca</li></ul>"
+      },
+      {
+        "title": "Convulsão, queimadura e hemorragia",
+        "objectives": [
+          "Proteger e estancar"
+        ],
+        "points": [
+          "Cronometrar a crise",
+          "Água na queimadura",
+          "Pressão no sangramento"
+        ],
+        "reading": "<h2>Convulsão, queimadura e hemorragia</h2><p>Na convulsão afaste objetos e proteja a cabeça. Sem objeto na boca.</p><p>Queimadura: água corrente. Sem gelo ou pasta.</p><p>Sangramento: pressão direta com pano limpo.</p><h3>Objetivos da aula</h3><ul><li>Proteger e estancar</li></ul><h3>Principais pontos</h3><ul><li>Cronometrar a crise</li><li>Água na queimadura</li><li>Pressão no sangramento</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 16,
+    "title": "16. Cuidados Paliativos",
+    "hours": 8,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/9BEwb30x4RQ",
+      "title": "Vídeo de encerramento do módulo — ética e sigilo"
+    },
+    "lessons": [
+      {
+        "title": "O que é cuidado paliativo",
+        "objectives": [
+          "Conforto como meta"
+        ],
+        "points": [
+          "Alívio",
+          "Presença",
+          "Não é abandono"
+        ],
+        "reading": "<h2>O que é cuidado paliativo</h2><p>Paliativo prioriza conforto quando a cura não é o centro da meta.</p><p>Higiene, posição e ambiente calmo são tratamento.</p><p>Não prometa cura.</p><h3>Objetivos da aula</h3><ul><li>Conforto como meta</li></ul><h3>Principais pontos</h3><ul><li>Alívio</li><li>Presença</li><li>Não é abandono</li></ul>"
+      },
+      {
+        "title": "Conforto físico",
+        "objectives": [
+          "Boca, dor e posição"
+        ],
+        "points": [
+          "Gemido se comunica",
+          "Lábios hidratados",
+          "Movimento suave"
+        ],
+        "reading": "<h2>Conforto físico</h2><p>Dor não controlada se avisa cedo.</p><p>Boca seca é sofrimento evitável.</p><p>Mude de posição devagar, sem puxão.</p><h3>Objetivos da aula</h3><ul><li>Boca, dor e posição</li></ul><h3>Principais pontos</h3><ul><li>Gemido se comunica</li><li>Lábios hidratados</li><li>Movimento suave</li></ul>"
+      },
+      {
+        "title": "Família e limite emocional",
+        "objectives": [
+          "Acolher sem prognóstico falso"
+        ],
+        "points": [
+          "Escuta",
+          "Sem frase pronta",
+          "Pedir revezamento"
+        ],
+        "reading": "<h2>Família e limite emocional</h2><p>A família oscila. Ofereça fato e presença.</p><p>Não invente prazo de vida.</p><p>Cuidar de quem morre cansa. Peça apoio.</p><h3>Objetivos da aula</h3><ul><li>Acolher sem prognóstico falso</li></ul><h3>Principais pontos</h3><ul><li>Escuta</li><li>Sem frase pronta</li><li>Pedir revezamento</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 17,
+    "title": "17. Comunicação e Família",
+    "hours": 8,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/9BEwb30x4RQ",
+      "title": "Vídeo de encerramento do módulo — ética e sigilo"
+    },
+    "lessons": [
+      {
+        "title": "Falar com a pessoa cuidada",
+        "objectives": [
+          "Frase curta na altura dos olhos"
+        ],
+        "points": [
+          "Avisar o toque",
+          "Tempo para responder"
+        ],
+        "reading": "<h2>Falar com a pessoa cuidada</h2><p>Aproxime-se pela frente e diga o nome.</p><p>Uma ideia por frase.</p><p>Pergunta fechada ajuda quem cansa.</p><h3>Objetivos da aula</h3><ul><li>Frase curta na altura dos olhos</li></ul><h3>Principais pontos</h3><ul><li>Avisar o toque</li><li>Tempo para responder</li></ul>"
+      },
+      {
+        "title": "Família e conflitos",
+        "objectives": [
+          "Entregar fato sem escolher lado"
+        ],
+        "points": [
+          "Um responsável de referência",
+          "Sem fofoca"
+        ],
+        "reading": "<h2>Família e conflitos</h2><p>Diga o que comeu e o que recusou, não “está impossível”.</p><p>Siga o plano do responsável formal.</p><p>Não transporte recado venenoso entre irmãos.</p><h3>Objetivos da aula</h3><ul><li>Entregar fato sem escolher lado</li></ul><h3>Principais pontos</h3><ul><li>Um responsável de referência</li><li>Sem fofoca</li></ul>"
+      },
+      {
+        "title": "Comunicar intercorrência",
+        "objectives": [
+          "Estrutura hora-fato-ação"
+        ],
+        "points": [
+          "Sem pânico",
+          "Escuta ativa"
+        ],
+        "reading": "<h2>Comunicar intercorrência</h2><p>Queda e pele aberta se falam cedo, com tom firme.</p><p>Diga o que houve, quando, o que fez e o que precisa agora.</p><p>Escutar o medo da família não é aceitar injustiça.</p><h3>Objetivos da aula</h3><ul><li>Estrutura hora-fato-ação</li></ul><h3>Principais pontos</h3><ul><li>Sem pânico</li><li>Escuta ativa</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 18,
+    "title": "18. Diário de Bordo",
+    "hours": 6,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/9BEwb30x4RQ",
+      "title": "Vídeo de encerramento do módulo — ética e sigilo"
+    },
+    "lessons": [
+      {
+        "title": "Por que registrar",
+        "objectives": [
+          "Documento de continuidade"
+        ],
+        "points": [
+          "Memória do plantão",
+          "Proteção"
+        ],
+        "reading": "<h2>Por que registrar</h2><p>Quem entra depois depende do que você escreveu.</p><p>O que não está escrito tende a não existir na disputa.</p><p>Escreva para quem nunca viu a casa.</p><h3>Objetivos da aula</h3><ul><li>Documento de continuidade</li></ul><h3>Principais pontos</h3><ul><li>Memória do plantão</li><li>Proteção</li></ul>"
+      },
+      {
+        "title": "O que anotar no plantão",
+        "objectives": [
+          "Checklist mínimo"
+        ],
+        "points": [
+          "Alimentação",
+          "Eliminações",
+          "Banho",
+          "Recusa"
+        ],
+        "reading": "<h2>O que anotar no plantão</h2><p>Data, horários, comida, xixi, fezes, higiene e sono.</p><p>Recusa é dado.</p><p>Intercorrência ganha parágrafo próprio.</p><h3>Objetivos da aula</h3><ul><li>Checklist mínimo</li></ul><h3>Principais pontos</h3><ul><li>Alimentação</li><li>Eliminações</li><li>Banho</li><li>Recusa</li></ul>"
+      },
+      {
+        "title": "Como escrever e corrigir",
+        "objectives": [
+          "Fato sem gíria"
+        ],
+        "points": [
+          "Sem rasura ilegal",
+          "Sem WhatsApp pessoal"
+        ],
+        "reading": "<h2>Como escrever e corrigir</h2><p>Prefira “recusou o jantar” a “teimoso”.</p><p>No papel: uma linha, correção, data e rubrica.</p><p>Diário não é status de rede social.</p><h3>Objetivos da aula</h3><ul><li>Fato sem gíria</li></ul><h3>Principais pontos</h3><ul><li>Sem rasura ilegal</li><li>Sem WhatsApp pessoal</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 19,
+    "title": "19. Autocuidado e Burnout",
+    "hours": 8,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/Y0woaElMsXA",
+      "title": "Vídeo de encerramento do módulo — banho no leito / técnica"
+    },
+    "lessons": [
+      {
+        "title": "Sinais de burnout",
+        "objectives": [
+          "Reconhecer cedo"
+        ],
+        "points": [
+          "Irritação",
+          "Insônia",
+          "Distanciamento"
+        ],
+        "reading": "<h2>Sinais de burnout</h2><p>Cuidar sem pausa gera erro e rispidez.</p><p>Tratar a pessoa como objeto é sinal de esgotamento.</p><p>Não é falta de vocação.</p><h3>Objetivos da aula</h3><ul><li>Reconhecer cedo</li></ul><h3>Principais pontos</h3><ul><li>Irritação</li><li>Insônia</li><li>Distanciamento</li></ul>"
+      },
+      {
+        "title": "Pausas e corpo do cuidador",
+        "objectives": [
+          "Incluir pausa real"
+        ],
+        "points": [
+          "Água",
+          "Coluna",
+          "Limite de hora extra"
+        ],
+        "reading": "<h2>Pausas e corpo do cuidador</h2><p>Cinco minutos sentado e água são segurança do paciente.</p><p>Troca de decúbito com lombar torta lesiona o cuidador.</p><p>Jornada sem fim aumenta queda e erro.</p><h3>Objetivos da aula</h3><ul><li>Incluir pausa real</li></ul><h3>Principais pontos</h3><ul><li>Água</li><li>Coluna</li><li>Limite de hora extra</li></ul>"
+      },
+      {
+        "title": "Rede de apoio",
+        "objectives": [
+          "Pedir revezamento"
+        ],
+        "points": [
+          "Falar com a coordenação",
+          "Buscar ajuda"
+        ],
+        "reading": "<h2>Rede de apoio</h2><p>Peça troca cedo à Bene Curati ou ao responsável da casa.</p><p>Álcool para “desligar” piora o ciclo.</p><p>Tristeza pesada pede cuidado de saúde também para o cuidador.</p><h3>Objetivos da aula</h3><ul><li>Pedir revezamento</li></ul><h3>Principais pontos</h3><ul><li>Falar com a coordenação</li><li>Buscar ajuda</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 20,
+    "title": "20. Ética e Legislação",
+    "hours": 8,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/9BEwb30x4RQ",
+      "title": "Vídeo de encerramento do módulo — ética e sigilo"
+    },
+    "lessons": [
+      {
+        "title": "Direitos da pessoa idosa",
+        "objectives": [
+          "Proteger contra violência"
+        ],
+        "points": [
+          "Dignidade",
+          "Alimentação",
+          "Não abandono"
+        ],
+        "reading": "<h2>Direitos da pessoa idosa</h2><p>Idoso tem direito à dignidade e a não sofrer agressão.</p><p>Grito, contenção sem indicação e retenção de aposentadoria são violência.</p><p>Silêncio diante de maus-tratos vira cumplicidade.</p><h3>Objetivos da aula</h3><ul><li>Proteger contra violência</li></ul><h3>Principais pontos</h3><ul><li>Dignidade</li><li>Alimentação</li><li>Não abandono</li></ul>"
+      },
+      {
+        "title": "Competências profissionais",
+        "objectives": [
+          "Não invadir atribuição privativa"
+        ],
+        "points": [
+          "Medicina",
+          "Enfermagem",
+          "Cuidador"
+        ],
+        "reading": "<h2>Competências profissionais</h2><p>Diagnóstico e prescrição são da medicina.</p><p>O cuidador apoia a vida diária e a rotina combinada.</p><p>O curso não transforma o aluno em enfermeiro.</p><h3>Objetivos da aula</h3><ul><li>Não invadir atribuição privativa</li></ul><h3>Principais pontos</h3><ul><li>Medicina</li><li>Enfermagem</li><li>Cuidador</li></ul>"
+      },
+      {
+        "title": "Contrato, registro e responsabilidade",
+        "objectives": [
+          "Valorizar o documento"
+        ],
+        "points": [
+          "Diário",
+          "Função combinada",
+          "Base formativa"
+        ],
+        "reading": "<h2>Contrato, registro e responsabilidade</h2><p>A função escrita evita cobrança indevida.</p><p>Sumir com informação agrava o caso.</p><p>A instituição cita o Decreto 5.154 e a Resolução CNE 04/99 na educação profissional.</p><h3>Objetivos da aula</h3><ul><li>Valorizar o documento</li></ul><h3>Principais pontos</h3><ul><li>Diário</li><li>Função combinada</li><li>Base formativa</li></ul>"
+      }
+    ]
+  },
+  {
+    "order": 21,
+    "title": "21. Código de Excelência + Técnicas Avançadas",
+    "hours": 8,
+    "closingVideo": {
+      "url": "https://www.youtube.com/embed/Y0woaElMsXA",
+      "title": "Vídeo de encerramento do módulo — banho no leito / técnica"
+    },
+    "lessons": [
+      {
+        "title": "Código de excelência Bene Curati",
+        "objectives": [
+          "Aplicar a conduta institucional"
+        ],
+        "points": [
+          "Pontualidade",
+          "Sigilo",
+          "Pedir ajuda"
+        ],
+        "reading": "<h2>Código de excelência Bene Curati</h2><p>Excelência é consistência no horário, nas mãos limpas e no nome da pessoa.</p><p>A frase da casa só vale no detalhe do plantão.</p><p>Pedir ajuda cedo é padrão de qualidade.</p><h3>Objetivos da aula</h3><ul><li>Aplicar a conduta institucional</li></ul><h3>Principais pontos</h3><ul><li>Pontualidade</li><li>Sigilo</li><li>Pedir ajuda</li></ul>"
+      },
+      {
+        "title": "Revisão das técnicas essenciais",
+        "objectives": [
+          "Encadear o plantão"
+        ],
+        "points": [
+          "Mãos",
+          "Decúbito",
+          "Alimentação segura"
+        ],
+        "reading": "<h2>Revisão das técnicas essenciais</h2><p>Sequência: mãos, checagem, higiene, decúbito, refeição, registro.</p><p>Revise banho no leito e posição sentada para comer.</p><p>Inconsciente não recebe água.</p><h3>Objetivos da aula</h3><ul><li>Encadear o plantão</li></ul><h3>Principais pontos</h3><ul><li>Mãos</li><li>Decúbito</li><li>Alimentação segura</li></ul>"
+      },
+      {
+        "title": "Preparação para a prova final",
+        "objectives": [
+          "Treinar decisão de cuidador"
+        ],
+        "points": [
+          "Limites",
+          "Emergências",
+          "14 de 20"
+        ],
+        "reading": "<h2>Preparação para a prova final</h2><p>A prova cobra o que fazer, o que não fazer e o que escrever.</p><p>Estude medicação, sonda, LPP, AVC e engasgo.</p><p>Pergunte sempre: isso protege? Isso ultrapassa meu papel?</p><h3>Objetivos da aula</h3><ul><li>Treinar decisão de cuidador</li></ul><h3>Principais pontos</h3><ul><li>Limites</li><li>Emergências</li><li>14 de 20</li></ul>"
+      }
+    ]
+  }
+]

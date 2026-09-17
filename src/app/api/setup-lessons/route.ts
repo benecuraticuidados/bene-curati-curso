@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import { MODULE_READINGS } from "@/lib/lesson-content"
+import { MODULE_PACKS } from "@/lib/lesson-content"
 
 export const dynamic = "force-dynamic"
 
@@ -19,8 +19,9 @@ export async function GET(req: Request) {
     where: { id: course.id },
     data: {
       title: "Curso Profissional de Cuidador",
+      workloadHours: 204,
       description:
-        "Apostila Oficial Ampliada Bene Curati Cuidados — formação em Home Care, Cuidados Domiciliares e Assistência ao Paciente. Aulas com texto de leitura e vídeos de referência do YouTube. Prova final com aprovação mínima de 70%.",
+        "Apostila Oficial Ampliada Bene Curati Cuidados — 21 módulos, 204 horas. Cada aula tem texto próprio. O YouTube aparece como vídeo de encerramento do módulo.",
     },
   })
 
@@ -30,59 +31,63 @@ export async function GET(req: Request) {
     include: { lessons: { orderBy: { order: "asc" } } },
   })
 
+  const audit: { module: string; titles: string[]; duplicateText: boolean }[] = []
   let lessonsUpdated = 0
   let materialsUpserted = 0
 
-  for (const reading of MODULE_READINGS) {
-    const mod =
-      modules.find((m) => m.order === reading.order) ||
-      modules.find((m) => m.title.includes(reading.title.replace(/^\d+\.\s*/, "").slice(0, 12)))
+  for (const pack of MODULE_PACKS) {
+    const mod = modules.find((m) => m.order === pack.order)
     if (!mod) continue
 
     await prisma.module.update({
       where: { id: mod.id },
       data: {
-        title: reading.title,
-        description: `Carga horária do módulo na apostila Bene Curati Cuidados. Texto de leitura + vídeo de referência.`,
+        title: pack.title,
+        description: `${pack.hours}h. Apostila Bene Curati. Vídeo de encerramento apenas na última aula do módulo.`,
       },
     })
 
-    for (const lesson of mod.lessons) {
-      const focus =
-        lesson.order === 1
-          ? "Leitura — conceitos e fundamentos"
-          : lesson.order === 2
-            ? "Vídeo de referência e técnica"
-            : "Fixação e estudo de caso"
+    const texts: string[] = []
+    for (let i = 0; i < mod.lessons.length; i++) {
+      const lesson = mod.lessons[i]
+      const unit = pack.lessons[i] || pack.lessons[pack.lessons.length - 1]
+      const isLast = i === mod.lessons.length - 1
+      texts.push(unit.reading)
+
       await prisma.lesson.update({
         where: { id: lesson.id },
         data: {
-          videoUrl: reading.video,
-          description: `${focus}. ${reading.videoTitle}. Material da Apostila Bene Curati Cuidados — sem referência a outras instituições.`,
+          title: `${pack.order}.${i + 1} — ${unit.title}`,
+          description: isLast
+            ? `Leitura específica desta aula. ${pack.closingVideo.title}.`
+            : "Leitura específica desta aula. O vídeo de encerramento do módulo está na última aula.",
+          videoUrl: isLast ? pack.closingVideo.url : null,
         },
       })
       lessonsUpdated++
 
       const existing = await prisma.material.findFirst({
-        where: { lessonId: lesson.id, type: "text", title: "Leitura do módulo" },
+        where: { lessonId: lesson.id, type: "text" },
       })
+      const payload = {
+        title: "Leitura da aula",
+        type: "text" as const,
+        content: unit.reading,
+        url: isLast ? pack.closingVideo.url.replace("/embed/", "/watch?v=") : null,
+      }
       if (existing) {
-        await prisma.material.update({
-          where: { id: existing.id },
-          data: { content: reading.reading },
-        })
+        await prisma.material.update({ where: { id: existing.id }, data: payload })
       } else {
-        await prisma.material.create({
-          data: {
-            lessonId: lesson.id,
-            title: "Leitura do módulo",
-            type: "text",
-            content: reading.reading,
-          },
-        })
+        await prisma.material.create({ data: { lessonId: lesson.id, ...payload } })
       }
       materialsUpserted++
     }
+
+    audit.push({
+      module: pack.title,
+      titles: pack.lessons.map((l) => l.title),
+      duplicateText: new Set(texts).size !== texts.length,
+    })
   }
 
   return NextResponse.json({
@@ -91,5 +96,7 @@ export async function GET(req: Request) {
     modules: modules.length,
     lessonsUpdated,
     materialsUpserted,
+    audit,
+    duplicates: audit.filter((a) => a.duplicateText).map((a) => a.module),
   })
 }
