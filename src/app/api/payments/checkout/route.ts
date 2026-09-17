@@ -90,58 +90,92 @@ export async function POST() {
     })
   }
 
-  const prefRes = await fetch("https://api.mercadopago.com/checkout/preferences", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
+  const payerEmail = (session.user as { email?: string }).email || undefined
+  const items = [
+    {
+      id: "certificado-bene-curati",
+      title: "Taxa de emissao de certificado Bene Curati",
+      description: "Certificado Curso Profissional de Cuidador",
+      category_id: "services",
+      quantity: 1,
+      currency_id: "BRL",
+      unit_price: Number(amount),
     },
-    body: JSON.stringify({
-      items: [
-        {
-          title: "Taxa de emissão de certificado — Bene Curati Cuidados",
-          quantity: 1,
-          currency_id: "BRL",
-          unit_price: Number(amount),
-        },
-      ],
-      statement_descriptor: "BENE CURATI",
-      external_reference: payment.id,
-      notification_url: `${appUrl}/api/payments/webhook`,
-      back_urls: {
-        success: `${appUrl}/certificado?pagamento=ok`,
-        failure: `${appUrl}/certificado?pagamento=falhou`,
-        pending: `${appUrl}/certificado?pagamento=pendente`,
-      },
-      auto_return: "approved",
-      payment_methods: {
-        excluded_payment_methods: [],
-        excluded_payment_types: [],
-        default_payment_method_id: "pix",
-        installments: 1,
-      },
-    }),
-  })
+  ]
+  const basePref = {
+    items,
+    external_reference: payment.id,
+    notification_url: `${appUrl}/api/payments/webhook`,
+    back_urls: {
+      success: `${appUrl}/certificado?pagamento=ok`,
+      failure: `${appUrl}/certificado?pagamento=falhou`,
+      pending: `${appUrl}/certificado?pagamento=pendente`,
+    },
+    auto_return: "approved",
+    statement_descriptor: "BENE CURATI",
+    ...(payerEmail ? { payer: { email: payerEmail } } : {}),
+  }
 
-  if (!prefRes.ok) {
-    const errText = await prefRes.text()
-    console.error("Mercado Pago preference error")
+  const attempts = [
+    {
+      ...basePref,
+      payment_methods: {
+        default_payment_method_id: "pix",
+        installments: 12,
+      },
+    },
+    basePref,
+    { items, external_reference: payment.id },
+  ]
+
+  let pref: Record<string, unknown> | null = null
+  let lastError = ""
+
+  for (let i = 0; i < attempts.length; i++) {
+    const prefRes = await fetch("https://api.mercadopago.com/checkout/preferences", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "X-Idempotency-Key": `${payment.id}-${i}`,
+      },
+      body: JSON.stringify(attempts[i]),
+    })
+    const raw = await prefRes.text()
+    let parsed: Record<string, unknown> = {}
+    try {
+      parsed = JSON.parse(raw)
+    } catch {
+      parsed = { message: raw.slice(0, 240) }
+    }
+    if (prefRes.ok && (parsed.init_point || parsed.sandbox_init_point)) {
+      pref = parsed
+      break
+    }
+    lastError = String(parsed.message || parsed.error || raw).slice(0, 240)
+    if (/unauthorized|invalid access/i.test(lastError)) break
+  }
+
+  if (!pref) {
     await prisma.certificatePayment.update({
       where: { id: payment.id },
-      data: { status: "FAILED", rawStatus: "preference_error", failedAt: new Date() },
+      data: { status: "FAILED", rawStatus: lastError.slice(0, 180), failedAt: new Date() },
     })
+    const tokenHint = token.startsWith("TEST-")
+      ? "Token de TESTE. Para Pix use o Access Token de produção (APP_USR-)."
+      : token.startsWith("APP_USR-")
+        ? "Token de produção reconhecido, mas o Mercado Pago recusou a preferência."
+        : "MERCADOPAGO_ACCESS_TOKEN não parece um Access Token válido."
     return NextResponse.json(
-      { error: "Falha ao iniciar o checkout. Tente novamente.", details: errText.slice(0, 200) },
+      { error: "Falha ao iniciar o checkout.", details: lastError, hint: tokenHint },
       { status: 502 }
     )
   }
-
-  const pref = await prefRes.json()
   await prisma.certificatePayment.update({
     where: { id: payment.id },
     data: {
       providerPaymentId: String(pref.id || ""),
-      checkoutUrl: pref.init_point || pref.sandbox_init_point || null,
+      checkoutUrl: String(pref.init_point || pref.sandbox_init_point || ""),
     },
   })
 

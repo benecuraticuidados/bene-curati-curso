@@ -32,7 +32,10 @@ export default function PayCertificateButton({
         )
         return
       }
-      setMessage(data.error || "Não foi possível iniciar o pagamento.")
+      setMessage(
+        [data.error, data.hint, data.details].filter(Boolean).join(" — ") ||
+          "Não foi possível iniciar o pagamento."
+      )
     } catch {
       setMessage("Erro de conexão. Tente novamente.")
     } finally {
