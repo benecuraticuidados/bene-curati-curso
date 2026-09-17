@@ -115,21 +115,35 @@ export async function GET(req: Request) {
       title: "Transferência para a cadeira",
       video: "https://www.youtube.com/embed/Gcoj_yG2Y1U",
       reading:
-        "<h2>Transferência para a cadeira</h2><p>Aula prática obrigatória. O vídeo é exibido neste aplicativo. Trave a cadeira, retire o apoio de pés e transfira sem puxar pelos braços.</p>",
+        "<h2>Transferência para a cadeira</h2><p>Aula prática obrigatória 1 de 5. O vídeo roda neste aplicativo. Trave a cadeira e transfira sem puxar pelos braços.</p>",
     },
     {
       order: 2,
       title: "Trocar lençol com acamados",
       video: "https://www.youtube.com/embed/F_J2ZiDjBgY",
       reading:
-        "<h2>Trocar lençol com acamados</h2><p>Aula prática obrigatória. O vídeo é exibido neste aplicativo. Lateralize a pessoa, enrole o lençol sujo e coloque o limpo sem arrastar o paciente.</p>",
+        "<h2>Trocar lençol com acamados</h2><p>Aula prática obrigatória 2 de 5. Lateralize a pessoa, enrole o lençol sujo e coloque o limpo sem arrastar.</p>",
     },
     {
       order: 3,
       title: "Vestir roupas em acamados",
       video: "https://www.youtube.com/embed/4qKbNpcKuXM",
       reading:
-        "<h2>Vestir roupas em acamados</h2><p>Aula prática obrigatória. O vídeo é exibido neste aplicativo. Vista primeiro o lado mais comprometido e não force articulações.</p>",
+        "<h2>Vestir roupas em acamados</h2><p>Aula prática obrigatória 3 de 5. Vista primeiro o lado mais comprometido. Não force articulações.</p>",
+    },
+    {
+      order: 4,
+      title: "Mudança de decúbito",
+      video: "https://www.youtube.com/embed/WXvyHrn90eQ",
+      reading:
+        "<h2>Mudança de decúbito</h2><p>Aula prática obrigatória 4 de 5. Reposicione no leito para prevenir lesão por pressão. Evite arrastar.</p>",
+    },
+    {
+      order: 5,
+      title: "Higiene íntima e troca de fralda",
+      video: "https://www.youtube.com/embed/MhGAFzpE8pA",
+      reading:
+        "<h2>Higiene íntima e troca de fralda</h2><p>Aula prática obrigatória 5 de 5. Proteja a intimidade, prepare o material e registre lesão ou recusa.</p>",
     },
   ]
 
