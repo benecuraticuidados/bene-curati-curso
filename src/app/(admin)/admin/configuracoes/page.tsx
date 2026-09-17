@@ -23,7 +23,7 @@ export default async function AdminConfigPage() {
           email: settings?.email || "",
           address: settings?.address || "",
           courseName: settings?.courseName || "CURSO PROFISSIONAL DE CUIDADOR",
-          workloadHours: settings?.workloadHours || 200,
+          workloadHours: settings?.workloadHours || 210,
           minScore: settings?.minScore || 7.0,
           certificateFee: settings?.certificateFee || 75,
           institutionalPhrase:

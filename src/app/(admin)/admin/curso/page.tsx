@@ -53,7 +53,7 @@ export default async function AdminCursoPage() {
         )}
         <div className="flex flex-wrap gap-4 mt-4 text-sm text-gray-600">
           <span>
-            <strong>{course.workloadHours}h</strong> de carga horária
+            <strong>{course.workloadHours}h</strong> de carga horária (204h teóricas + 6h práticas)
           </span>
           <span>•</span>
           <span>

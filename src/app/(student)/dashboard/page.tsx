@@ -261,7 +261,9 @@ export default async function DashboardPage() {
             {course.subtitle}
           </p>
           <div className="flex flex-wrap gap-4 text-sm text-gray-500 mb-4">
-            <span>Carga horária: {course.workloadHours}h</span>
+            <span>
+              Carga horária: {course.workloadHours || 210}h (204h teóricas + 6h práticas)
+            </span>
             <span>•</span>
             <span>{totalModules} módulos</span>
             <span>•</span>
@@ -270,12 +272,12 @@ export default async function DashboardPage() {
             <span>Nota mínima: {course.minScore * 10}%</span>
           </div>
           <a
-            href="/apostila-oficial-200h.pdf"
+            href="/apostila-oficial-bene-curati.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm text-wine hover:underline font-medium"
           >
-            📄 Baixar Apostila Oficial (PDF 200h)
+            📄 Baixar Apostila Oficial (PDF 210h)
           </a>
         </div>
       </main>

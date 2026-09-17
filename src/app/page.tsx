@@ -43,7 +43,7 @@ export default function HomePage() {
             Curso Profissional de Cuidador
           </h2>
           <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            Prepare-se para atuar com responsabilidade, conhecimento e humanização nos cuidados com pessoas que precisam de assistência.
+            Prepare-se para atuar com responsabilidade, conhecimento e humanização nos cuidados com pessoas que precisam de assistência. Formação de 210 horas (204h teóricas + 6h práticas).
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/cadastro" className="btn-primary text-base px-8 py-3">
@@ -90,7 +90,7 @@ export default function HomePage() {
             Conteúdo Programático
           </h3>
           <p className="text-center text-gray-600 mb-10 max-w-xl mx-auto">
-            22 módulos da formação Bene Curati Cuidados (210 horas), incluindo manejo prático obrigatório.
+            22 módulos da formação Bene Curati Cuidados — 210 horas (204h teóricas + 6h práticas).
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {[

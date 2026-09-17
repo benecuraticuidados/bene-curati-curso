@@ -131,7 +131,7 @@ function ValidarForm() {
                   <div>
                     <dt className="text-gray-500">Carga horária</dt>
                     <dd className="font-semibold text-gray-900">
-                      {result.workloadHours} horas
+                      {result.workloadHours || 210} horas (204h teóricas + 6h práticas)
                     </dd>
                   </div>
                   <div>

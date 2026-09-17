@@ -19,9 +19,9 @@ export async function GET(req: Request) {
     where: { id: course.id },
     data: {
       title: "Curso Profissional de Cuidador",
-      workloadHours: 204,
+      workloadHours: 210,
       description:
-        "Apostila Oficial Ampliada Bene Curati Cuidados — 21 módulos, 204 horas. Cada aula tem texto próprio. O YouTube aparece como vídeo de encerramento do módulo.",
+        "Apostila Oficial Ampliada Bene Curati Cuidados — 22 módulos, 210 horas (204h teóricas + 6h práticas). Cada aula tem texto próprio. O YouTube aparece como vídeo de encerramento do módulo.",
     },
   })
 

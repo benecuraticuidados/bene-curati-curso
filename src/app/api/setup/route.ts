@@ -43,7 +43,7 @@ export async function GET(req: Request) {
       update: {
         institutionName: "Bene Curati Cuidados",
         cnpj: "60.725.201/0001-88",
-        workloadHours: 200,
+        workloadHours: 210,
         certificateFee: 75,
         institutionalPhrase: "NOSSA PAIXÃO É CUIDAR DE QUEM VOCÊ AMA!",
       },
@@ -51,7 +51,7 @@ export async function GET(req: Request) {
         id: "main",
         institutionName: "Bene Curati Cuidados",
         cnpj: "60.725.201/0001-88",
-        workloadHours: 200,
+        workloadHours: 210,
         minScore: 7.0,
         certificateFee: 75,
         courseName: "CURSO PROFISSIONAL DE CUIDADOR",
@@ -101,7 +101,7 @@ export async function GET(req: Request) {
           subtitle: "Formação em Home Care, Cuidados Domiciliares e Assistência ao Paciente",
           description:
             "Apostila Oficial Ampliada Bene Curati Cuidados — 200 horas. Formação em Home Care.",
-          workloadHours: 200,
+          workloadHours: 210,
           minScore: 7.0,
           isPublished: true,
           createdById: admin.id,

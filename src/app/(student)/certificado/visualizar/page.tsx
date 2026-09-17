@@ -7,6 +7,7 @@ import Link from "next/link"
 import { formatDate } from "@/lib/utils"
 import PrintButton from "@/components/PrintButton"
 import { canReleaseCertificate } from "@/lib/certificate-guard"
+import { HORAS_PRATICAS, HORAS_TEORICAS, HORAS_TOTAL, cargaHorariaTexto } from "@/lib/workload"
 
 const CONTEUDO_PROGRAMATICO = [
   { titulo: "1. Papel do Cuidador", horas: 8 },
@@ -61,7 +62,12 @@ export default async function VisualizarCertificadoPage() {
   const totalHoras =
     CONTEUDO_PROGRAMATICO.reduce((acc, m) => acc + m.horas, 0) ||
     certificate.course.workloadHours ||
-    200
+    HORAS_TOTAL
+  const horasTeoricas = CONTEUDO_PROGRAMATICO.filter((m) => !m.titulo.startsWith("22.")).reduce(
+    (acc, m) => acc + m.horas,
+    0
+  ) || HORAS_TEORICAS
+  const horasPraticas = HORAS_PRATICAS
   const validateUrl = `https://bene-curati-curso.vercel.app/validar?codigo=${certificate.code}`
   const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(validateUrl)}`
   const started = certificate.user.createdAt
@@ -143,6 +149,7 @@ export default async function VisualizarCertificadoPage() {
               <div className="border-l-4 border-[#5b1320] pl-3">
                 <p className="text-[10px] uppercase tracking-wider text-gray-500">Carga horária</p>
                 <p className="text-xl font-bold text-[#5b1320]">{totalHoras} horas</p>
+                <p className="text-[10px] text-gray-500">{horasTeoricas}h teóricas + {horasPraticas}h práticas</p>
               </div>
               <div className="border-l-4 border-[#c9a227] pl-3">
                 <p className="text-[10px] uppercase tracking-wider text-gray-500">Início</p>
@@ -232,7 +239,7 @@ export default async function VisualizarCertificadoPage() {
 
           <h2 className="text-center text-xl font-bold mt-3">CONTEÚDO PROGRAMÁTICO</h2>
           <p className="text-center text-xs text-gray-500 mb-3">
-            Curso Profissional de Cuidador — {totalHoras} horas
+            Curso Profissional de Cuidador — {cargaHorariaTexto()}
           </p>
 
           <div className="grid grid-cols-3 gap-4 flex-1">
@@ -256,7 +263,9 @@ export default async function VisualizarCertificadoPage() {
             ))}
           </div>
 
-          <p className="text-right font-bold text-[#5b1320] mt-2">TOTAL: {totalHoras}h</p>
+          <p className="text-right font-bold text-[#5b1320] mt-2">
+            TOTAL: {totalHoras}h ({horasTeoricas}h teóricas + {horasPraticas}h práticas)
+          </p>
           <p className="text-[10px] text-gray-600 mt-2 leading-snug">
             Modalidade teórica, técnica e prática em Home Care. Avaliação: prova final
             (mínimo 70%, tentativas ilimitadas). Conclusão exige as 5 aulas práticas
