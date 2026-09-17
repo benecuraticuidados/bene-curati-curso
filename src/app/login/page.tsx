@@ -4,7 +4,8 @@ import { useState } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { Heart, Loader2 } from "lucide-react"
+import Image from "next/image"
+import { Loader2 } from "lucide-react"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -46,9 +47,14 @@ export default function LoginPage() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-wine mb-4">
-            <Heart className="w-7 h-7 text-white" fill="white" />
-          </div>
+          <Image
+            src="/logo-bene-curati.png"
+            alt="Bene Curati Cuidados"
+            width={72}
+            height={72}
+            className="mx-auto rounded-full mb-4"
+            priority
+          />
           <h1 className="text-2xl font-bold text-gray-900">Entrar</h1>
           <p className="text-gray-500 mt-1">Acesse sua conta Bene Curati</p>
         </div>

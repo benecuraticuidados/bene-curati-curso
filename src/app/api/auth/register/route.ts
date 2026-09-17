@@ -14,8 +14,17 @@ export async function POST(req: Request) {
       )
     }
 
+    if (String(password).length < 6) {
+      return NextResponse.json(
+        { error: "A senha deve ter pelo menos 6 caracteres" },
+        { status: 400 }
+      )
+    }
+
+    const normalizedEmail = email.toLowerCase().trim()
+
     const existing = await prisma.user.findUnique({
-      where: { email: email.toLowerCase().trim() },
+      where: { email: normalizedEmail },
     })
 
     if (existing) {
@@ -30,7 +39,7 @@ export async function POST(req: Request) {
     const user = await prisma.user.create({
       data: {
         name: name.trim(),
-        email: email.toLowerCase().trim(),
+        email: normalizedEmail,
         passwordHash,
         whatsapp: whatsapp || null,
         city: city || null,
@@ -40,7 +49,22 @@ export async function POST(req: Request) {
       },
     })
 
-    // Log
+    // Matricular automaticamente no curso principal
+    const course = await prisma.course.findFirst({
+      where: { isPublished: true },
+      orderBy: { createdAt: "asc" },
+    })
+
+    if (course) {
+      await prisma.enrollment.create({
+        data: {
+          userId: user.id,
+          courseId: course.id,
+          status: "ACTIVE",
+        },
+      })
+    }
+
     await prisma.auditLog.create({
       data: {
         actorId: user.id,
@@ -58,7 +82,7 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error("Register error:", error)
     return NextResponse.json(
-      { error: "Erro interno ao criar conta" },
+      { error: "Erro interno ao criar conta. Tente novamente." },
       { status: 500 }
     )
   }
