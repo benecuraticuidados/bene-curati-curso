@@ -7,7 +7,7 @@ import { generateCertificateCode } from "@/lib/utils"
 
 export const dynamic = "force-dynamic"
 
-export async function POST() {
+export async function POST(req: Request) {
   const session = await getServerSession(authOptions)
   if (!session?.user) {
     return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
@@ -90,7 +90,65 @@ export async function POST() {
     })
   }
 
+  let method = "pix"
+  try {
+    const body = await req.json()
+    if (body?.method === "checkout") method = "checkout"
+  } catch {
+    method = "pix"
+  }
+
   const payerEmail = (session.user as { email?: string }).email || undefined
+
+  if (method === "pix") {
+    const pixRes = await fetch("https://api.mercadopago.com/v1/payments", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "X-Idempotency-Key": payment.id,
+      },
+      body: JSON.stringify({
+        transaction_amount: Number(amount),
+        description: "Taxa de emissao de certificado Bene Curati",
+        payment_method_id: "pix",
+        notification_url: `${appUrl}/api/payments/webhook`,
+        external_reference: payment.id,
+        payer: {
+          email: payerEmail || "aluno@bene-curati-curso.vercel.app",
+        },
+      }),
+    })
+    const pixRaw = await pixRes.text()
+    let pixJson: Record<string, any> = {}
+    try {
+      pixJson = JSON.parse(pixRaw)
+    } catch {
+      pixJson = {}
+    }
+    const tx = pixJson?.point_of_interaction?.transaction_data || {}
+    if (pixRes.ok && (tx.qr_code || tx.ticket_url)) {
+      await prisma.certificatePayment.update({
+        where: { id: payment.id },
+        data: {
+          providerPaymentId: String(pixJson.id || ""),
+          checkoutUrl: tx.ticket_url || null,
+          rawStatus: String(pixJson.status || "pending"),
+        },
+      })
+      return NextResponse.json({
+        configured: true,
+        method: "pix",
+        paymentId: payment.id,
+        amount,
+        status: pixJson.status,
+        qrCode: tx.qr_code || null,
+        qrCodeBase64: tx.qr_code_base64 || null,
+        ticketUrl: tx.ticket_url || null,
+      })
+    }
+    // se Pix direto falhar, segue para Checkout Pro
+  }
   const items = [
     {
       id: "certificado-bene-curati",
