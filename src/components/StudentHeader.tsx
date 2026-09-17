@@ -53,7 +53,10 @@ export default function StudentHeader() {
             <span className="max-w-[140px] truncate">{session?.user?.name}</span>
           </div>
           <button
-            onClick={() => signOut({ callbackUrl: "/" })}
+            onClick={async () => {
+              await fetch("/api/logout", { method: "POST" })
+              await signOut({ callbackUrl: "/" })
+            }}
             className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-wine transition"
             title="Sair"
           >

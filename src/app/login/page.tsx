@@ -37,12 +37,9 @@ export default function LoginPage() {
         return
       }
 
-      if (data.role === "ADMIN") {
-        router.push("/admin")
-      } else {
-        router.push("/dashboard")
-      }
-      router.refresh()
+      const dest = data.role === "ADMIN" ? "/admin" : "/dashboard"
+      window.location.assign(dest)
+      return
     } catch {
       // Fallback NextAuth (pode falhar com CSRF em domínio diferente)
       const res = await signIn("credentials", {

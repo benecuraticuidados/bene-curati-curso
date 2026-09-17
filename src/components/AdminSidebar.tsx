@@ -87,7 +87,10 @@ export default function AdminSidebar() {
                 {session?.user?.name}
               </p>
               <button
-                onClick={() => signOut({ callbackUrl: "/" })}
+                onClick={async () => {
+                  await fetch("/api/logout", { method: "POST" })
+                  await signOut({ callbackUrl: "/" })
+                }}
                 className="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-600 hover:text-wine w-full"
               >
                 <LogOut className="w-4 h-4" />
@@ -125,7 +128,10 @@ export default function AdminSidebar() {
             {session?.user?.name || session?.user?.email}
           </p>
           <button
-            onClick={() => signOut({ callbackUrl: "/" })}
+            onClick={async () => {
+                  await fetch("/api/logout", { method: "POST" })
+                  await signOut({ callbackUrl: "/" })
+                }}
             className="flex items-center gap-2 text-sm text-gray-600 hover:text-wine transition"
           >
             <LogOut className="w-4 h-4" />
