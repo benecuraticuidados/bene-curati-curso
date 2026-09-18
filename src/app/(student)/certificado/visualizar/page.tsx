@@ -173,7 +173,7 @@ export default async function VisualizarCertificadoPage() {
               <div className="absolute -left-2 top-0 bottom-0 w-4 bg-[#5b1320] [clip-path:polygon(40%_0,100%_0,100%_100%,40%_100%,0_50%)]" />
               <div className="absolute -right-2 top-0 bottom-0 w-4 bg-[#5b1320] [clip-path:polygon(0_0,60%_0,100%_50%,60%_100%,0_100%)]" />
               <div className="bg-[#5b1320] text-white text-[13px] font-bold tracking-[0.22em] uppercase py-1.5">
-                Curso Profissional de Cuidador
+                Curso de Cuidador Profissional
               </div>
             </div>
             <p className="text-[12.5px] text-gray-600 mt-2">
@@ -193,7 +193,7 @@ export default async function VisualizarCertificadoPage() {
             <p className="text-center text-[11px] text-gray-500 mt-1">CPF: {certificate.user.cpf}</p>
           )}
           <p className="text-center text-[13px] text-gray-700 mt-2 max-w-[236mm] mx-auto leading-snug">
-            concluiu com aproveitamento o Curso Profissional de Cuidador — Formação em Home Care,
+            concluiu com aproveitamento o Curso de Cuidador Profissional — Formação em Home Care,
             Cuidados Domiciliares e Assistência ao Paciente, promovido pela Bene Curati Cuidados.
           </p>
 
