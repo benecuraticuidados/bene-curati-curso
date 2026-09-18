@@ -63,10 +63,11 @@ export default async function VisualizarCertificadoPage() {
     CONTEUDO_PROGRAMATICO.reduce((acc, m) => acc + m.horas, 0) ||
     certificate.course.workloadHours ||
     HORAS_TOTAL
-  const horasTeoricas = CONTEUDO_PROGRAMATICO.filter((m) => !m.titulo.startsWith("22.")).reduce(
-    (acc, m) => acc + m.horas,
-    0
-  ) || HORAS_TEORICAS
+  const horasTeoricas =
+    CONTEUDO_PROGRAMATICO.filter((m) => !m.titulo.startsWith("22.")).reduce(
+      (acc, m) => acc + m.horas,
+      0
+    ) || HORAS_TEORICAS
   const horasPraticas = HORAS_PRATICAS
   const validateUrl = `https://bene-curati-curso.vercel.app/validar?codigo=${certificate.code}`
   const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(validateUrl)}`
@@ -100,118 +101,147 @@ export default async function VisualizarCertificadoPage() {
         <Link href="/certificado" className="btn-outline text-sm bg-white">← Voltar</Link>
         <PrintButton />
         <p className="text-xs text-white/80 self-center">
-          Imprimir: A4 • Paisagem • margens nenhuma • 2 páginas
+          Imprimir: A4 • Paisagem • margens nenhuma • frente e verso
         </p>
       </div>
 
-      {/* FRENTE — modelo técnico paisagem */}
+      {/* FRENTE */}
       <div className="stage mx-auto relative overflow-hidden bg-white shadow-2xl">
-        <div className="absolute inset-0 flex">
-          <aside className="w-[52mm] h-full bg-[#5b1320] text-white flex flex-col items-center py-6 px-3 relative">
-            <Image src="/logo-bene-curati-v2.png" alt="" width={92} height={92} className="object-contain bg-white rounded-full p-1" />
-            <p className="mt-4 text-center text-[10px] tracking-[0.25em] font-semibold uppercase">Bene Curati</p>
-            <p className="text-center text-[10px] tracking-[0.25em] font-semibold uppercase">Cuidados</p>
-            <div className="flex-1" />
-            <p className="text-[9px] text-center leading-tight opacity-90 px-1">
-              Nossa Paixão é Cuidar de Quem Você Ama!
-            </p>
-            <p className="mt-4 text-[8px] tracking-widest uppercase opacity-70">Institucional</p>
-          </aside>
+        <div className="absolute -top-16 -right-10 w-72 h-72 rounded-full bg-[#5b1320]" />
+        <div className="absolute -top-10 -right-6 w-64 h-64 rounded-full border-[10px] border-[#c9a227]/80" />
+        <div className="absolute -bottom-20 -left-16 w-80 h-40 bg-[#5b1320] rotate-[-8deg]" />
+        <div className="absolute bottom-4 left-0 right-0 h-[3px] bg-gradient-to-r from-[#c9a227] via-[#5b1320] to-[#c9a227]" />
 
-          <div className="flex-1 relative px-8 py-5 flex flex-col">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-[#c9a227] to-transparent opacity-80" />
-            <div className="absolute bottom-0 right-0 w-16 h-16 border-b-8 border-r-8 border-[#c9a227]" />
-
-            <p className="text-[#5b1320] text-xs tracking-[0.35em] uppercase font-semibold">Bene Curati Cuidados</p>
-            <h1 className="text-[42px] leading-none font-bold text-[#1a1a1a] mt-1">CERTIFICADO</h1>
-            <p className="text-lg tracking-wide text-[#5b1320] font-semibold mt-1">
-              CURSO PROFISSIONAL DE CUIDADOR
-            </p>
-
-            <div className="mt-4 inline-block bg-[#5b1320] text-white text-[11px] font-semibold tracking-widest px-3 py-1">
-              CERTIFICAMOS QUE
-            </div>
-
-            <p className="mt-3 text-[28px] leading-tight font-bold text-[#5b1320]">
-              {certificate.user.name}
-            </p>
-            {certificate.user.cpf && (
-              <p className="text-xs text-gray-500 mt-1">CPF: {certificate.user.cpf}</p>
-            )}
-
-            <p className="mt-3 text-sm text-gray-700 leading-relaxed max-w-[210mm]">
-              concluiu com aproveitamento o <strong>Curso Profissional de Cuidador</strong> —
-              Formação em Home Care, Cuidados Domiciliares e Assistência ao Paciente,
-              promovido pela Bene Curati Cuidados.
-            </p>
-
-            <div className="mt-4 grid grid-cols-3 gap-4 text-sm">
-              <div className="border-l-4 border-[#5b1320] pl-3">
-                <p className="text-[10px] uppercase tracking-wider text-gray-500">Carga horária</p>
-                <p className="text-xl font-bold text-[#5b1320]">{totalHoras} horas</p>
-                <p className="text-[10px] text-gray-500">{horasTeoricas}h teóricas + {horasPraticas}h práticas</p>
-              </div>
-              <div className="border-l-4 border-[#c9a227] pl-3">
-                <p className="text-[10px] uppercase tracking-wider text-gray-500">Início</p>
-                <p className="font-semibold text-gray-800">{formatDate(started)}</p>
-              </div>
-              <div className="border-l-4 border-[#c9a227] pl-3">
-                <p className="text-[10px] uppercase tracking-wider text-gray-500">Conclusão</p>
-                <p className="font-semibold text-gray-800">{formatDate(certificate.issuedAt)}</p>
+        <div className="relative h-full px-8 py-5 flex flex-col">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              <Image
+                src="/logo-bene-curati-v2.png"
+                alt="Bene Curati Cuidados"
+                width={64}
+                height={64}
+                className="object-contain"
+              />
+              <div>
+                <p className="text-[22px] leading-none font-extrabold tracking-tight text-[#1a1a1a]">
+                  BENE CURATI
+                </p>
+                <p className="text-[22px] leading-none font-extrabold tracking-tight text-[#1a1a1a]">
+                  CUIDADOS
+                </p>
+                <p className="text-[9px] tracking-[0.18em] uppercase text-[#5b1320] mt-1">
+                  Nossa paixão é cuidar de quem você ama!
+                </p>
               </div>
             </div>
+            <p className="text-right text-[13px] italic text-[#5b1320] pt-2 pr-6 max-w-[42mm] leading-tight">
+              Cuidar é transformar vidas!
+            </p>
+          </div>
 
-            <div className="mt-4 flex-1">
-              <p className="text-[10px] uppercase tracking-widest text-[#5b1320] font-semibold mb-1">
+          <div className="text-center mt-2">
+            <h1 className="text-[48px] leading-none font-black text-[#5b1320] tracking-tight">
+              CERTIFICADO
+            </h1>
+            <p className="text-[11px] tracking-[0.35em] uppercase text-gray-500 mt-1">
+              de conclusão do curso
+            </p>
+            <div className="mt-2 inline-block bg-[#5b1320] text-white text-[13px] font-bold tracking-[0.18em] uppercase px-8 py-1.5 rounded-sm shadow">
+              Curso Profissional de Cuidador
+            </div>
+            <p className="text-[12px] text-gray-600 mt-2">
+              Formação em Home Care, Cuidados Domiciliares e Assistência ao Paciente
+            </p>
+          </div>
+
+          <p className="text-center text-sm text-gray-600 mt-3">Certificamos que</p>
+          <p className="text-center text-[34px] leading-tight italic font-semibold text-[#1a1a1a] mt-1">
+            {certificate.user.name}
+          </p>
+          <div className="mx-auto mt-1 h-px w-[70%] bg-[#c9a227]" />
+          {certificate.user.cpf && (
+            <p className="text-center text-[11px] text-gray-500 mt-1">CPF: {certificate.user.cpf}</p>
+          )}
+          <p className="text-center text-[13px] text-gray-700 mt-2 max-w-[230mm] mx-auto leading-snug">
+            concluiu com aproveitamento o Curso Profissional de Cuidador — Formação em Home Care,
+            Cuidados Domiciliares e Assistência ao Paciente, promovido pela Bene Curati Cuidados.
+          </p>
+
+          <div className="mt-4 grid grid-cols-5 gap-2 text-center">
+            {[
+              ["Carga horária", `${totalHoras} horas`, `${horasTeoricas}h + ${horasPraticas}h prática`],
+              ["Modalidade", "Online", "Teórica e prática"],
+              ["Início", formatDate(started), ""],
+              ["Conclusão", formatDate(certificate.issuedAt), ""],
+              ["CNPJ", "60.725.201/0001-88", ""],
+            ].map(([label, value, extra]) => (
+              <div key={label} className="border border-[#5b1320]/15 rounded-md py-2 px-1">
+                <p className="text-[8px] uppercase tracking-wider text-[#5b1320] font-semibold">{label}</p>
+                <p className="text-[12px] font-bold text-[#1a1a1a] leading-tight mt-0.5">{value}</p>
+                {extra ? <p className="text-[8px] text-gray-500 mt-0.5">{extra}</p> : null}
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-3 flex-1 grid grid-cols-[1.2fr_0.9fr_0.9fr] gap-4 items-end">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-[#5b1320] mb-1">
                 Eixos da formação
               </p>
-              <div className="grid grid-cols-3 gap-x-4 text-[11px] text-gray-700">
-                <ul className="space-y-0.5">
-                  <li>Home Care e domicílio</li>
-                  <li>Ética e humanização</li>
-                  <li>Sinais vitais e biossegurança</li>
+              <div className="grid grid-cols-2 gap-x-3 text-[11px] text-gray-700 leading-5">
+                <ul>
+                  <li>• Home Care e domicílio</li>
+                  <li>• Ética e humanização</li>
+                  <li>• Sinais vitais e biossegurança</li>
+                  <li>• Higiene e mobilização</li>
+                  <li>• Enfermagem aplicada</li>
                 </ul>
-                <ul className="space-y-0.5">
-                  <li>Higiene e mobilização</li>
-                  <li>Enfermagem aplicada</li>
-                  <li>Primeiros socorros</li>
-                </ul>
-                <ul className="space-y-0.5">
-                  <li>Doenças crônicas</li>
-                  <li>Cuidados paliativos</li>
-                  <li>Legislação e excelência</li>
+                <ul>
+                  <li>• Primeiros socorros</li>
+                  <li>• Doenças crônicas</li>
+                  <li>• Cuidados paliativos</li>
+                  <li>• Legislação e excelência</li>
+                  <li>• Manejo prático obrigatório</li>
                 </ul>
               </div>
             </div>
+            <div className="text-center">
+              <Image
+                src="/assinatura-digital-diretor.jpg"
+                alt="Assinatura digital do diretor"
+                width={220}
+                height={56}
+                className="object-contain mx-auto"
+              />
+              <div className="border-t border-gray-400 w-40 mx-auto pt-1">
+                <p className="font-bold text-sm">Marcelo Rios</p>
+                <p className="text-[10px] text-gray-600">Diretor</p>
+                <p className="text-[9px] text-gray-500">Bene Curati Cuidados</p>
+              </div>
+            </div>
+            <div className="flex items-end justify-end gap-3">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={qrSrc} alt="QR de validação" width={78} height={78} className="border border-gray-200 rounded-sm" />
+              <div className="bg-[#5b1320] text-white rounded-md px-3 py-2 text-[10px] leading-snug max-w-[38mm]">
+                <p className="uppercase tracking-wide font-semibold">Acesse a plataforma</p>
+                <p className="font-bold mt-0.5">app.benecurati.com.br</p>
+                <p className="opacity-80 mt-1">QR valida o código deste aluno</p>
+              </div>
+            </div>
+          </div>
 
-            <div className="mt-auto pt-3 flex items-end justify-between gap-4">
-              <div className="flex items-end gap-3">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={qrSrc} alt="QR validação" width={78} height={78} className="border border-gray-200" />
-                <div className="text-[10px] text-gray-600 leading-snug max-w-[46mm]">
-                  <p className="font-semibold text-[#5b1320]">Certificado nº</p>
-                  <p className="font-mono text-[11px]">{certificate.code}</p>
-                  <p className="mt-1">Valide em /validar</p>
-                </div>
-              </div>
-              <div className="text-center min-w-[72mm]">
-                <Image
-                  src="/assinatura-digital-diretor.jpg"
-                  alt="Assinatura digital do diretor"
-                  width={280}
-                  height={70}
-                  className="object-contain mx-auto mb-1"
-                />
-                <div className="border-t border-gray-800 pt-1">
-                  <p className="font-bold text-sm tracking-wide">MARCELO RIOS</p>
-                  <p className="text-[10px] uppercase text-gray-600">Diretor</p>
-                  <p className="text-[10px] text-gray-500">Bene Curati Cuidados</p>
-                </div>
-              </div>
-              <div className="text-right text-[10px] text-gray-500 leading-snug">
-                <p>CNPJ 60.725.201/0001-88</p>
-                <p>bene-curati-curso.vercel.app</p>
-              </div>
+          <div className="mt-3 flex items-end justify-between text-[10px] text-gray-600">
+            <div>
+              <p className="font-bold uppercase tracking-wide text-[#5b1320]">
+                Certificado verificável digitalmente
+              </p>
+              <p>
+                Código: <span className="font-mono font-semibold text-[#1a1a1a]">{certificate.code}</span>
+              </p>
+            </div>
+            <div className="text-right">
+              <p className="font-bold text-[#5b1320]">BENE CURATI CUIDADOS</p>
+              <p className="uppercase tracking-wide text-[8px]">Nossa paixão é cuidar de quem você ama!</p>
             </div>
           </div>
         </div>
@@ -222,7 +252,7 @@ export default async function VisualizarCertificadoPage() {
       {/* VERSO */}
       <div className="stage stage-back mx-auto relative overflow-hidden bg-white shadow-2xl">
         <div className="h-3 bg-[#5b1320]" />
-        <div className="px-8 py-5 h-[calc(210mm-12px)] flex flex-col">
+        <div className="px-8 py-4 h-[calc(210mm-12px)] flex flex-col">
           <div className="flex items-center justify-between border-b border-[#5b1320]/20 pb-3">
             <div className="flex items-center gap-3">
               <Image src="/logo-bene-curati-v2.png" alt="" width={44} height={44} className="object-contain" />
@@ -234,17 +264,16 @@ export default async function VisualizarCertificadoPage() {
             <div className="text-right">
               <p className="text-[10px] uppercase text-gray-400">Verso • Certificado nº</p>
               <p className="font-mono font-semibold text-[#5b1320]">{certificate.code}</p>
+              <p className="text-[10px] text-gray-500">{certificate.user.name}</p>
             </div>
           </div>
 
-          <h2 className="text-center text-xl font-bold mt-3">CONTEÚDO PROGRAMÁTICO</h2>
-          <p className="text-center text-xs text-gray-500 mb-3">
-            Curso Profissional de Cuidador — {cargaHorariaTexto()}
-          </p>
+          <h2 className="text-center text-xl font-bold mt-2">CONTEÚDO PROGRAMÁTICO</h2>
+          <p className="text-center text-xs text-gray-500 mb-2">{cargaHorariaTexto()}</p>
 
-          <div className="grid grid-cols-3 gap-4 flex-1">
+          <div className="grid grid-cols-3 gap-3 flex-1">
             {[colA, colB, colC].map((col, i) => (
-              <table key={i} className="w-full text-[11px]">
+              <table key={i} className="w-full text-[10.5px]">
                 <thead>
                   <tr className="bg-[#5b1320] text-white">
                     <th className="text-left py-1 px-2 font-semibold">Módulo</th>
@@ -253,7 +282,7 @@ export default async function VisualizarCertificadoPage() {
                 </thead>
                 <tbody>
                   {col.map((m, idx) => (
-                    <tr key={m.titulo} className={idx % 2 ? "bg-gray-50" : "bg-white"}>
+                    <tr key={m.titulo} className={idx % 2 ? "bg-[#f8f1f3]" : "bg-white"}>
                       <td className="py-1 px-2">{m.titulo}</td>
                       <td className="py-1 px-2 text-right font-medium">{m.horas}h</td>
                     </tr>
@@ -263,23 +292,40 @@ export default async function VisualizarCertificadoPage() {
             ))}
           </div>
 
-          <p className="text-right font-bold text-[#5b1320] mt-2">
+          <div className="mt-2 grid grid-cols-3 gap-3 text-[10px]">
+            <div className="border border-[#5b1320]/15 rounded-md p-2">
+              <p className="font-bold text-[#5b1320] uppercase tracking-wide">Como validar</p>
+              <p className="text-gray-700 mt-1">
+                Leia o QR da frente ou acesse /validar e informe o código{" "}
+                <span className="font-mono font-semibold">{certificate.code}</span>.
+              </p>
+            </div>
+            <div className="border border-[#5b1320]/15 rounded-md p-2">
+              <p className="font-bold text-[#5b1320] uppercase tracking-wide">Carga e avaliação</p>
+              <p className="text-gray-700 mt-1">
+                {totalHoras}h no total ({horasTeoricas}h teóricas + {horasPraticas}h práticas).
+                Prova final com mínimo de 70%. Práticas obrigatórias: {AULAS_PRATICAS.join("; ")}.
+              </p>
+            </div>
+            <div className="border border-[#5b1320]/15 rounded-md p-2">
+              <p className="font-bold text-[#5b1320] uppercase tracking-wide">Natureza da formação</p>
+              <p className="text-gray-700 mt-1">
+                Este certificado comprova a formação. Não estabelece vínculo de emprego com a Bene Curati Cuidados.
+              </p>
+            </div>
+          </div>
+
+          <p className="text-right font-bold text-[#5b1320] mt-2 text-sm">
             TOTAL: {totalHoras}h ({horasTeoricas}h teóricas + {horasPraticas}h práticas)
           </p>
-          <p className="text-[10px] text-gray-600 mt-2 leading-snug">
-            Modalidade teórica, técnica e prática em Home Care. Avaliação: prova final
-            (mínimo 70%, tentativas ilimitadas). Conclusão exige as 5 aulas práticas
-            obrigatórias ({AULAS_PRATICAS.join("; ")}). Validação pública do código{" "}
-            {certificate.code}. Aluno: {certificate.user.name} • Emitido em{" "}
-            {formatDate(certificate.issuedAt)}.
-          </p>
-          <div className="mt-3 border-t border-gray-200 pt-2 text-[9px] text-gray-700 leading-snug uppercase">
+
+          <div className="mt-2 border-t border-gray-200 pt-2 text-[9px] text-gray-700 leading-snug uppercase">
             Embasamento legal: os cursos oferecidos pela Bene Curati Cuidados têm base legal
             constituída pelo Decreto Presidencial nº 5.154 e a metodologia segue as normas do MEC
             através da Resolução CNE nº 04/99.
           </div>
           <div className="mt-auto flex items-center justify-between text-[10px] text-gray-600 px-1 py-1">
-            <span>bene-curati-curso.vercel.app</span>
+            <span>bene-curati-curso.vercel.app/validar</span>
             <span>CNPJ 60.725.201/0001-88</span>
           </div>
           <div className="h-3 bg-[#5b1320] -mx-8 text-center text-[9px] text-white leading-[12px] tracking-widest uppercase">
