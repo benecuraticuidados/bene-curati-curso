@@ -79,7 +79,7 @@ export default async function VisualizarCertificadoPage() {
 
   const boxes = [
     { label: "Carga horária", value: `${totalHoras} horas`, hint: `${horasTeoricas}h + ${horasPraticas}h prática` },
-    { label: "Modalidade", value: "Online", hint: "Teórica e prática" },
+    { label: "Modalidade", value: "EAD", hint: "Teórica e prática" },
     { label: "Início", value: formatDate(started), hint: "" },
     { label: "Conclusão", value: formatDate(certificate.issuedAt), hint: "" },
     { label: "CNPJ", value: "60.725.201/0001-88", hint: "" },
@@ -146,44 +146,46 @@ export default async function VisualizarCertificadoPage() {
 
       <div className="stage mx-auto relative overflow-hidden bg-white shadow-2xl">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/certificado-frente-modelo.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src="/certificado-frente-modelo.png" alt="" className="absolute inset-0 w-full h-full object-contain" />
 
-        <div className="absolute left-[16%] right-[16%] top-[31.6%] h-[6.2%] bg-[#5b1320] flex items-center justify-center">
-          <p className="text-white text-[13px] font-bold tracking-[0.18em] uppercase">
+        <div className="absolute left-[18%] right-[18%] top-[16.5%] text-center">
+          <p className="text-[28px] leading-none font-black tracking-wide text-[#5b1320] uppercase">
+            Certificado de conclusão
+          </p>
+        </div>
+
+        <div className="absolute left-[17%] right-[17%] top-[31.2%] h-[6.8%] flex items-center justify-center">
+          <p className="text-white text-[18px] font-black tracking-[0.12em] uppercase">
             Curso de Cuidador Profissional
           </p>
         </div>
 
-        <div className="absolute left-[12%] right-[12%] top-[43.2%] h-[8.5%] flex items-center justify-center bg-white/92">
-          <p className="text-[32px] leading-none text-[#1a1a1a] text-center px-2" style={{ fontFamily: "Georgia, 'Times New Roman', serif", fontStyle: "italic" }}>
+        <div className="absolute left-[12%] right-[12%] top-[42.5%] h-[9%] flex items-center justify-center">
+          <p className="text-[30px] leading-none text-[#1a1a1a] text-center px-2" style={{ fontFamily: "Georgia, 'Times New Roman', serif", fontStyle: "italic" }}>
             {certificate.user.name}
           </p>
         </div>
 
-        <div className="absolute left-[8.5%] top-[57.8%] w-[14%] h-[6.5%] flex flex-col justify-center bg-white">
-          <p className="text-[11px] font-extrabold text-[#1a1a1a] leading-tight">{totalHoras} horas</p>
-          <p className="text-[7px] text-gray-500">{horasTeoricas}h + {horasPraticas}h prática</p>
+        <div className="absolute left-[9%] top-[58%] w-[13%] h-[6%] flex flex-col justify-center">
+          <p className="text-[12px] font-extrabold text-[#1a1a1a] leading-tight">{totalHoras} horas</p>
+          <p className="text-[7px] text-gray-500">{horasTeoricas}h + {horasPraticas}h</p>
         </div>
-        <div className="absolute left-[40.2%] top-[57.8%] w-[11%] h-[6.5%] flex items-center bg-white">
+        <div className="absolute left-[24.5%] top-[58.5%] w-[10%] h-[5%] flex items-center">
+          <p className="text-[13px] font-extrabold text-[#1a1a1a]">EAD</p>
+        </div>
+        <div className="absolute left-[40%] top-[58.5%] w-[11%] h-[5%] flex items-center">
           <p className="text-[12px] font-extrabold text-[#1a1a1a]">{formatDate(started)}</p>
         </div>
-        <div className="absolute left-[56.5%] top-[57.8%] w-[11%] h-[6.5%] flex items-center bg-white">
+        <div className="absolute left-[53.5%] top-[58.5%] w-[11%] h-[5%] flex items-center">
           <p className="text-[12px] font-extrabold text-[#1a1a1a]">{formatDate(certificate.issuedAt)}</p>
         </div>
-        <div className="absolute left-[73%] top-[56.6%] w-[19%] h-[8%] flex flex-col justify-center bg-[#f6efe8] rounded-sm px-2">
+        <div className="absolute left-[73.5%] top-[56.8%] w-[18%] h-[7.5%] flex flex-col justify-center px-1">
           <p className="text-[8px] uppercase tracking-wider text-[#5b1320] font-bold">CNPJ</p>
           <p className="text-[11px] font-extrabold text-[#1a1a1a] leading-tight">60.725.201/0001-88</p>
         </div>
 
-        <div className="absolute left-[8.5%] bottom-[6.2%] bg-[#5b1320] text-white px-2 py-1 rounded-sm">
-          <p className="text-[8px] uppercase tracking-wide font-semibold">Certificado verificável digitalmente</p>
-          <p className="text-[11px] font-mono font-bold">Código: {certificate.code}</p>
-        </div>
-
-        <div className="absolute left-[18%] right-[18%] bottom-[11.5%] text-center bg-white/85 py-0.5">
-          <p className="text-[8px] uppercase tracking-wide text-gray-700">
-            Embasamento legal: Decreto Presidencial nº 5.154 e Resolução CNE nº 04/99 do MEC.
-          </p>
+        <div className="absolute left-[8.2%] bottom-[6.4%]">
+          <p className="text-[10px] font-mono font-bold text-white">Código: {certificate.code}</p>
         </div>
       </div>
 
