@@ -3,6 +3,7 @@ import Link from "next/link"
 import { formatDate } from "@/lib/utils"
 import ToggleStudentButton from "./ToggleStudentButton"
 import DeleteUserButton from "./DeleteUserButton"
+import CreateStudentForm from "./CreateStudentForm"
 
 export default async function AdminAlunosPage({
   searchParams,
@@ -66,6 +67,8 @@ export default async function AdminAlunosPage({
           </button>
         </form>
       </div>
+
+      <CreateStudentForm />
 
       <div className="card overflow-x-auto p-0">
         <table className="w-full text-sm">

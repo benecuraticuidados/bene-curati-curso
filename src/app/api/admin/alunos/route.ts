@@ -11,6 +11,69 @@ async function requireAdmin() {
   return session
 }
 
+export async function POST(req: Request) {
+  const session = await requireAdmin()
+  if (!session) {
+    return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+  }
+
+  const body = await req.json()
+  const name = String(body.name || "").trim()
+  const email = String(body.email || "").trim().toLowerCase()
+  const password = String(body.password || "").trim()
+  const cpf = String(body.cpf || "").trim() || null
+  const whatsapp = String(body.whatsapp || "").trim() || null
+
+  if (!name || !email || !password) {
+    return NextResponse.json(
+      { error: "Nome, e-mail e senha são obrigatórios." },
+      { status: 400 }
+    )
+  }
+  if (password.length < 6) {
+    return NextResponse.json({ error: "Senha com no mínimo 6 caracteres." }, { status: 400 })
+  }
+
+  const exists = await prisma.user.findUnique({ where: { email } })
+  if (exists) {
+    return NextResponse.json({ error: "Já existe usuário com este e-mail." }, { status: 409 })
+  }
+
+  const bcrypt = (await import("bcryptjs")).default
+  const passwordHash = await bcrypt.hash(password, 12)
+
+  const course = await prisma.course.findFirst({ orderBy: { createdAt: "asc" } })
+  const user = await prisma.user.create({
+    data: {
+      name,
+      email,
+      passwordHash,
+      cpf,
+      whatsapp,
+      role: "STUDENT",
+      isActive: true,
+    },
+  })
+
+  if (course) {
+    await prisma.enrollment.create({
+      data: { userId: user.id, courseId: course.id, status: "ACTIVE" },
+    })
+  }
+
+  await prisma.auditLog.create({
+    data: {
+      actorId: (session.user as { id?: string }).id,
+      action: "USER_CREATED_MANUAL",
+      entity: "User",
+      entityId: user.id,
+      details: `Aluno incluído manualmente: ${name} (${email})`,
+    },
+  })
+
+  return NextResponse.json({ ok: true, userId: user.id })
+}
+
 export async function PATCH(req: Request) {
   const session = await requireAdmin()
   if (!session) {

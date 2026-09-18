@@ -210,10 +210,81 @@ export async function GET(req: Request) {
     materialsUpserted++
   }
 
-  await prisma.quiz.updateMany({
+  const FINAL_QUESTIONS: { text: string; correct: boolean; explanation: string }[] = [
+    { text: "O cuidador apoia atividades da vida diária e não substitui o técnico de enfermagem nem o enfermeiro.", correct: true, explanation: "O limite de atuação é obrigatório." },
+    { text: "O sigilo sobre dados de saúde termina quando o plantão acaba.", correct: false, explanation: "O sigilo permanece após o atendimento." },
+    { text: "A higienização das mãos é a medida mais eficaz para prevenir infecção no domicílio.", correct: true, explanation: "Mãos são o principal veículo de transmissão." },
+    { text: "O cuidador pode administrar medicação injetável por conta própria se a família pedir.", correct: false, explanation: "Injetáveis não são atribuição do cuidador." },
+    { text: "Mudança de decúbito ajuda a prevenir lesão por pressão.", correct: true, explanation: "Alívio de pressão é medida essencial." },
+    { text: "Pessoa com suspeita de disfagia pode ser alimentada deitada, desde que depressa.", correct: false, explanation: "Alimentar deitado aumenta risco de aspiração." },
+    { text: "O número do SAMU é 192.", correct: true, explanation: "192 é o SAMU." },
+    { text: "Após uma queda, o cuidador deve levantar a pessoa imediatamente, mesmo com dor intensa.", correct: false, explanation: "Avalie, proteja e acione ajuda se houver gravidade." },
+    { text: "Registrar hora, fato e o que foi feito no diário de bordo é parte do cuidado profissional.", correct: true, explanation: "O registro comunica o plantão seguinte." },
+    { text: "Fotografar o paciente e enviar no grupo da família sem critério institucional é adequado.", correct: false, explanation: "Imagem de saúde exige sigilo e autorização." },
+    { text: "Os cinco certos da medicação incluem paciente, medicamento, dose, via e horário.", correct: true, explanation: "Essa checagem reduz erro." },
+    { text: "Vermelhidão no sacro que não some após alívio de pressão deve ser descrita e comunicada.", correct: true, explanation: "Pode ser início de lesão por pressão." },
+    { text: "O cuidador diagnostica Alzheimer e inicia tratamento por conta própria.", correct: false, explanation: "Diagnóstico e prescrição não são do cuidador." },
+    { text: "Em engasgo com tosse eficaz, o primeiro passo é estimular a tosse e não iniciar manobra agressiva.", correct: true, explanation: "Tosse eficaz é o mecanismo mais eficiente." },
+    { text: "Cuidado paliativo significa abandonar conforto e higiene.", correct: false, explanation: "Paliativo prioriza conforto e dignidade." },
+    { text: "Contrato, limites de função e registro protegem o profissional e a pessoa cuidada.", correct: true, explanation: "Formalizar reduz risco jurídico." },
+    { text: "Burnout do cuidador não interfere na segurança do paciente.", correct: false, explanation: "Exaustão aumenta erro e risco." },
+    { text: "Na transferência cama-cadeira, a cadeira deve estar travada.", correct: true, explanation: "Travar evita deslizamento e queda." },
+    { text: "A conclusão do curso exige as aulas práticas obrigatórias de manejo, além da prova.", correct: true, explanation: "As 5 aulas práticas são requisito de conclusão." },
+    { text: "Concluir o curso da Bene Curati Cuidados cria automaticamente vínculo de emprego com a empresa.", correct: false, explanation: "O curso forma; não contrata." },
+  ]
+
+  let quiz = await prisma.quiz.findFirst({
     where: { courseId: course.id, isFinal: true },
-    data: { maxAttempts: 0 },
+    include: { questions: true },
   })
+  if (!quiz) {
+    quiz = await prisma.quiz.create({
+      data: {
+        courseId: course.id,
+        title: "PROVA FINAL — Curso Profissional de Cuidador",
+        description: "20 questões. Aprovação com 70%. Tentativas ilimitadas.",
+        minScore: 7.0,
+        maxAttempts: 0,
+        isFinal: true,
+        order: 99,
+      },
+      include: { questions: true },
+    })
+  } else {
+    await prisma.quiz.update({
+      where: { id: quiz.id },
+      data: {
+        title: "PROVA FINAL — Curso Profissional de Cuidador",
+        description: "20 questões. Aprovação com 70%. Tentativas ilimitadas.",
+        minScore: 7.0,
+        maxAttempts: 0,
+      },
+    })
+  }
+
+  if (quiz.questions.length !== 20) {
+    await prisma.question.deleteMany({ where: { quizId: quiz.id } })
+    for (let i = 0; i < FINAL_QUESTIONS.length; i++) {
+      const q = FINAL_QUESTIONS[i]
+      await prisma.question.create({
+        data: {
+          quizId: quiz.id,
+          text: q.text,
+          type: "true_false",
+          explanation: q.explanation,
+          order: i + 1,
+          options: {
+            create: [
+              { text: "Verdadeiro", isCorrect: q.correct, order: 1 },
+              { text: "Falso", isCorrect: !q.correct, order: 2 },
+            ],
+          },
+        },
+      })
+    }
+  }
+
+  const finalCount = await prisma.question.count({ where: { quizId: quiz.id } })
 
   return NextResponse.json({
     ok: true,
@@ -225,6 +296,7 @@ export async function GET(req: Request) {
     duplicates: audit.filter((a) => a.duplicateText).map((a) => a.module),
     uniqueVideos: videoIds.length,
     duplicateVideos: videoIds.length !== new Set(videoIds).size,
+    finalQuestions: finalCount,
     aulasCurtas: audit.flatMap((a) =>
       a.wordCounts
         .map((w, i) => (w < 650 ? `${a.module} aula ${i + 1} (${w} palavras)` : null))
