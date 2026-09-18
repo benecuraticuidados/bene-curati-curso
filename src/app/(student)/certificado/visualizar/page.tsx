@@ -91,23 +91,34 @@ export default async function VisualizarCertificadoPage() {
         .stage { width: 297mm; height: 210mm; }
         .gold { color: #c9a227; }
         .wine { color: #5b1320; }
+        .frame {
+          position: absolute; inset: 4mm;
+          border: 1.5px solid #c9a227;
+          pointer-events: none;
+        }
+        .frame-inner {
+          position: absolute; inset: 6mm;
+          border: 0.6px solid #5b1320;
+          opacity: 0.35;
+          pointer-events: none;
+        }
         .ornament-tr {
-          position: absolute; top: -8mm; right: -8mm;
-          width: 92mm; height: 92mm;
+          position: absolute; top: -4mm; right: -6mm;
+          width: 118mm; height: 118mm;
           background:
-            radial-gradient(circle at 100% 0%, #5b1320 0 58mm, transparent 58.2mm),
-            radial-gradient(circle at 100% 0%, transparent 50mm, #c9a227 50.2mm 54mm, transparent 54.2mm);
+            radial-gradient(circle at 100% 0%, #5b1320 0 72mm, transparent 72.2mm),
+            radial-gradient(circle at 100% 0%, transparent 62mm, #c9a227 62.2mm 68mm, transparent 68.2mm);
         }
         .ornament-bl {
-          position: absolute; bottom: -14mm; left: -18mm;
-          width: 120mm; height: 70mm;
+          position: absolute; bottom: -18mm; left: -22mm;
+          width: 150mm; height: 88mm;
           background:
-            radial-gradient(circle at 0% 100%, #5b1320 0 52mm, transparent 52.2mm),
-            radial-gradient(circle at 0% 100%, transparent 44mm, #c9a227 44.2mm 48mm, transparent 48.2mm);
+            radial-gradient(circle at 0% 100%, #5b1320 0 68mm, transparent 68.2mm),
+            radial-gradient(circle at 0% 100%, transparent 58mm, #c9a227 58.2mm 64mm, transparent 64.2mm);
         }
         .watermark {
-          position: absolute; right: 18mm; top: 48mm;
-          width: 78mm; height: 78mm; opacity: 0.06;
+          position: absolute; right: 22mm; top: 42mm;
+          width: 95mm; height: 95mm; opacity: 0.07;
         }
         @media print {
           @page { size: A4 landscape; margin: 0; }
@@ -133,14 +144,16 @@ export default async function VisualizarCertificadoPage() {
         </p>
       </div>
 
-      <div className="stage mx-auto relative overflow-hidden bg-white shadow-2xl">
+      <div className="stage mx-auto relative overflow-hidden bg-[#fffdf9] shadow-2xl">
         <div className="ornament-tr" />
         <div className="ornament-bl" />
+        <div className="frame" />
+        <div className="frame-inner" />
         <div className="watermark">
-          <Image src="/logo-bene-curati-v2.png" alt="" width={280} height={280} className="object-contain" />
+          <Image src="/logo-bene-curati-v2.png" alt="" width={340} height={340} className="object-contain" />
         </div>
 
-        <div className="relative h-full px-9 pt-6 pb-5 flex flex-col">
+        <div className="relative h-full px-10 pt-7 pb-6 flex flex-col justify-between">
           <header className="flex items-start justify-between">
             <div className="flex items-center gap-3">
               <div className="w-[18mm] h-[18mm] rounded-full border-[3px] border-[#5b1320] overflow-hidden bg-white flex items-center justify-center">
@@ -163,7 +176,7 @@ export default async function VisualizarCertificadoPage() {
           </header>
 
           <div className="text-center mt-2">
-            <h1 className="text-[52px] leading-none font-black text-[#5b1320] tracking-tight">CERTIFICADO</h1>
+            <h1 className="text-[62px] leading-none font-black text-[#5b1320] tracking-tight">CERTIFICADO</h1>
             <div className="flex items-center justify-center gap-3 mt-1">
               <span className="w-16 h-px bg-[#c9a227]" />
               <p className="text-[11px] tracking-[0.38em] uppercase text-gray-500">de conclusão do curso</p>
@@ -183,7 +196,7 @@ export default async function VisualizarCertificadoPage() {
 
           <p className="text-center text-[13px] text-gray-600 mt-3">Certificamos que</p>
           <p
-            className="text-center text-[36px] leading-tight text-[#1a1a1a] mt-0.5"
+            className="text-center text-[42px] leading-tight text-[#1a1a1a] mt-0.5"
             style={{ fontFamily: "Georgia, 'Times New Roman', serif", fontStyle: "italic" }}
           >
             {certificate.user.name}
@@ -197,9 +210,9 @@ export default async function VisualizarCertificadoPage() {
             Cuidados Domiciliares e Assistência ao Paciente, promovido pela Bene Curati Cuidados.
           </p>
 
-          <div className="mt-3 grid grid-cols-5 gap-2">
+          <div className="grid grid-cols-5 gap-0 bg-[#5b1320]/[0.04] border border-[#5b1320]/15 rounded-md px-2 py-2">
             {boxes.map((box) => (
-              <div key={box.label} className="flex items-center gap-2 border-r last:border-r-0 border-[#5b1320]/15 px-1">
+              <div key={box.label} className="flex items-center gap-2 border-r last:border-r-0 border-[#5b1320]/15 px-2">
                 <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#5b1320] text-white text-[10px] font-bold flex items-center justify-center">
                   {box.label === "Carga horária" ? "⏱" : box.label === "Modalidade" ? "💻" : box.label === "Início" ? "📅" : box.label === "Conclusão" ? "☑" : "📄"}
                 </span>
@@ -212,7 +225,7 @@ export default async function VisualizarCertificadoPage() {
             ))}
           </div>
 
-          <div className="mt-3 grid grid-cols-[1.15fr_0.7fr_0.55fr_0.85fr] gap-3 items-end flex-1">
+          <div className="grid grid-cols-[1.15fr_0.7fr_0.55fr_0.85fr] gap-3 items-end">
             <div>
               <p className="text-[11px] font-bold uppercase tracking-wider text-[#5b1320] mb-1">Eixos da formação</p>
               <div className="grid grid-cols-2 gap-x-3 text-[11.5px] text-gray-700 leading-5">
