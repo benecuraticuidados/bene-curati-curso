@@ -47,7 +47,6 @@ export default async function VisualizarCertificadoPage() {
   if (!session?.user) redirect("/login")
 
   const userId = (session.user as { id?: string }).id as string
-
   const raw = await prisma.certificate.findFirst({
     where: { userId },
     include: { user: true, course: true },
@@ -64,128 +63,196 @@ export default async function VisualizarCertificadoPage() {
     certificate.course.workloadHours ||
     HORAS_TOTAL
   const horasTeoricas =
-    CONTEUDO_PROGRAMATICO.filter((m) => !m.titulo.startsWith("22.")).reduce(
-      (acc, m) => acc + m.horas,
-      0
-    ) || HORAS_TEORICAS
+    CONTEUDO_PROGRAMATICO.filter((m) => !m.titulo.startsWith("22.")).reduce((acc, m) => acc + m.horas, 0) ||
+    HORAS_TEORICAS
   const horasPraticas = HORAS_PRATICAS
   const validateUrl = `https://app.benecurati.com.br/validar?codigo=${encodeURIComponent(certificate.code)}`
   const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(validateUrl)}`
   const started = certificate.user.createdAt
-
   const colA = CONTEUDO_PROGRAMATICO.slice(0, 8)
   const colB = CONTEUDO_PROGRAMATICO.slice(8, 16)
   const colC = CONTEUDO_PROGRAMATICO.slice(16)
-
-  const boxes = [
-    { label: "Carga horária", value: `${totalHoras} horas`, hint: `${horasTeoricas}h + ${horasPraticas}h prática` },
-    { label: "Modalidade", value: "EAD", hint: "Teórica e prática" },
-    { label: "Início", value: formatDate(started), hint: "" },
-    { label: "Conclusão", value: formatDate(certificate.issuedAt), hint: "" },
-    { label: "CNPJ", value: "60.725.201/0001-88", hint: "" },
-  ]
 
   return (
     <div className="min-h-screen bg-[#3a0f16] py-6 px-3 print:bg-white print:p-0">
       <style>{`
         .stage { width: 297mm; height: 210mm; }
-        .gold { color: #c9a227; }
-        .wine { color: #5b1320; }
-        .frame {
-          position: absolute; inset: 4mm;
-          border: 1.5px solid #c9a227;
-          pointer-events: none;
+        .ribbon {
+          background: #5b1320;
+          color: white;
+          clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 8px 100%, 0 50%);
         }
-        .frame-inner {
-          position: absolute; inset: 6mm;
-          border: 0.6px solid #5b1320;
-          opacity: 0.35;
-          pointer-events: none;
+        .corner-tr {
+          position: absolute; top: 0; right: 0; width: 110mm; height: 78mm;
+          background: radial-gradient(circle at 100% 0, #5b1320 0 58mm, transparent 58mm);
         }
-        .ornament-tr {
-          position: absolute; top: -4mm; right: -6mm;
-          width: 118mm; height: 118mm;
-          background:
-            radial-gradient(circle at 100% 0%, #5b1320 0 72mm, transparent 72.2mm),
-            radial-gradient(circle at 100% 0%, transparent 62mm, #c9a227 62.2mm 68mm, transparent 68.2mm);
+        .corner-tr:after {
+          content: ""; position: absolute; inset: 0;
+          background: radial-gradient(circle at 100% 0, transparent 48mm, #c9a227 48.2mm 54mm, transparent 54.2mm);
         }
-        .ornament-bl {
-          position: absolute; bottom: -18mm; left: -22mm;
-          width: 150mm; height: 88mm;
-          background:
-            radial-gradient(circle at 0% 100%, #5b1320 0 68mm, transparent 68.2mm),
-            radial-gradient(circle at 0% 100%, transparent 58mm, #c9a227 58.2mm 64mm, transparent 64.2mm);
+        .corner-bl {
+          position: absolute; bottom: 0; left: 0; width: 130mm; height: 52mm;
+          background: radial-gradient(circle at 0 100%, #5b1320 0 48mm, transparent 48.2mm);
         }
-        .watermark {
-          position: absolute; right: 22mm; top: 42mm;
-          width: 95mm; height: 95mm; opacity: 0.07;
+        .corner-bl:after {
+          content: ""; position: absolute; inset: 0;
+          background: radial-gradient(circle at 0 100%, transparent 38mm, #c9a227 38.2mm 44mm, transparent 44.2mm);
         }
         @media print {
           @page { size: A4 landscape; margin: 0; }
           html, body { margin: 0 !important; background: white !important; }
           .no-print { display: none !important; }
           .stage {
-            width: 297mm !important;
-            height: 210mm !important;
-            margin: 0 !important;
-            box-shadow: none !important;
-            page-break-after: always;
-            break-after: page;
+            width: 297mm !important; height: 210mm !important;
+            margin: 0 !important; box-shadow: none !important;
+            page-break-after: always; break-after: page;
           }
           .stage-back { page-break-after: auto; }
         }
       `}</style>
 
       <div className="no-print max-w-[297mm] mx-auto mb-4 flex flex-wrap gap-3">
-        <Link href="/certificado" className="btn-outline text-sm bg-white">← Voltar</Link>
+        <Link href="/certificado" className="btn-outline text-sm bg-white">Voltar</Link>
         <PrintButton />
-        <p className="text-xs text-white/80 self-center">
-          Imprimir: A4 • Paisagem • margens nenhuma • frente e verso
-        </p>
+        <p className="text-xs text-white/80 self-center">A4 paisagem • 2 páginas • Salvar PDF na impressão</p>
       </div>
 
       <div className="stage mx-auto relative overflow-hidden bg-white shadow-2xl">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/certificado-frente-modelo.png" alt="" className="absolute inset-0 w-full h-full object-contain" />
-
-        <div className="absolute left-[18%] right-[18%] top-[16.5%] text-center">
-          <p className="text-[28px] leading-none font-black tracking-wide text-[#5b1320] uppercase">
-            Certificado de conclusão
-          </p>
+        <div className="corner-tr" />
+        <div className="corner-bl" />
+        <div className="absolute right-[22mm] top-[58mm] w-[70mm] h-[70mm] opacity-[0.06]">
+          <Image src="/logo-bene-curati-v2.png" alt="" width={260} height={260} className="object-contain" />
         </div>
 
-        <div className="absolute left-[17%] right-[17%] top-[31.2%] h-[6.8%] flex items-center justify-center">
-          <p className="text-white text-[18px] font-black tracking-[0.12em] uppercase">
-            Curso de Cuidador Profissional
-          </p>
-        </div>
+        <div className="relative h-full px-8 pt-5 pb-4 flex flex-col">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-[17mm] h-[17mm] rounded-full border-[3px] border-[#5b1320] overflow-hidden bg-white flex items-center justify-center">
+                <Image src="/logo-bene-curati-v2.png" alt="" width={60} height={60} className="object-contain" />
+              </div>
+              <div className="border-l-[3px] border-[#c9a227] pl-3">
+                <p className="text-[20px] leading-[0.95] font-black text-[#1a1a1a]">BENE CURATI</p>
+                <p className="text-[20px] leading-[0.95] font-black text-[#1a1a1a]">CUIDADOS</p>
+                <p className="text-[8px] tracking-[0.18em] uppercase text-[#5b1320] font-semibold mt-1">
+                  Nossa paixão é cuidar de quem você ama!
+                </p>
+              </div>
+            </div>
+            <div className="text-right pr-10 pt-1">
+              <p className="text-[13px] italic text-[#5b1320] leading-tight">Cuidar</p>
+              <p className="text-[13px] italic text-[#5b1320] leading-tight">e transformar</p>
+              <p className="text-[13px] italic text-[#5b1320] leading-tight">vidas!</p>
+              <div className="ml-auto mt-1 w-9 h-[2px] bg-[#5b1320]" />
+            </div>
+          </div>
 
-        <div className="absolute left-[12%] right-[12%] top-[42.5%] h-[9%] flex items-center justify-center">
-          <p className="text-[30px] leading-none text-[#1a1a1a] text-center px-2" style={{ fontFamily: "Georgia, 'Times New Roman', serif", fontStyle: "italic" }}>
+          <div className="text-center mt-2">
+            <h1 className="text-[34px] leading-none font-black text-[#5b1320] tracking-wide uppercase">
+              Certificado de conclusão
+            </h1>
+            <div className="mx-auto mt-2 w-[175mm] ribbon py-[6px] text-center">
+              <p className="text-[16px] font-black tracking-[0.14em] uppercase">
+                Curso de Cuidador Profissional
+              </p>
+            </div>
+            <p className="text-[12px] text-gray-600 mt-2">
+              Formação em Home Care, Cuidados Domiciliares e Assistência ao Paciente
+            </p>
+          </div>
+
+          <p className="text-center text-[13px] text-gray-600 mt-3">Certificamos que</p>
+          <p
+            className="text-center text-[34px] leading-tight text-[#1a1a1a]"
+            style={{ fontFamily: "Georgia, 'Times New Roman', serif", fontStyle: "italic" }}
+          >
             {certificate.user.name}
           </p>
-        </div>
+          <div className="mx-auto mt-1 h-[1.5px] w-[72%] bg-[#c9a227]" />
+          {certificate.user.cpf ? (
+            <p className="text-center text-[11px] text-gray-500 mt-1">CPF: {certificate.user.cpf}</p>
+          ) : null}
+          <p className="text-center text-[13px] text-gray-700 mt-2 max-w-[230mm] mx-auto leading-snug">
+            concluiu com aproveitamento o Curso de Cuidador Profissional — Formação em Home Care,
+            Cuidados Domiciliares e Assistência ao Paciente, promovido pela Bene Curati Cuidados.
+          </p>
 
-        <div className="absolute left-[9%] top-[58%] w-[13%] h-[6%] flex flex-col justify-center">
-          <p className="text-[12px] font-extrabold text-[#1a1a1a] leading-tight">{totalHoras} horas</p>
-          <p className="text-[7px] text-gray-500">{horasTeoricas}h + {horasPraticas}h</p>
-        </div>
-        <div className="absolute left-[24.5%] top-[58.5%] w-[10%] h-[5%] flex items-center">
-          <p className="text-[13px] font-extrabold text-[#1a1a1a]">EAD</p>
-        </div>
-        <div className="absolute left-[40%] top-[58.5%] w-[11%] h-[5%] flex items-center">
-          <p className="text-[12px] font-extrabold text-[#1a1a1a]">{formatDate(started)}</p>
-        </div>
-        <div className="absolute left-[53.5%] top-[58.5%] w-[11%] h-[5%] flex items-center">
-          <p className="text-[12px] font-extrabold text-[#1a1a1a]">{formatDate(certificate.issuedAt)}</p>
-        </div>
-        <div className="absolute left-[73.5%] top-[56.8%] w-[18%] h-[7.5%] flex flex-col justify-center px-1">
-          <p className="text-[8px] uppercase tracking-wider text-[#5b1320] font-bold">CNPJ</p>
-          <p className="text-[11px] font-extrabold text-[#1a1a1a] leading-tight">60.725.201/0001-88</p>
-        </div>
+          <div className="mt-3 grid grid-cols-5 gap-2 px-1">
+            {[
+              ["Carga horária", `${totalHoras} horas`, `${horasTeoricas}h + ${horasPraticas}h`],
+              ["Modalidade", "EAD", "Teórica e prática"],
+              ["Início", formatDate(started), ""],
+              ["Conclusão", formatDate(certificate.issuedAt), ""],
+              ["CNPJ", "60.725.201/0001-88", ""],
+            ].map(([label, value, hint]) => (
+              <div key={label} className="flex items-center gap-2 border-r last:border-0 border-[#5b1320]/15 pr-2">
+                <span className="w-8 h-8 rounded-full bg-[#5b1320] shrink-0" />
+                <div>
+                  <p className="text-[8px] uppercase tracking-wider text-[#5b1320] font-bold">{label}</p>
+                  <p className="text-[12px] font-extrabold text-[#1a1a1a] leading-tight">{value}</p>
+                  {hint ? <p className="text-[8px] text-gray-500">{hint}</p> : null}
+                </div>
+              </div>
+            ))}
+          </div>
 
-        <div className="absolute left-[8.2%] bottom-[6.4%]">
-          <p className="text-[10px] font-mono font-bold text-white">Código: {certificate.code}</p>
+          <div className="mt-3 grid grid-cols-[1.2fr_0.75fr_0.55fr_0.9fr] gap-3 items-end flex-1">
+            <div>
+              <p className="text-[11px] font-bold uppercase tracking-wider text-[#5b1320] mb-1">Eixos da formação</p>
+              <div className="grid grid-cols-2 text-[11px] text-gray-700 leading-5">
+                <ul>
+                  <li>Home Care e domicílio</li>
+                  <li>Ética e humanização</li>
+                  <li>Sinais vitais e biossegurança</li>
+                  <li>Higiene e mobilização</li>
+                  <li>Enfermagem aplicada</li>
+                </ul>
+                <ul>
+                  <li>Primeiros socorros</li>
+                  <li>Doenças crônicas</li>
+                  <li>Cuidados paliativos</li>
+                  <li>Legislação e excelência</li>
+                  <li>Manejo prático obrigatório</li>
+                </ul>
+              </div>
+            </div>
+            <div className="text-center">
+              <Image src="/assinatura-digital-diretor.jpg" alt="" width={190} height={50} className="object-contain mx-auto" />
+              <div className="border-t border-gray-500 w-36 mx-auto pt-1">
+                <p className="font-bold text-[13px]">Marcelo Rios</p>
+                <p className="text-[10px] text-gray-600">Diretor</p>
+                <p className="text-[9px] text-gray-500">Bene Curati Cuidados</p>
+              </div>
+            </div>
+            <div className="flex justify-center">
+              <div className="w-[26mm] h-[26mm] rounded-full border-[5px] border-[#c9a227] bg-[#5b1320] text-white flex flex-col items-center justify-center text-center px-1">
+                <Image src="/logo-bene-curati-v2.png" alt="" width={26} height={26} className="object-contain rounded-full bg-white" />
+                <p className="text-[6px] font-bold uppercase leading-tight mt-1">Certificado de conclusão</p>
+              </div>
+            </div>
+            <div className="flex justify-end">
+              <div className="flex overflow-hidden rounded-md">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={qrSrc} alt="QR" width={80} height={80} className="bg-white border border-gray-200" />
+                <div className="bg-[#5b1320] text-white w-[36mm] px-2 flex flex-col justify-center">
+                  <p className="text-[8px] uppercase font-semibold">Acesse a plataforma</p>
+                  <p className="text-[11px] font-bold leading-tight">app.benecurati.com.br</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-2 flex items-end justify-between text-[10px]">
+            <div>
+              <p className="font-bold uppercase tracking-wide text-[#5b1320]">Certificado verificável digitalmente</p>
+              <p className="text-gray-800">
+                Código: <span className="font-mono font-semibold">{certificate.code}</span>
+              </p>
+            </div>
+            <div className="text-right text-[#5b1320]">
+              <p className="font-black">BENE CURATI CUIDADOS</p>
+              <p className="text-[8px] uppercase tracking-wide">Nossa paixão é cuidar de quem você ama!</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -203,14 +270,16 @@ export default async function VisualizarCertificadoPage() {
               </div>
             </div>
             <div className="text-right">
-              <p className="text-[10px] uppercase text-gray-400">Verso • Certificado nº</p>
+              <p className="text-[10px] uppercase text-gray-400">Verso • Certificado n</p>
               <p className="font-mono font-semibold text-[#5b1320]">{certificate.code}</p>
               <p className="text-[10px] text-gray-500">{certificate.user.name}</p>
             </div>
           </div>
 
           <h2 className="text-center text-xl font-bold mt-2">CONTEÚDO PROGRAMÁTICO</h2>
-          <p className="text-center text-xs text-gray-500 mb-2">{cargaHorariaTexto()}</p>
+          <p className="text-center text-xs text-gray-500 mb-2">
+            Curso de Cuidador Profissional — {cargaHorariaTexto()}
+          </p>
 
           <div className="grid grid-cols-3 gap-3 flex-1">
             {[colA, colB, colC].map((col, i) => (
@@ -235,21 +304,21 @@ export default async function VisualizarCertificadoPage() {
 
           <div className="mt-2 grid grid-cols-3 gap-3 text-[10px]">
             <div className="border border-[#5b1320]/15 rounded-md p-2">
-              <p className="font-bold text-[#5b1320] uppercase tracking-wide">Como validar</p>
+              <p className="font-bold text-[#5b1320] uppercase">Como validar</p>
               <p className="text-gray-700 mt-1">
-                Leia o QR da frente ou acesse app.benecurati.com.br/validar com o código{" "}
+                QR da frente ou app.benecurati.com.br/validar com o codigo{" "}
                 <span className="font-mono font-semibold">{certificate.code}</span>.
               </p>
             </div>
             <div className="border border-[#5b1320]/15 rounded-md p-2">
-              <p className="font-bold text-[#5b1320] uppercase tracking-wide">Carga e avaliação</p>
+              <p className="font-bold text-[#5b1320] uppercase">Carga e avaliação</p>
               <p className="text-gray-700 mt-1">
-                {totalHoras}h ({horasTeoricas}h teóricas + {horasPraticas}h práticas). Prova 70%.
+                {totalHoras}h ({horasTeoricas}h teóricas + {horasPraticas}h práticas). Modalidade EAD. Prova 70%.
                 Práticas: {AULAS_PRATICAS.join("; ")}.
               </p>
             </div>
             <div className="border border-[#5b1320]/15 rounded-md p-2">
-              <p className="font-bold text-[#5b1320] uppercase tracking-wide">Natureza da formação</p>
+              <p className="font-bold text-[#5b1320] uppercase">Natureza da formação</p>
               <p className="text-gray-700 mt-1">
                 Comprova a formação. Não estabelece vínculo de emprego com a Bene Curati Cuidados.
               </p>
@@ -260,9 +329,8 @@ export default async function VisualizarCertificadoPage() {
             TOTAL: {totalHoras}h ({horasTeoricas}h teóricas + {horasPraticas}h práticas)
           </p>
           <div className="mt-2 border-t border-gray-200 pt-2 text-[9px] text-gray-700 leading-snug uppercase">
-            Embasamento legal: os cursos oferecidos pela Bene Curati Cuidados têm base legal
-            constituída pelo Decreto Presidencial nº 5.154 e a metodologia segue as normas do MEC
-            através da Resolução CNE nº 04/99. CNPJ 60.725.201/0001-88.
+            Embasamento legal: Decreto Presidencial nº 5.154 e Resolução CNE nº 04/99 do MEC.
+            CNPJ 60.725.201/0001-88.
           </div>
           <div className="mt-auto flex items-center justify-between text-[10px] text-gray-600 px-1 py-1">
             <span>app.benecurati.com.br/validar</span>
