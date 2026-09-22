@@ -45,6 +45,10 @@ export default function StudentHeader() {
             <Award className="w-4 h-4" />
             Certificado
           </Link>
+          <Link href="/conta" className="flex items-center gap-1.5 px-3 py-2 text-sm text-gray-700 hover:text-wine rounded-lg hover:bg-wine/5 transition">
+            <User className="w-4 h-4" />
+            Conta
+          </Link>
         </nav>
 
         <div className="flex items-center gap-3">
@@ -94,6 +98,9 @@ export default function StudentHeader() {
           </Link>
           <Link href="/certificado" onClick={() => setMenuOpen(false)} className="block px-3 py-2 text-sm text-gray-700 hover:bg-wine/5 rounded-lg">
             Certificado
+          </Link>
+          <Link href="/conta" onClick={() => setMenuOpen(false)} className="block px-3 py-2 text-sm text-gray-700 hover:bg-wine/5 rounded-lg">
+            Conta
           </Link>
         </div>
       )}

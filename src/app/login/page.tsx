@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 import { Loader2 } from "lucide-react"
+import PasswordField from "@/components/PasswordField"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -97,17 +98,12 @@ export default function LoginPage() {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Senha</label>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input-field"
-              placeholder="••••••••"
-            />
-          </div>
+          <PasswordField
+            label="Senha"
+            value={password}
+            onChange={setPassword}
+            autoComplete="current-password"
+          />
 
           <div className="flex justify-end">
             <Link href="/recuperar-senha" className="text-sm text-wine hover:underline">

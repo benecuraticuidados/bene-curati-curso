@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 import { Loader2 } from "lucide-react"
+import PasswordField from "@/components/PasswordField"
 
 export default function CadastroPage() {
   const router = useRouter()
@@ -117,15 +118,20 @@ export default function CadastroPage() {
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Senha</label>
-            <input name="password" type="password" required value={form.password} onChange={handleChange} className="input-field" />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Confirmar senha</label>
-            <input name="confirmPassword" type="password" required value={form.confirmPassword} onChange={handleChange} className="input-field" />
-          </div>
+          <PasswordField
+            name="password"
+            label="Senha"
+            value={form.password}
+            onChange={(v) => setForm({ ...form, password: v })}
+            autoComplete="new-password"
+          />
+          <PasswordField
+            name="confirmPassword"
+            label="Confirmar senha"
+            value={form.confirmPassword}
+            onChange={(v) => setForm({ ...form, confirmPassword: v })}
+            autoComplete="new-password"
+          />
 
           <button type="submit" disabled={loading} className="btn-primary w-full flex items-center justify-center gap-2">
             {loading && <Loader2 className="w-4 h-4 animate-spin" />}

@@ -39,6 +39,8 @@ export const config = {
     "/avaliacoes/:path*",
     "/certificado",
     "/certificado/:path*",
+    "/conta",
+    "/conta/:path*",
     "/admin",
     "/admin/:path*",
   ],
