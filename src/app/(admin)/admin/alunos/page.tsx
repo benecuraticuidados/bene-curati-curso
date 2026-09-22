@@ -4,6 +4,7 @@ import { formatDate } from "@/lib/utils"
 import ToggleStudentButton from "./ToggleStudentButton"
 import DeleteUserButton from "./DeleteUserButton"
 import CreateStudentForm from "./CreateStudentForm"
+import EditStudentButton from "./EditStudentButton"
 
 export default async function AdminAlunosPage({
   searchParams,
@@ -153,7 +154,14 @@ export default async function AdminAlunosPage({
                     </span>
                   </td>
                   <td className="py-3 px-4 text-right">
-                    <div className="flex justify-end gap-2">
+                    <div className="flex justify-end gap-2 flex-wrap">
+                      <EditStudentButton
+                        userId={s.id}
+                        name={s.name}
+                        email={s.email}
+                        whatsapp={s.whatsapp || ""}
+                        cpf={s.cpf || ""}
+                      />
                       <ToggleStudentButton
                         userId={s.id}
                         isActive={s.isActive}

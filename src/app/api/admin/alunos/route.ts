@@ -74,6 +74,66 @@ export async function POST(req: Request) {
   return NextResponse.json({ ok: true, userId: user.id })
 }
 
+export async function PUT(req: Request) {
+  const session = await requireAdmin()
+  if (!session) {
+    return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+  }
+
+  const body = await req.json().catch(() => ({}))
+  const userId = String(body.userId || "")
+  const name = String(body.name || "").trim()
+  const email = String(body.email || "").trim().toLowerCase()
+  const whatsapp = String(body.whatsapp || "").trim() || null
+  const cpf = String(body.cpf || "").trim() || null
+  const password = String(body.password || "").trim()
+
+  if (!userId || !name || !email) {
+    return NextResponse.json({ error: "Nome e e-mail são obrigatórios." }, { status: 400 })
+  }
+
+  const user = await prisma.user.findUnique({ where: { id: userId } })
+  if (!user || user.role !== "STUDENT") {
+    return NextResponse.json({ error: "Aluno não encontrado." }, { status: 404 })
+  }
+
+  const emailTaken = await prisma.user.findFirst({
+    where: { email, NOT: { id: userId } },
+  })
+  if (emailTaken) {
+    return NextResponse.json({ error: "Já existe usuário com este e-mail." }, { status: 409 })
+  }
+
+  const data: {
+    name: string
+    email: string
+    whatsapp: string | null
+    cpf: string | null
+    passwordHash?: string
+  } = { name, email, whatsapp, cpf }
+
+  if (password) {
+    if (password.length < 6) {
+      return NextResponse.json({ error: "Senha com no mínimo 6 caracteres." }, { status: 400 })
+    }
+    const bcrypt = (await import("bcryptjs")).default
+    data.passwordHash = await bcrypt.hash(password, 12)
+  }
+
+  await prisma.user.update({ where: { id: userId }, data })
+  await prisma.auditLog.create({
+    data: {
+      actorId: (session.user as { id?: string }).id,
+      action: password ? "USER_UPDATED_WITH_PASSWORD" : "USER_UPDATED",
+      entity: "User",
+      entityId: userId,
+      details: `Aluno editado: ${name} (${email})`,
+    },
+  })
+
+  return NextResponse.json({ ok: true })
+}
+
 export async function PATCH(req: Request) {
   const session = await requireAdmin()
   if (!session) {
