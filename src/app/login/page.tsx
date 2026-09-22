@@ -124,33 +124,6 @@ export default function LoginPage() {
           </Link>
         </p>
 
-        <div className="mt-6 space-y-2">
-          <p className="text-center text-xs text-gray-400">Preencher conta de teste:</p>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              className="flex-1 text-xs border border-wine/30 text-wine rounded-lg py-2"
-              onClick={() => {
-                setEmail("aluno@teste.com")
-                setPassword("aluno123")
-                setError("")
-              }}
-            >
-              Aluno demo
-            </button>
-            <button
-              type="button"
-              className="flex-1 text-xs border border-wine/30 text-wine rounded-lg py-2"
-              onClick={() => {
-                setEmail("admin@benecurati.com.br")
-                setPassword("admin123")
-                setError("")
-              }}
-            >
-              Admin demo
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   )
