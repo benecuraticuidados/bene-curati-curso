@@ -1,6 +1,7 @@
 import { PDFDocument, rgb, StandardFonts } from "pdf-lib"
 import fs from "fs/promises"
 import path from "path"
+import QRCode from "qrcode"
 
 export const CERTIFICATE_TEMPLATE_VERSION = "v1"
 
@@ -68,6 +69,28 @@ export async function fillMasterCertificate(params: {
   // Código frente
   cover(front, 696, 562, 92, 14, pageH)
   front.drawText(code, { x: 698, y: pageH - 574, size: 9, font: fontReg, color: rgb(0.12, 0.12, 0.12) })
+
+  // QR do aluno (mesmo lugar da arte; destino individual)
+  const qrUrl = `https://app.benecurati.com.br/validar?codigo=${encodeURIComponent(code)}`
+  const qrPng = await QRCode.toBuffer(qrUrl, {
+    type: "png",
+    margin: 1,
+    width: 280,
+    errorCorrectionLevel: "M",
+    color: { dark: "#1a1a1a", light: "#FFFFFF" },
+  })
+  const qrImg = await pdf.embedPng(qrPng)
+  const qrX = 557
+  const qrSize = 74
+  const qrY = pageH - 428 - qrSize
+  front.drawRectangle({
+    x: qrX - 2,
+    y: qrY - 2,
+    width: qrSize + 4,
+    height: qrSize + 4,
+    color: rgb(1, 1, 1),
+  })
+  front.drawImage(qrImg, { x: qrX, y: qrY, width: qrSize, height: qrSize })
 
   // Verso: código cabeçalho
   cover(back, 628, 42, 176, 22, pageH)
