@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Loader2 } from "lucide-react"
+import PasswordField from "@/components/PasswordField"
 
 export default function CreateAdminForm() {
   const router = useRouter()
@@ -53,10 +54,7 @@ export default function CreateAdminForm() {
         <label className="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
         <input type="email" className="input-field" required value={email} onChange={(e) => setEmail(e.target.value)} />
       </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Senha inicial</label>
-        <input type="password" minLength={6} className="input-field" required value={password} onChange={(e) => setPassword(e.target.value)} />
-      </div>
+      <PasswordField label="Senha inicial" value={password} onChange={setPassword} autoComplete="new-password" />
       <div className="flex items-end">
         <button type="submit" disabled={loading} className="btn-primary flex items-center gap-2">
           {loading && <Loader2 className="w-4 h-4 animate-spin" />}

@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import PasswordField from "@/components/PasswordField"
 
 export default function CreateStudentForm() {
   const router = useRouter()
@@ -47,7 +48,7 @@ export default function CreateStudentForm() {
         <form onSubmit={onSubmit} className="card mt-3 grid sm:grid-cols-2 gap-3">
           <input className="input-field" placeholder="Nome completo" value={name} onChange={(e) => setName(e.target.value)} required />
           <input className="input-field" type="email" placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          <input className="input-field" type="password" placeholder="Senha inicial (mín. 6)" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <PasswordField label="Senha inicial" value={password} onChange={setPassword} autoComplete="new-password" />
           <input className="input-field" placeholder="CPF (opcional)" value={cpf} onChange={(e) => setCpf(e.target.value)} />
           <input className="input-field" placeholder="WhatsApp (opcional)" value={whatsapp} onChange={(e) => setWhatsapp(e.target.value)} />
           <div className="sm:col-span-2 flex items-center gap-3">
