@@ -40,10 +40,10 @@ export default function HomePage() {
             Formação Profissional
           </p>
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-            Curso Profissional de Cuidador
+            Curso de Cuidador Profissional
           </h2>
           <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            Prepare-se para atuar com responsabilidade, conhecimento e humanização nos cuidados com pessoas que precisam de assistência. Formação de 210 horas (204h teóricas + 6h práticas).
+            Prepare-se para atuar com responsabilidade, conhecimento e humanização nos cuidados com pessoas que precisam de assistência. Formação livre de 210 horas (204h teóricas + 6h práticas). O acesso ao curso é gratuito; há apenas a taxa de emissão do certificado ao concluir.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/cadastro" className="btn-primary text-base px-8 py-3">
@@ -64,12 +64,12 @@ export default function HomePage() {
           </h3>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { icon: BookOpen, title: "18 Módulos Completos", desc: "Conteúdo atualizado e prático para o dia a dia do cuidador." },
-              { icon: Award, title: "Certificado Digital", desc: "Certificado de conclusão com código de autenticidade e QR Code." },
+              { icon: BookOpen, title: "22 Módulos Completos", desc: "Conteúdo atualizado e prático para o dia a dia do cuidador, incluindo o manejo obrigatório." },
+              { icon: Award, title: "Certificado Digital", desc: "A formação é gratuita. Ao concluir, emite-se o certificado mediante taxa única, com código de autenticidade e QR Code." },
               { icon: Users, title: "Humanização", desc: "Formação focada em ética, empatia e cuidado centrado na pessoa." },
               { icon: Shield, title: "Segurança e Biossegurança", desc: "Módulos específicos sobre prevenção de infecções e emergências." },
               { icon: CheckCircle, title: "Avaliações Práticas", desc: "Testes por módulo e avaliação final para consolidar o aprendizado." },
-              { icon: Heart, title: "Acesso Flexível", desc: "Estude no seu ritmo, pelo celular, tablet ou computador." },
+              { icon: Heart, title: "Acesso Livre e Flexível", desc: "Estude no seu ritmo, pelo celular, tablet ou computador, sem mensalidade para cursar." },
             ].map((item, i) => (
               <div key={i} className="card hover:shadow-md transition-shadow">
                 <div className="w-12 h-12 rounded-lg bg-wine/10 flex items-center justify-center mb-4">
@@ -135,10 +135,10 @@ export default function HomePage() {
             Pronto para transformar sua carreira?
           </h3>
           <p className="text-wine-light mb-8 opacity-90">
-            Cadastre-se agora e comece sua formação profissional como cuidador.
+            Cadastre-se e inicie a formação. O curso é livre e sem custo; a taxa refere-se somente à emissão do certificado.
           </p>
           <Link href="/cadastro" className="inline-block bg-white text-wine font-semibold py-3 px-8 rounded-lg hover:bg-gray-100 transition">
-            Criar minha conta gratuita
+            Criar minha conta
           </Link>
         </div>
       </section>
