@@ -151,6 +151,12 @@ export default function HomePage() {
             <span className="font-semibold text-white">Bene Curati Cuidados</span>
           </div>
           <p className="text-sm mb-2">Nossa paixão é cuidar de quem você ama!</p>
+          <p className="text-xs mb-2">
+            Contato:{" "}
+            <a href="mailto:contato@benecurati.com.br" className="text-white hover:underline">
+              contato@benecurati.com.br
+            </a>
+          </p>
           <p className="text-xs">© {new Date().getFullYear()} Bene Curati Cuidados. Todos os direitos reservados.</p>
         </div>
       </footer>

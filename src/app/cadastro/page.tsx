@@ -145,6 +145,12 @@ export default function CadastroPage() {
             Entrar
           </Link>
         </p>
+        <p className="text-center text-sm text-gray-500 mt-4">
+          Contato:{" "}
+          <a href="mailto:contato@benecurati.com.br" className="text-wine font-medium hover:underline">
+            contato@benecurati.com.br
+          </a>
+        </p>
       </div>
     </div>
   )
