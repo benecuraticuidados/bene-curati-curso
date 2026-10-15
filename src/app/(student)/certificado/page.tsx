@@ -76,7 +76,7 @@ export default async function CertificadoPage() {
       data: {
         userId,
         courseId: course.id,
-        code: generateCertificateCode(),
+        code: generateCertificateCode(course.id),
         status: "PENDING_PAYMENT",
         paymentAmount: fee,
       },
