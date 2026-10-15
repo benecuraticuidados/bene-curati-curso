@@ -92,13 +92,13 @@ export default function HomePage() {
       </section>
 
       {/* Content */}
-      <section id="conteudo" className="py-16 bg-gray-50">
+      <section id="conteudo". className="py-16 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4">
           <h3 className="text-2xl font-bold text-center text-gray-900 mb-4">
-            Conteúdo Programático
+            Curso de Cuidador Profissional.
           </h3>
           <p className="text-center text-gray-600 mb-10 max-w-xl mx-auto">
-            22 módulos da formação Bene Curati Cuidados — 210 horas (204h teóricas + 6h práticas).
+            22 módulos — 210 horas. Esta lista é só deste curso.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {[
@@ -140,6 +140,38 @@ export default function HomePage() {
       <section className="py-16 bg-wine text-white">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
+            <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4">
+          <h3 className="text-2xl font-bold text-center text-gray-900 mb-2">
+            Primeiros Socorros e Prevenção de Acidentes
+          </h3>
+          <p className="text-center text-gray-600 mb-10 max-w-xl mx-auto">
+            Outro curso, 26 aulas — 40 horas. Público geral. Não faz parte do cuidador.
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {[
+              "Princípios do atendimento", "Desmaio", "Crises convulsivas",
+              "Sangramentos", "Queimaduras", "AVC", "Engasgo", "PCR e suporte básico",
+              "Quedas", "Fraturas", "Intoxicações", "Animais peçonhentos",
+              "Afogamento", "Extremos térmicos", "Saúde mental", "Gestação",
+              "Prevenção", "Como acionar o 192", "Kit de emergência",
+              "Bebês e crianças", "DEA para qualquer pessoa", "Rua e trânsito",
+              "Escola, trabalho e eventos", "Cena com várias pessoas",
+              "Esporte, praia e lazer", "Avaliação final",
+            ].map((title, i) => (
+              <div key={i} className="flex items-start gap-3 bg-gray-50 p-3 rounded-lg border border-gray-100">
+                <span className="flex-shrink-0 w-7 h-7 rounded-full bg-wine text-white text-xs font-bold flex items-center justify-center">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="text-sm text-gray-700">{title}</span>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-8">
+            <Link href="/cadastro?curso=socorros" className="btn-primary text-sm">Quero este curso</Link>
+          </div>
+        </div>
+      </section>
             Pronto para transformar sua carreira?
           </h3>
           <p className="text-wine-light mb-8 opacity-90">
