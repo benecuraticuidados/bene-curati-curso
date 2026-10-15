@@ -151,4 +151,78 @@ async function fillSocorros(params: {
   const s1 = fit(line1, fontBold, 540, 18, 12)
   const s2 = fit(line2, fontBold, 540, 14, 10)
   front.drawText(line1, { x: 421 - fontBold.widthOfTextAtSize(line1, s1) / 2, y: H - 132, size: s1, font: fontBold, color: WINE })
-  front.drawText(line2, { x: 421
+  front.drawText(line2, { x: 421 - fontBold.widthOfTextAtSize(line2, s2) / 2, y: H - 150, size: s2, font: fontBold, color: WINE })
+
+  cover(front, 150, 156, 540, 20, H, WHITE)
+  const subSize = fit(subtitle, fontReg, 520, 10, 8)
+  front.drawText(subtitle, { x: 421 - fontReg.widthOfTextAtSize(subtitle, subSize) / 2, y: H - 170, size: subSize, font: fontReg, color: INK })
+
+  cover(front, 80, 248, 680, 42, H, WHITE)
+  const lineSize = fit(line, fontReg, 640, 9, 7)
+  front.drawText(line, { x: 421 - fontReg.widthOfTextAtSize(line, lineSize) / 2, y: H - 274, size: lineSize, font: fontReg, color: INK })
+
+  cover(front, 68, 308, 110, 40, H, WHITE)
+  front.drawText(hours, { x: 75, y: H - 322, size: 10, font: fontBold, color: INK })
+  front.drawText(hoursSub, { x: 75, y: H - 336, size: 8, font: fontReg, color: INK })
+
+  cover(front, 155, 382, 460, 80, H, WHITE)
+  eixos.forEach((item, i) => {
+    const col = i < 5 ? 0 : 1
+    const row = i % 5
+    front.drawText("•  " + item, { x: 168 + col * 220, y: H - 400 - row * 14, size: 8, font: fontReg, color: INK })
+  })
+
+  cover(back, 625, 32, 180, 18, H, WHITE)
+  const codeW = fontBold.widthOfTextAtSize(code, 12)
+  back.drawText(code, { x: 802 - codeW, y: H - 46, size: 12, font: fontBold, color: WINE })
+  cover(back, 625, 54, 180, 14, H, WHITE)
+  const backNameSize = fit(name, fontReg, 170, 8, 6)
+  const backNameW = fontReg.widthOfTextAtSize(name, backNameSize)
+  back.drawText(name, { x: 802 - backNameW, y: H - 64, size: backNameSize, font: fontReg, color: INK })
+
+  cover(back, 180, 112, 480, 20, H, WHITE)
+  const backTitle = "Primeiros Socorros e Prevenção de Acidentes — 40 horas"
+  const bt = fit(backTitle, fontBold, 460, 10, 8)
+  back.drawText(backTitle, { x: 421 - fontBold.widthOfTextAtSize(backTitle, bt) / 2, y: H - 126, size: bt, font: fontBold, color: WINE })
+
+  cover(back, 40, 168, 760, 230, H, WHITE)
+  aulas.forEach((item, i) => {
+    const col = Math.floor(i / 9)
+    const row = i % 9
+    back.drawText(item, { x: 50 + col * 255, y: H - 188 - row * 20, size: 8, font: fontReg, color: INK })
+  })
+
+  cover(back, 308, 450, 210, 52, H, WHITE)
+  const carga = params.carga || "40h (34h teóricas + 6h práticas). Modalidade EAD. Prova 70%. Público geral."
+  const cargaLines = carga.match(/.{1,36}(\s|$)/g) || [carga]
+  cargaLines.slice(0, 4).forEach((text, i) => {
+    back.drawText(text.trim(), { x: 312, y: H - 464 - i * 12, size: 7, font: fontReg, color: INK })
+  })
+
+  cover(back, 530, 534, 280, 14, H, WHITE)
+  back.drawText(params.total || "TOTAL: 40h (34h teóricas + 6h práticas)", { x: 539, y: H - 546, size: 8, font: fontBold, color: INK })
+
+  cover(back, 84, 474, 110, 12, H, WHITE)
+  back.drawText(code, { x: 86, y: H - 484, size: 7, font: fontReg, color: INK })
+
+  return pdf.save()
+}
+
+export async function fillMasterCertificate(params: {
+  name: string
+  startedAt: Date | string
+  issuedAt: Date | string
+  code: string
+  courseTitle?: string
+  courseSubtitle?: string
+  courseLine?: string
+  hoursMain?: string
+  hoursSub?: string
+  eixos?: string[]
+  aulas?: string[]
+  carga?: string
+  total?: string
+}) {
+  if (params.courseTitle) return fillSocorros(params)
+  return fillCuidador(params)
+}
