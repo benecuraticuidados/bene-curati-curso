@@ -48,13 +48,14 @@ export async function POST(req: Request) {
         isActive: true,
       },
     })
-// Matricular automaticamente no curso principal
-      const course = courseKey === "socorros"
+
+    const course = courseKey === "socorros"
       ? await prisma.course.findUnique({ where: { id: "curso-socorros-01" } })
       : await prisma.course.findFirst({
           where: { isPublished: true },
           orderBy: { createdAt: "asc" },
         })
+
     if (course) {
       await prisma.enrollment.create({
         data: {
@@ -63,6 +64,7 @@ export async function POST(req: Request) {
           status: "ACTIVE",
         },
       })
+    }
 
     await prisma.auditLog.create({
       data: {
