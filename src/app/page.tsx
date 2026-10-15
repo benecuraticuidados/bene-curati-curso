@@ -41,7 +41,7 @@ export default function HomePage() {
             Dois cursos. Uma conta.
           </h2>
           <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            Prepare-se para atuar com responsabilidade, conhecimento e humanização nos cuidados com pessoas que precisam de assistência. Formação livre de 210 horas (204h teóricas + 6h práticas). O acesso ao curso é gratuito; há apenas a taxa de emissão do certificado ao concluir.
+            Crie a conta uma vez. Escolha o curso na hora. Cuidador Profissional ou Primeiros Socorros. O login é o mesmo.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/cadastro" className="btn-primary text-base px-8 py-3">
