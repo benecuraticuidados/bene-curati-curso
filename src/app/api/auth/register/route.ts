@@ -48,8 +48,7 @@ export async function POST(req: Request) {
         isActive: true,
       },
     })
-
-    // Matricular automaticamente no curso principal
+// Matricular automaticamente no curso principal
     const course = await prisma.course.findFirst({
       where: { isPublished: true },
       orderBy: { createdAt: "asc" },
@@ -62,6 +61,8 @@ export async function POST(req: Request) {
           courseId: course.id,
           status: "ACTIVE",
         },
+      })
+    }
       })
     }
 
