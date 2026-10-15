@@ -63,9 +63,6 @@ export async function POST(req: Request) {
           status: "ACTIVE",
         },
       })
-    
-      
-    }
 
     await prisma.auditLog.create({
       data: {
