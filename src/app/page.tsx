@@ -59,7 +59,7 @@ export default function HomePage() {
             <p className="text-gray-600 text-sm mb-4">
               Para o público geral: casa, rua, escola e trabalho. 40 horas (34h teóricas + 6h práticas), 26 aulas e prova de 70%. Não substitui o curso de cuidador. Certificado próprio, código BC-PS, taxa de emissão de R$ 50.
             </p>
-            <Link href="/cadastro" className="btn-outline text-sm">Quero este curso</Link>
+            <Link href="/cadastro?curso=socorros" className="btn-outline text-sm">Quero este curso</Link>
           </div>
         </div>
       </section>
