@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma"
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { name, email, password, whatsapp, city, state } = body
+    const { name, email, password, whatsapp, city, state, course: courseKey } = body
 
     if (!name || !email || !password) {
       return NextResponse.json(
@@ -49,11 +49,12 @@ export async function POST(req: Request) {
       },
     })
 
-    // Matricular automaticamente no curso principal
-    const course = await prisma.course.findFirst({
-      where: { isPublished: true },
-      orderBy: { createdAt: "asc" },
-    })
+    const course = courseKey === "socorros"
+      ? await prisma.course.findUnique({ where: { id: "curso-socorros-01" } })
+      : await prisma.course.findFirst({
+          where: { isPublished: true },
+          orderBy: { createdAt: "asc" },
+        })
 
     if (course) {
       await prisma.enrollment.create({

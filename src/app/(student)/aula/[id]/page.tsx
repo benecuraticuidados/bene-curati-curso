@@ -105,32 +105,35 @@ export default async function AulaPage({
           </h1>
 
           {lesson.videoUrl && (
-            <div className="mb-6">
-              <p className="text-xs font-semibold tracking-widest uppercase text-wine mb-2">
-                {lesson.module.order === 22
-                  ? "Vídeo prático obrigatório"
-                  : "Vídeo de encerramento do módulo"}
-              </p>
-              <div className="aspect-video bg-gray-900 rounded-lg overflow-hidden">
-                <iframe
-                  src={lesson.videoUrl}
-                  title={lesson.title}
-                  className="w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
-              <a
-                href={lesson.videoUrl.replace("/embed/", "/watch?v=")}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-outline text-sm mt-3 inline-flex"
-              >
-                Assistir no YouTube
-              </a>
-            </div>
-          )}
-
+  <div className="mb-6">
+    <p className="text-xs font-semibold tracking-widest uppercase text-wine mb-2">
+      Vídeo da aula
+    </p>
+    <div className="aspect-video bg-gray-900 rounded-lg overflow-hidden">
+      <iframe
+        src={
+          lesson.videoUrl.includes("watch?v=")
+            ? lesson.videoUrl.replace("watch?v=", "embed/").split("&")[0]
+            : lesson.videoUrl.includes("youtu.be/")
+              ? "https://www.youtube.com/embed/" + lesson.videoUrl.split("youtu.be/")[1].split("?")[0]
+              : lesson.videoUrl
+        }
+        title={lesson.title}
+        className="w-full h-full"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+    </div>
+    <a
+      href={lesson.videoUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="btn-outline text-sm mt-3 inline-flex"
+    >
+      Assistir no YouTube
+    </a>
+  </div>
+)}
           {lesson.description && (
             <p className="text-sm text-gray-600 mb-4">{lesson.description}</p>
           )}

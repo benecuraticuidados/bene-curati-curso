@@ -76,7 +76,7 @@ export default function LoginPage() {
             priority
           />
           <h1 className="text-2xl font-bold text-gray-900">Entrar</h1>
-          <p className="text-gray-500 mt-1">Acesse sua conta Bene Curati</p>
+          <p className="text-gray-500 mt-1">Uma conta. Vale para Cuidador e para Primeiros Socorros.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="card space-y-5">

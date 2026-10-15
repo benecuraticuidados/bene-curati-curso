@@ -50,6 +50,7 @@ export default function CadastroPage() {
           city: form.city,
           state: form.state,
           password: form.password,
+          course: new URLSearchParams(window.location.search).get("curso"),
         }),
       })
 
@@ -80,9 +81,13 @@ export default function CadastroPage() {
             className="mx-auto rounded-full mb-3"
           />
           <h1 className="text-2xl font-bold text-gray-900">Criar minha conta</h1>
-          <p className="text-gray-500 mt-1 text-sm">
-            Comece sua formação profissional de cuidador
-          </p>
+        <p className="text-gray-500 mt-1 text-sm">
+  Uma conta para os dois cursos. Você está criando acesso a{" "}
+  {new URLSearchParams(typeof window === "undefined" ? "" : window.location.search).get("curso") === "socorros"
+    ? "Primeiros Socorros e Prevenção de Acidentes"
+    : "Curso de Cuidador Profissional"}
+  .
+</p>
         </div>
 
         <form onSubmit={handleSubmit} className="card space-y-4">
