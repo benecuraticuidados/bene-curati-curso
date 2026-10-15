@@ -20,6 +20,6 @@ export function generateCertificateCode(courseId?: string) {
   const random = Math.floor(Math.random() * 1000000)
     .toString()
     .padStart(6, "0")
-  if (courseId === "curso-socorros-01") return `BC-PS-\( {year}- \){random}`
-  return `BC-\( {year}- \){random}`
+ if (courseId === "curso-socorros-01") return "BC-PS-" + year + "-" + random
+  return "BC-" + year + "-" + random
 }
