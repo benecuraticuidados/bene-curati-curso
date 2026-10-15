@@ -129,6 +129,9 @@ export default function HomePage() {
             ))}
           </div>
         </div>
+        <div className="text-center mt-8">
+            <Link href="/cadastro" className="btn-primary text-sm">Quero este curso</Link>
+          </div>
       </section>
 
       <section className="py-16 bg-white">
