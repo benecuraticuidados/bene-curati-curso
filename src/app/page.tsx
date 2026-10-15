@@ -92,7 +92,7 @@ export default function HomePage() {
       </section>
 
       {/* Content */}
-      <section id="conteudo". className="py-16 bg-gray-50">
+      <section id="conteudo" className="py-16 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4">
           <h3 className="text-2xl font-bold text-center text-gray-900 mb-4">
             Curso de Cuidador Profissional.
