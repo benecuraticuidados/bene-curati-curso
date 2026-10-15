@@ -35,32 +35,34 @@ export default function HomePage() {
       <section className="bg-gradient-to-b from-wine/5 to-white py-16 md:py-24">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <p className="text-wine font-medium text-sm uppercase tracking-wider mb-3">
-            Formação Profissional
-          </p>
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-            Dois cursos. Uma conta.
-          </h2>
-          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            Crie a conta uma vez. Escolha o curso na hora. Cuidador Profissional ou Primeiros Socorros. O login é o mesmo.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/cadastro" className="btn-primary text-base px-8 py-3">
-              Começar agora
-            </Link>
-            <Link href="#conteudo" className="btn-secondary text-base px-8 py-3">
-              Conhecer o curso
-            </Link>
-          </div>
-          <div className="mt-10 max-w-2xl mx-auto text-left card border border-wine/20">
-            <p className="text-wine font-medium text-sm uppercase tracking-wider mb-2">Outro curso, mesma conta</p>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Primeiros Socorros e Prevenção de Acidentes</h3>
-            <p className="text-gray-600 text-sm mb-4">
-              Para o público geral: casa, rua, escola e trabalho. 40 horas (34h teóricas + 6h práticas), 26 aulas e prova de 70%. Não substitui o curso de cuidador. Certificado próprio. A taxa de emissão é a mesma dos dois cursos.
-            </p>
-            <Link href="/cadastro?curso=socorros" className="btn-outline text-sm">Quero este curso</Link>
-          </div>
-        </div>
-      </section>
+            <section className="bg-gradient-to-b from-wine/5 to-white py-16 md:py-24">
+  <div className="max-w-6xl mx-auto px-4">
+    <p className="text-wine font-medium text-sm uppercase tracking-wider mb-3 text-center">
+      Uma conta. Dois cursos.
+    </p>
+    <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-10 leading-tight text-center">
+      Escolha o seu curso
+    </h2>
+    <div className="grid md:grid-cols-2 gap-6">
+      <div className="card border border-wine/20 text-left">
+        <p className="text-wine font-medium text-sm uppercase tracking-wider mb-2">Formação profissional</p>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Curso de Cuidador Profissional</h3>
+        <p className="text-gray-600 text-sm mb-4">
+          22 módulos, 210 horas. Para quem vai cuidar de pessoas. Certificado próprio. A taxa de emissão é a mesma dos dois cursos.
+        </p>
+        <Link href="/cadastro" className="btn-primary text-sm">Quero este curso</Link>
+      </div>
+      <div className="card border border-wine/20 text-left">
+        <p className="text-wine font-medium text-sm uppercase tracking-wider mb-2">Público geral</p>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Primeiros Socorros e Prevenção de Acidentes</h3>
+        <p className="text-gray-600 text-sm mb-4">
+          26 aulas, 40 horas. Casa, rua, escola e trabalho. Não substitui o curso de cuidador. Certificado próprio. A taxa de emissão é a mesma dos dois cursos.
+        </p>
+        <Link href="/cadastro?curso=socorros" className="btn-primary text-sm">Quero este curso</Link>
+      </div>
+    </div>
+  </div>
+</section>
 
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4">
