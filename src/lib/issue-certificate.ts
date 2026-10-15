@@ -13,7 +13,7 @@ export async function markCertificateIssued(params: {
   if (!current) throw new Error("Certificado não encontrado")
   if (current.status === "ISSUED") return current
 
-  const code = current.code || generateCertificateCode()
+  const code = current.code || generateCertificateCode(current.courseId)
 
   const updated = await prisma.certificate.update({
     where: { id: params.certificateId },
