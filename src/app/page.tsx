@@ -138,9 +138,6 @@ export default function HomePage() {
 
       {/* CTA */}
       <section className="py-16 bg-wine text-white">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <h3 className="text-2xl md:text-3xl font-bold mb-4">
-            <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4">
           <h3 className="text-2xl font-bold text-center text-gray-900 mb-2">
             Primeiros Socorros e Prevenção de Acidentes
@@ -172,6 +169,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+            <section className="py-16 bg-wine text-white">
+        <div className="max-w-3xl mx-auto px-4 text-center">
+          <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Pronto para transformar sua carreira?
           </h3>
           <p className="text-wine-light mb-8 opacity-90">
