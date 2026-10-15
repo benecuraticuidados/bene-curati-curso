@@ -22,9 +22,10 @@ export default function HomePage() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/login" className="btn-outline text-sm hidden sm:inline-flex">
-              Entrar
-            </Link>
+            <Link href="/login" className="btn-outline text-sm">
+  Entrar
+</Link>
+            
             <Link href="/cadastro" className="btn-primary text-sm">
               Criar minha conta
             </Link>
