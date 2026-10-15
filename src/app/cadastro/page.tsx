@@ -43,13 +43,15 @@ export default function CadastroPage() {
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+        body: body: JSON.stringify({
           name: form.name,
           email: form.email,
           whatsapp: form.whatsapp,
           city: form.city,
           state: form.state,
           password: form.password,
+          course: new URLSearchParams(window.location.search).get("curso"),
+        }),
         }),
       })
 
