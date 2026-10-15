@@ -38,7 +38,7 @@ export default function HomePage() {
             Formação Profissional
           </p>
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-            Curso de Cuidador Profissional
+            Dois cursos. Uma conta.
           </h2>
           <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8">
             Prepare-se para atuar com responsabilidade, conhecimento e humanização nos cuidados com pessoas que precisam de assistência. Formação livre de 210 horas (204h teóricas + 6h práticas). O acesso ao curso é gratuito; há apenas a taxa de emissão do certificado ao concluir.
