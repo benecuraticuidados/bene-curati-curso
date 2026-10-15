@@ -69,7 +69,7 @@ export default function HomePage() {
           </h3>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { icon: BookOpen, title: "22 Módulos Completos", desc: "Conteúdo atualizado e prático para o dia a dia do cuidador, incluindo o manejo obrigatório." },
+              { icon: BookOpen, title: "Módulos Completos", desc: "Conteúdo atualizado e prático para o dia a dia do cuidador, incluindo o manejo obrigatório." },
               { icon: Award, title: "Certificado Digital", desc: "A formação é gratuita. Ao concluir, emite-se o certificado mediante taxa única, com código de autenticidade e QR Code." },
               { icon: Users, title: "Humanização", desc: "Formação focada em ética, empatia e cuidado centrado na pessoa." },
               { icon: Shield, title: "Segurança e Biossegurança", desc: "Módulos específicos sobre prevenção de infecções e emergências." },
