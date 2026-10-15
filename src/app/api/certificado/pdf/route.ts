@@ -90,7 +90,7 @@ export async function GET() {
     total: socorros ? "TOTAL: 40h (34h teóricas + 6h práticas)" : undefined,
   })
 
-  const filename = `certificado-bene-curati-\( {raw.code}- \){CERTIFICATE_TEMPLATE_VERSION}.pdf`
+  const filename = "certificado-bene-curati-" + raw.code + "-" + CERTIFICATE_TEMPLATE_VERSION + ".pdf"
   return new NextResponse(Buffer.from(bytes), {
     status: 200,
     headers: {
