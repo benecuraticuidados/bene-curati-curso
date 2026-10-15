@@ -26,7 +26,7 @@ export default function HomePage() {
             <Link href="/login" className="btn-outline text-sm hidden sm:inline-flex">
               Entrar
             </Link>
-            <Link href="/cadastro?curso=socorros" className="btn-outline text-sm">Quero este curso</Link>
+            <Link href="/cadastro" className="btn-primary text-sm">
               Criar minha conta
             </Link>
           </div>
