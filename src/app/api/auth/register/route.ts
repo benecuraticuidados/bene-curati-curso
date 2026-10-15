@@ -49,7 +49,6 @@ export async function POST(req: Request) {
       },
     })
 // Matricular automaticamente no curso principal
-    const course = await prisma.course.findFirst({
       const course = courseKey === "socorros"
       ? await prisma.course.findUnique({ where: { id: "curso-socorros-01" } })
       : await prisma.course.findFirst({
