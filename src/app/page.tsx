@@ -55,7 +55,7 @@ export default function HomePage() {
             <p className="text-wine font-medium text-sm uppercase tracking-wider mb-2">Outro curso, mesma conta</p>
             <h3 className="text-xl font-bold text-gray-900 mb-2">Primeiros Socorros e Prevenção de Acidentes</h3>
             <p className="text-gray-600 text-sm mb-4">
-              Para o público geral: casa, rua, escola e trabalho. 40 horas (34h teóricas + 6h práticas), 26 aulas e prova de 70%. Não substitui o curso de cuidador. Certificado próprio, código BC-PS, taxa de emissão de R$ 50.
+              Para o público geral: casa, rua, escola e trabalho. 40 horas (34h teóricas + 6h práticas), 26 aulas e prova de 70%. Não substitui o curso de cuidador. Certificado próprio. A taxa de emissão é a mesma dos dois cursos.
             </p>
             <Link href="/cadastro?curso=socorros" className="btn-outline text-sm">Quero este curso</Link>
           </div>
