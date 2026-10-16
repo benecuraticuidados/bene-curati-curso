@@ -36,7 +36,7 @@ export default function HomePage() {
       <section className="bg-gradient-to-b from-wine/5 to-white py-16 md:py-24">
         <div className="max-w-6xl mx-auto px-4">
           <p className="text-wine font-medium text-sm uppercase tracking-wider mb-3 text-center">
-            Uma conta Dois cursos
+            
           </p>
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-10 leading-tight text-center">
             Escolha o seu curso
