@@ -45,7 +45,7 @@ const SOCORROS_MODULOS = [
    ["18. Acionamento do socorro", "2h"]],
 ]
 
-async function fillCuidador(params: { name: string startedAt: Date | string issuedAt: Date | string code: string }) {
+async function fillCuidador(params: { name: string; startedAt: Date | string; issuedAt: Date | string; code: string }) {
   const templatePath = path.join(process.cwd(), "public", "templates", "certificado-mestre-v1.pdf")
   const bytes = await fs.readFile(templatePath)
   const pdf = await PDFDocument.load(bytes)
@@ -89,7 +89,7 @@ async function fillCuidador(params: { name: string startedAt: Date | string issu
   return pdf.save()
 }
 
-async function fillSocorros(params: { name: string startedAt: Date | string issuedAt: Date | string code: string }) {
+async function fillSocorros(params: { name: string; startedAt: Date | string; issuedAt: Date | string; code: string }) {
   const pdf = await PDFDocument.create()
   const font = await pdf.embedFont(StandardFonts.TimesRomanBold)
   const fontReg = await pdf.embedFont(StandardFonts.Helvetica)
@@ -215,7 +215,7 @@ async function fillSocorros(params: { name: string startedAt: Date | string issu
   return pdf.save()
 }
 
-export async function fillMasterCertificate(params: { name: string startedAt: Date | string issuedAt: Date | string code: string courseTitle?: string courseSubtitle?: string courseLine?: string hoursMain?: string hoursSub?: string eixos?: string[] aulas?: string[] carga?: string total?: string }) {
+export async function fillMasterCertificate(params: { name: string; startedAt: Date | string; issuedAt: Date | string; code: string; courseTitle?: string; courseSubtitle?: string; courseLine?: string; hoursMain?: string; hoursSub?: string; eixos?: string[]; aulas?: string[]; carga?: string; total?: string }) {
   if (params.courseTitle) return fillSocorros(params)
   return fillCuidador(params)
 }
