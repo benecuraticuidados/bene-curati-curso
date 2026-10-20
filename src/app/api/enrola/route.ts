@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
+import bcrypt from "bcryptjs"
 import { prisma } from "@/lib/prisma"
 
 export const dynamic = "force-dynamic"
@@ -18,32 +17,67 @@ async function resolveCourse(courseKey?: string | null) {
 }
 
 export async function POST(req: Request) {
-  const session = await getServerSession(authOptions)
-  if (!session?.user) {
-    return NextResponse.json({ error: "Não autenticado" }, { status: 401 })
-  }
-  const userId = (session.user as { id?: string }).id
-  if (!userId) {
-    return NextResponse.json({ error: "Sessão inválida" }, { status: 401 })
-  }
+  try {
+    const body = await req.json()
+    const { name, email, password, whatsapp, city, state, course: courseKey } = body
 
-  const body = await req.json().catch(() => ({}))
-  const courseKey = body?.course || new URL(req.url).searchParams.get("curso")
-  const course = await resolveCourse(courseKey)
-  if (!course) {
-    return NextResponse.json({ error: "Curso não encontrado" }, { status: 404 })
+    if (!name || !email || !password) {
+      return NextResponse.json({ error: "Nome, e-mail e senha são obrigatórios" }, { status: 400 })
+    }
+    if (String(password).length < 6) {
+      return NextResponse.json({ error: "A senha deve ter pelo menos 6 caracteres" }, { status: 400 })
+    }
+
+    const normalizedEmail = String(email).toLowerCase().trim()
+    const existing = await prisma.user.findUnique({ where: { email: normalizedEmail } })
+
+    if (existing) {
+      return NextResponse.json(
+        {
+          code: "ACCOUNT_EXISTS",
+          error: "Você já tem conta Bene Curati. Entre para se matricular neste curso.",
+        },
+        { status: 409 }
+      )
+    }
+
+    const passwordHash = await bcrypt.hash(String(password), 12)
+    const user = await prisma.user.create({
+      data: {
+        name: String(name).trim(),
+        email: normalizedEmail,
+        passwordHash,
+        whatsapp: whatsapp || null,
+        city: city || null,
+        state: state || null,
+        role: "STUDENT",
+        isActive: true,
+      },
+    })
+
+    const course = await resolveCourse(courseKey)
+    if (course) {
+      await prisma.enrollment.create({
+        data: { userId: user.id, courseId: course.id, status: "ACTIVE" },
+      })
+    }
+
+    await prisma.auditLog.create({
+      data: {
+        actorId: user.id,
+        action: "USER_REGISTERED",
+        entity: "User",
+        entityId: user.id,
+        details: "Novo aluno cadastrado: " + user.email,
+      },
+    })
+
+    return NextResponse.json({
+      success: true,
+      message: "Conta criada com sucesso. Faça login para continuar.",
+    })
+  } catch (error) {
+    console.error("Register error:", error)
+    return NextResponse.json({ error: "Erro interno ao criar conta. Tente novamente." }, { status: 500 })
   }
-
-  const existing = await prisma.enrollment.findUnique({
-    where: { userId_courseId: { userId, courseId: course.id } },
-  })
-  if (existing) {
-    return NextResponse.json({ ok: true, already: true, courseId: course.id })
-  }
-
-  await prisma.enrollment.create({
-    data: { userId, courseId: course.id, status: "ACTIVE" },
-  })
-
-  return NextResponse.json({ ok: true, courseId: course.id })
 }
