@@ -24,7 +24,7 @@ export default async function DashboardPage() {
   const userId = (session.user as any).id as string
 
   // Buscar matrícula + curso
-  const enrollment = await prisma.enrollment.findFirst({
+  const enrollments = await prisma.enrollment.findMany({
     where: { userId, status: { in: ["ACTIVE", "COMPLETED"] } },
     include: {
       course: {
@@ -38,9 +38,10 @@ export default async function DashboardPage() {
         },
       },
     },
+    orderBy: { createdAt: "desc" },
   })
 
-  if (!enrollment) {
+  if (enrollments.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50">
         <StudentHeader />
@@ -51,13 +52,16 @@ export default async function DashboardPage() {
           <p className="text-gray-600 mb-6">
             Você ainda não está matriculado em nenhum curso.
           </p>
-          <p className="text-sm text-gray-500">
-            Entre em contato com a Bene Curati Cuidados para liberar seu acesso.
-          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link href="/cadastro?curso=cuidador" className="btn-primary text-sm">Curso de Cuidador</Link>
+            <Link href="/cadastro?curso=socorros" className="btn-outline text-sm">Primeiros Socorros</Link>
+          </div>
         </main>
       </div>
     )
   }
+
+  const enrollment = enrollments[0]
 
   const course = enrollment.course
   const allLessons = course.modules.flatMap((m) => m.lessons)
@@ -122,9 +126,20 @@ export default async function DashboardPage() {
             Olá, {session.user.name?.split(" ")[0]}!
           </h1>
           <p className="text-gray-500 mt-1">
-            Continue sua formação profissional de cuidador.
+            Sua conta vale para os dois cursos. Cada um tem matrícula, progresso e certificado próprios.
           </p>
         </div>
+
+        {enrollments.length > 1 && (
+          <div className="grid sm:grid-cols-2 gap-3 mb-6">
+            {enrollments.map((e) => (
+              <Link key={e.id} href={"/curso?curso=" + (e.courseId === "curso-socorros-01" ? "socorros" : "cuidador")} className="card border border-wine/20">
+                <p className="text-xs uppercase tracking-wider text-wine font-medium">Matriculado</p>
+                <h3 className="font-semibold text-gray-900 mt-1">{e.course.title}</h3>
+              </Link>
+            ))}
+          </div>
+        )}
 
         {/* Progresso principal */}
         <div className="card mb-6">
@@ -283,4 +298,5 @@ export default async function DashboardPage() {
       </main>
     </div>
   )
-}
+      }
+  
