@@ -6,14 +6,16 @@ import StudentHeader from "@/components/StudentHeader"
 import Link from "next/link"
 import { CheckCircle2, Circle, ChevronRight, PlayCircle } from "lucide-react"
 
-export default async function CursoPage() {
+export default async function CursoPage({ searchParams }: { searchParams?: { curso?: string } }) {
   const session = await getServerSession(authOptions)
   if (!session?.user) redirect("/login")
 
   const userId = (session.user as any).id as string
+  const key = searchParams?.curso
+  const courseId = key === "socorros" ? "curso-socorros-01" : undefined
 
   const enrollment = await prisma.enrollment.findFirst({
-    where: { userId, status: { in: ["ACTIVE", "COMPLETED"] } },
+    where: { userId, status: { in: ["ACTIVE", "COMPLETED"] }, ...(courseId ? { courseId } : {}) },
     include: {
       course: {
         include: {
@@ -134,4 +136,5 @@ export default async function CursoPage() {
       </main>
     </div>
   )
-}
+            }
+                      
