@@ -1,96 +1,102 @@
 "use client"
 
 import { useState } from "react"
+import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 import { Loader2 } from "lucide-react"
 import PasswordField from "@/components/PasswordField"
 
-export default function CadastroPage() {
+export default function LoginPage() {
   const router = useRouter()
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    whatsapp: "",
-    city: "",
-    state: "",
-    password: "",
-    confirmPassword: "",
-  })
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const [course, setCourse] = useState("")
+  const [accountExists, setAccountExists] = useState(false)
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setForm({ ...form, [e.target.name]: e.target.value })
+  if (typeof window !== "undefined" && !course && !email) {
+    const params = new URLSearchParams(window.location.search)
+    const c = params.get("curso") || ""
+    const e = params.get("email") || ""
+    if (c) setCourse(c)
+    if (e) setEmail(e)
+    if (params.get("conta") === "1") setAccountExists(true)
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError("")
-
-    if (form.password !== form.confirmPassword) {
-      setError("As senhas não coincidem.")
-      return
-    }
-    if (form.password.length < 6) {
-      setError("A senha deve ter pelo menos 6 caracteres.")
-      return
-    }
-
     setLoading(true)
+
     try {
-      const res = await fetch("/api/auth/register", {
+      // Login sem CSRF do NextAuth (evita erro no Vercel/celular)
+      const apiRes = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          whatsapp: form.whatsapp,
-          city: form.city,
-          state: form.state,
-          password: form.password,
-          course: new URLSearchParams(window.location.search).get("curso"),
+          email: email.toLowerCase().trim(),
+          password,
+          course,
         }),
       })
+      const data = await apiRes.json()
 
-      const data = await res.json()
-      if (!res.ok) {
-        setError(data.error || "Erro ao criar conta")
+      if (!apiRes.ok) {
+        setError(data.error || "E-mail ou senha incorretos.")
         setLoading(false)
         return
       }
 
-      // Redireciona para login
-      router.push("/login?registered=1")
+      const dest = data.role === "ADMIN" ? "/admin" : "/dashboard"
+      window.location.assign(dest)
+      return
     } catch {
-      setError("Erro de conexão. Tente novamente.")
-      setLoading(false)
+      // Fallback NextAuth (pode falhar com CSRF em domínio diferente)
+      const res = await signIn("credentials", {
+        email: email.toLowerCase().trim(),
+        password,
+        redirect: false,
+      })
+      if (res?.error) {
+        setError(
+          res.error === "CredentialsSignin"
+            ? "E-mail ou senha incorretos."
+            : `Falha no login (${res.error}). Abra https://bene-curati-curso.vercel.app/login`
+        )
+        setLoading(false)
+        return
+      }
+      router.push("/dashboard")
+      router.refresh()
     }
+    setLoading(false)
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4 py-10">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Image
             src="/logo-bene-curati-v2.png"
-            alt="Bene Curati"
-            width={64}
-            height={64}
-            className="mx-auto rounded-full mb-3"
+            alt="Bene Curati Cuidados"
+            width={72}
+            height={72}
+            className="mx-auto object-contain mb-4"
+            priority
           />
-          <h1 className="text-2xl font-bold text-gray-900">Criar minha conta</h1>
-        <p className="text-gray-500 mt-1 text-sm">
-  Uma conta para os dois cursos. Você está criando acesso a{" "}
-  {new URLSearchParams(typeof window === "undefined" ? "" : window.location.search).get("curso") === "socorros"
-    ? "Primeiros Socorros e Prevenção de Acidentes"
-    : "Curso de Cuidador Profissional"}
-  .
-</p>
+          <h1 className="text-2xl font-bold text-gray-900">Entrar</h1>
+          <p className="text-gray-500 mt-1">Uma conta. Vale para Cuidador e para Primeiros Socorros.</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="card space-y-4">
+        <form onSubmit={handleSubmit} className="card space-y-5">
+          {accountExists && (
+            <div className="bg-amber-50 text-amber-800 text-sm p-3 rounded-lg border border-amber-100">
+              Você já tem conta Bene Curati. Entre com a mesma senha para se matricular neste curso.
+            </div>
+          )}
           {error && (
             <div className="bg-red-50 text-red-700 text-sm p-3 rounded-lg border border-red-100">
               {error}
@@ -98,56 +104,40 @@ export default function CadastroPage() {
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nome completo</label>
-            <input name="name" required value={form.name} onChange={handleChange} className="input-field" />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
-            <input name="email" type="email" required value={form.email} onChange={handleChange} className="input-field" />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">WhatsApp</label>
-            <input name="whatsapp" value={form.whatsapp} onChange={handleChange} className="input-field" placeholder="(11) 99999-9999" />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Cidade</label>
-              <input name="city" value={form.city} onChange={handleChange} className="input-field" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Estado</label>
-              <input name="state" value={form.state} onChange={handleChange} className="input-field" placeholder="SP" maxLength={2} />
-            </div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">E-mail</label>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="input-field"
+              placeholder="seu@email.com"
+            />
           </div>
 
           <PasswordField
-            name="password"
             label="Senha"
-            value={form.password}
-            onChange={(v) => setForm({ ...form, password: v })}
-            autoComplete="new-password"
+            value={password}
+            onChange={setPassword}
+            autoComplete="current-password"
           />
-          <PasswordField
-            name="confirmPassword"
-            label="Confirmar senha"
-            value={form.confirmPassword}
-            onChange={(v) => setForm({ ...form, confirmPassword: v })}
-            autoComplete="new-password"
-          />
+
+          <div className="flex justify-end">
+            <Link href="/recuperar-senha" className="text-sm text-wine hover:underline">
+              Esqueci minha senha
+            </Link>
+          </div>
 
           <button type="submit" disabled={loading} className="btn-primary w-full flex items-center justify-center gap-2">
             {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-            Criar conta
+            Entrar
           </button>
         </form>
 
         <p className="text-center text-sm text-gray-500 mt-6">
-          Já tem conta?{" "}
-          <Link href="/login" className="text-wine font-medium hover:underline">
-            Entrar
+          Ainda não tem conta?{" "}
+          <Link href="/cadastro" className="text-wine font-medium hover:underline">
+            Criar minha conta
           </Link>
         </p>
         <p className="text-center text-sm text-gray-500 mt-4">
@@ -156,7 +146,8 @@ export default function CadastroPage() {
             contato@benecurati.com.br
           </a>
         </p>
+
       </div>
     </div>
   )
-}
+          }
