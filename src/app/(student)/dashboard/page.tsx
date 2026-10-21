@@ -38,7 +38,7 @@ export default async function DashboardPage() {
         },
       },
     },
-    orderBy: { createdAt: "desc" },
+    orderBy: { enrolledAt: "desc" },
   })
 
   if (enrollments.length === 0) {
