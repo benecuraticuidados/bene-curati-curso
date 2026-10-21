@@ -73,8 +73,27 @@ export default function LoginPage() {
         setLoading(false)
         return
       }
-            router.push("/dashboard")
-      router.refresh()
+                  if (course) {
+        const enrollRes = await fetch("/api/enroll", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ course }),
+        })
+
+        const enrollData = await enrollRes.json().catch(() => ({}))
+
+        if (!enrollRes.ok) {
+          setError(
+            enrollData.error ||
+              "Login realizado, mas não foi possível concluir a matrícula. Tente novamente."
+          )
+          setLoading(false)
+          return
+        }
+      }
+
+      window.location.assign("/dashboard")
+      return
     }
     setLoading(false)
   }
