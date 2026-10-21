@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
@@ -17,14 +17,18 @@ export default function LoginPage() {
   const [course, setCourse] = useState("")
   const [accountExists, setAccountExists] = useState(false)
 
-  if (typeof window !== "undefined" && !course && !email) {
+    useEffect(() => {
     const params = new URLSearchParams(window.location.search)
-    const c = params.get("curso") || ""
-    const e = params.get("email") || ""
-    if (c) setCourse(c)
-    if (e) setEmail(e)
-    if (params.get("conta") === "1") setAccountExists(true)
-  }
+
+    setCourse(params.get("curso") || "")
+
+    const emailParam = params.get("email") || ""
+    if (emailParam) {
+      setEmail(emailParam)
+    }
+
+    setAccountExists(params.get("conta") === "1")
+  }, [])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
