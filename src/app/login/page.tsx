@@ -159,7 +159,10 @@ export default function LoginPage() {
 
         <p className="text-center text-sm text-gray-500 mt-6">
           Ainda não tem conta?{" "}
-          <Link href="/cadastro" className="text-wine font-medium hover:underline">
+          <Link
+  href={"/cadastro" + (course ? "?curso=" + encodeURIComponent(course) : "")}
+  className="text-wine font-medium hover:underline"
+>
             Criar minha conta
           </Link>
         </p>
