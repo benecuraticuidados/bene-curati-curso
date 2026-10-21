@@ -14,6 +14,17 @@ export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const [course, setCourse] = useState("")
+  const [accountExists, setAccountExists] = useState(false)
+
+  if (typeof window !== "undefined" && !course && !email) {
+    const params = new URLSearchParams(window.location.search)
+    const c = params.get("curso") || ""
+    const e = params.get("email") || ""
+    if (c) setCourse(c)
+    if (e) setEmail(e)
+    if (params.get("conta") === "1") setAccountExists(true)
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -28,6 +39,7 @@ export default function LoginPage() {
         body: JSON.stringify({
           email: email.toLowerCase().trim(),
           password,
+          course,
         }),
       })
       const data = await apiRes.json()
@@ -80,6 +92,11 @@ export default function LoginPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="card space-y-5">
+          {accountExists && (
+            <div className="bg-amber-50 text-amber-800 text-sm p-3 rounded-lg border border-amber-100">
+              Você já tem conta Bene Curati. Entre com a mesma senha para se matricular neste curso.
+            </div>
+          )}
           {error && (
             <div className="bg-red-50 text-red-700 text-sm p-3 rounded-lg border border-red-100">
               {error}
@@ -133,4 +150,5 @@ export default function LoginPage() {
       </div>
     </div>
   )
-}
+      }
+              
