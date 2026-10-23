@@ -13,8 +13,10 @@ type PixData = {
 
 export default function PayCertificateButton({
   amountLabel,
+  courseId,
 }: {
   amountLabel: string
+  courseId: string
 }) {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState("")
@@ -28,11 +30,11 @@ export default function PayCertificateButton({
       const res = await fetch("/api/payments/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ method }),
+        body: JSON.stringify({ method, courseId }),
       })
       const data = await res.json()
       if (data.alreadyIssued) {
-        window.location.assign("/certificado")
+        window.location.assign(courseId === "curso-socorros-01" ? "/certificado?curso=socorros" : "/certificado")
         return
       }
       if (data.method === "pix" && (data.qrCode || data.qrCodeBase64)) {
@@ -71,7 +73,7 @@ export default function PayCertificateButton({
       const res = await fetch(`/api/payments/status?paymentId=${pix.paymentId}`)
       const data = await res.json()
       if (data.status === "PAID" || data.issued) {
-        window.location.assign("/certificado")
+        window.location.assign(courseId === "curso-socorros-01" ? "/certificado?curso=socorros" : "/certificado")
         return
       }
       setMessage(
@@ -156,4 +158,5 @@ export default function PayCertificateButton({
       )}
     </div>
   )
-}
+  }
+      
