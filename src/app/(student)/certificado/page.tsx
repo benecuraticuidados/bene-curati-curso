@@ -108,7 +108,7 @@ export default async function CertificadoPage({ searchParams }: { searchParams?:
               <CreditCard className="w-10 h-10 text-wine/60" />
             </div>
             <p className="text-xs text-gray-500 mt-3">O valor cobre a emissão, armazenamento e validação pública do certificado.</p>
-            <PayCertificateButton amountLabel={feeLabel} />
+            <PayCertificateButton amountLabel={feeLabel} courseId={course.id} />
           </div>
         )}
 
@@ -140,4 +140,4 @@ export default async function CertificadoPage({ searchParams }: { searchParams?:
     </div>
   )
                                                 }
-              
+
