@@ -6,14 +6,17 @@ import StudentHeader from "@/components/StudentHeader"
 import Link from "next/link"
 import { ClipboardList, CheckCircle2, AlertCircle, ArrowRight } from "lucide-react"
 
-export default async function AvaliacoesPage() {
+export default async function AvaliacoesPage({ searchParams }: { searchParams?: { curso?: string } }) {
   const session = await getServerSession(authOptions)
   if (!session?.user) redirect("/login")
 
   const userId = (session.user as any).id as string
+  const socorros = searchParams?.curso === "socorros"
 
   const enrollment = await prisma.enrollment.findFirst({
-    where: { userId, status: { in: ["ACTIVE", "COMPLETED"] } },
+    where: socorros
+      ? { userId, status: { in: ["ACTIVE", "COMPLETED"] }, courseId: "curso-socorros-01" }
+      : { userId, status: { in: ["ACTIVE", "COMPLETED"] }, courseId: { not: "curso-socorros-01" } },
     include: { course: true },
   })
 
@@ -141,4 +144,5 @@ export default async function AvaliacoesPage() {
       </main>
     </div>
   )
-}
+                    }
+                      
