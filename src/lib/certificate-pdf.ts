@@ -52,22 +52,25 @@ export async function fillMasterCertificate(params: {
   const end = fmt(params.issuedAt)
   const code = params.code
 
-  // nome
-  front.drawRectangle({ x: 80, y: pageH - 250, width: 680, height: 40, color: WHITE })
-  let size = 26
-  while (font.widthOfTextAtSize(name, size) > 640 && size > 12) size -= 1
+  const CREAM = rgb(0.996, 0.984, 0.973)
+
+  // nome (matriz: y=356)
+  front.drawRectangle({ x: 90, y: 340, width: 660, height: 46, color: CREAM })
+  let size = 28
+  while (font.widthOfTextAtSize(name, size) > 620 && size > 12) size -= 1
   const w = font.widthOfTextAtSize(name, size)
-  front.drawText(name, { x: 421 - w / 2, y: pageH - 240, size, font, color: INK })
+  front.drawText(name, { x: 421 - w / 2, y: 352, size, font, color: INK })
 
-  // datas
-  front.drawRectangle({ x: 300, y: pageH - 340, width: 90, height: 16, color: WHITE })
-  front.drawRectangle({ x: 450, y: pageH - 340, width: 90, height: 16, color: WHITE })
-  front.drawText(start, { x: 305, y: pageH - 336, size: 11, font: fontBold, color: INK })
-  front.drawText(end, { x: 455, y: pageH - 336, size: 11, font: fontBold, color: INK })
+  // datas (matriz: valor em y=265, x início ~353, conclusão ~499)
+  front.drawRectangle({ x: 345, y: 252, width: 110, height: 22, color: CREAM })
+  front.drawRectangle({ x: 490, y: 252, width: 110, height: 22, color: CREAM })
+  front.drawText(start, { x: 353, y: 258, size: 13, font: fontBold, color: INK })
+  front.drawText(end, { x: 499, y: 258, size: 13, font: fontBold, color: INK })
 
-  // código na frente
-  front.drawRectangle({ x: 560, y: 18, width: 220, height: 14, color: WHITE })
-  front.drawText("Código: " + code, { x: 780 - fontBold.widthOfTextAtSize("Código: " + code, 9), y: 22, size: 9, font: fontBold, color: INK })
+  // código na frente (matriz: canto inferior direito, y~24)
+  front.drawRectangle({ x: 560, y: 14, width: 230, height: 16, color: CREAM })
+  const codeLabel = "Código: " + code
+  front.drawText(codeLabel, { x: 786 - fontBold.widthOfTextAtSize(codeLabel, 10), y: 18, size: 10, font: fontBold, color: INK })
 
   // QR
   const qrPng = await QRCode.toBuffer("https://app.benecurati.com.br/validar?codigo=" + encodeURIComponent(code), {
@@ -82,5 +85,5 @@ export async function fillMasterCertificate(params: {
   back.drawText(name, { x: 800 - fontBold.widthOfTextAtSize(name, 8), y: pageH - 70, size: 8, font: fontBold, color: INK })
 
   return pdf.save()
-      }
+              }
     
