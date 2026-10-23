@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth"
 import { NextResponse } from "next/server"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { recordRequirementsIfComplete } from "@/lib/enrollment-dates"
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions)
@@ -110,6 +111,10 @@ export async function POST(req: Request) {
     },
   })
 
+  if (passed && quiz.courseId) {
+    await recordRequirementsIfComplete(userId, quiz.courseId)
+  }
+
   return NextResponse.json({
     score,
     maxScore,
@@ -118,3 +123,4 @@ export async function POST(req: Request) {
     details,
   })
 }
+  
