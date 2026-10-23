@@ -10,19 +10,27 @@ export default async function VisualizarCertificadoPage({ searchParams }: { sear
   if (!session?.user) redirect("/login")
 
   const userId = (session.user as { id?: string }).id as string
-  const courseId = searchParams?.curso === "socorros" ? "curso-socorros-01" : "curso-cuidador-01"
+  const socorros = searchParams?.curso === "socorros"
 
+  const enrollment = await prisma.enrollment.findFirst({
+    where: socorros
+      ? { userId, courseId: "curso-socorros-01" }
+      : { userId, courseId: { not: "curso-socorros-01" } },
+  })
+  if (!enrollment) redirect("/certificado")
+
+  const courseId = enrollment.courseId
   const raw = await prisma.certificate.findFirst({
-    where: { userId, courseId },
+    where: { userId, courseId, status: "ISSUED" },
     orderBy: { createdAt: "desc" },
   })
-  if (!raw) redirect(courseId === "curso-socorros-01" ? "/certificado?curso=socorros" : "/certificado")
+  if (!raw) redirect(socorros ? "/certificado?curso=socorros" : "/certificado")
 
   const access = await canReleaseCertificate({ userId, certificateId: raw.id })
-  if (!access.ok || raw.status !== "ISSUED") redirect("/certificado")
+  if (!access.ok) redirect("/certificado")
 
-  const pdf = "/api/certificado/pdf?courseId=" + courseId
-  const back = courseId === "curso-socorros-01" ? "/certificado?curso=socorros" : "/certificado"
+  const pdf = "/api/certificado/pdf?courseId=" + encodeURIComponent(courseId)
+  const back = socorros ? "/certificado?curso=socorros" : "/certificado"
 
   return (
     <div className="min-h-screen bg-[#3a0f16] py-6 px-3">
