@@ -38,7 +38,7 @@ export async function fillMasterCertificate(params: {
   courseId?: string
   courseTitle?: string
 }) {
-  const isSocorros = params.courseId === SOCORROS_ID || Boolean(params.courseTitle)
+  const isSocorros = params.courseId === SOCORROS_ID
   const template = isSocorros ? "certificado-matriz-socorros.pdf" : "certificado-matriz-cuidador.pdf"
   const bytes = await loadTemplate(template)
   const pdf = await PDFDocument.load(bytes)
@@ -82,4 +82,5 @@ export async function fillMasterCertificate(params: {
   back.drawText(name, { x: 800 - fontBold.widthOfTextAtSize(name, 8), y: pageH - 70, size: 8, font: fontBold, color: INK })
 
   return pdf.save()
-}
+      }
+    
