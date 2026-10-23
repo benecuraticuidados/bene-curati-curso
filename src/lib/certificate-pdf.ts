@@ -3,10 +3,11 @@ import fs from "fs/promises"
 import path from "path"
 import QRCode from "qrcode"
 
-export const CERTIFICATE_TEMPLATE_VERSION = "v10"
+export const CERTIFICATE_TEMPLATE_VERSION = "v11"
 
 const INK = rgb(38 / 255, 42 / 255, 53 / 255)
-const WHITE = rgb(1, 1, 1)
+const BURG = rgb(91 / 255, 19 / 255, 32 / 255)
+const GREY = rgb(87 / 255, 93 / 255, 107 / 255)
 
 const SOCORROS_ID = "curso-socorros-01"
 
@@ -42,48 +43,48 @@ export async function fillMasterCertificate(params: {
   const template = isSocorros ? "certificado-matriz-socorros.pdf" : "certificado-matriz-cuidador.pdf"
   const bytes = await loadTemplate(template)
   const pdf = await PDFDocument.load(bytes)
-  const font = await pdf.embedFont(StandardFonts.TimesRomanBold)
-  const fontBold = await pdf.embedFont(StandardFonts.HelveticaBold)
+  const nameFont = await pdf.embedFont(StandardFonts.TimesRomanItalic)
+  const bold = await pdf.embedFont(StandardFonts.HelveticaBold)
   const front = pdf.getPage(0)
   const back = pdf.getPage(1)
-  const pageH = front.getHeight()
   const name = params.name.trim().toUpperCase()
   const start = fmt(params.startedAt)
   const end = fmt(params.issuedAt)
   const code = params.code
 
-  const CREAM = rgb(0.996, 0.984, 0.973)
+  // nome — área já vazia na matriz
+  let size = 32
+  while (nameFont.widthOfTextAtSize(name, size) > 620 && size > 14) size -= 1
+  const nameW = nameFont.widthOfTextAtSize(name, size)
+  front.drawText(name, { x: 421 - nameW / 2, y: 348, size, font: nameFont, color: INK })
 
-  // nome (matriz: y=356)
-  front.drawRectangle({ x: 90, y: 340, width: 660, height: 46, color: CREAM })
-  let size = 28
-  while (font.widthOfTextAtSize(name, size) > 620 && size > 12) size -= 1
-  const w = font.widthOfTextAtSize(name, size)
-  front.drawText(name, { x: 421 - w / 2, y: 352, size, font, color: INK })
+  // datas — área já vazia na matriz
+  front.drawText(start, { x: 372, y: 258, size: 12, font: bold, color: INK })
+  front.drawText(end, { x: 518, y: 258, size: 12, font: bold, color: INK })
 
-  // datas (matriz: valor em y=265, x início ~353, conclusão ~499)
-  front.drawRectangle({ x: 345, y: 252, width: 110, height: 22, color: CREAM })
-  front.drawRectangle({ x: 490, y: 252, width: 110, height: 22, color: CREAM })
-  front.drawText(start, { x: 353, y: 258, size: 13, font: fontBold, color: INK })
-  front.drawText(end, { x: 499, y: 258, size: 13, font: fontBold, color: INK })
-
-  // código na frente (matriz: canto inferior direito, y~24)
-  front.drawRectangle({ x: 560, y: 14, width: 230, height: 16, color: CREAM })
+  // código na frente — área já vazia
   const codeLabel = "Código: " + code
-  front.drawText(codeLabel, { x: 786 - fontBold.widthOfTextAtSize(codeLabel, 10), y: 18, size: 10, font: fontBold, color: INK })
-
-  // QR
-  const qrPng = await QRCode.toBuffer("https://app.benecurati.com.br/validar?codigo=" + encodeURIComponent(code), {
-    type: "png", margin: 1, width: 280, errorCorrectionLevel: "M",
-    color: { dark: "#1a1a1a", light: "#FFFFFF" },
+  front.drawText(codeLabel, {
+    x: 786 - bold.widthOfTextAtSize(codeLabel, 10),
+    y: 20,
+    size: 10,
+    font: bold,
+    color: INK,
   })
-  front.drawImage(await pdf.embedPng(qrPng), { x: 565, y: 53, width: 52, height: 52 })
 
-  // verso: código e nome
-  back.drawRectangle({ x: 500, y: pageH - 70, width: 300, height: 36, color: WHITE })
-  back.drawText(code, { x: 800 - fontBold.widthOfTextAtSize(code, 14), y: pageH - 56, size: 14, font: fontBold, color: INK })
-  back.drawText(name, { x: 800 - fontBold.widthOfTextAtSize(name, 8), y: pageH - 70, size: 8, font: fontBold, color: INK })
+  // QR no espaço branco já reservado
+  const qrPng = await QRCode.toBuffer(
+    "https://app.benecurati.com.br/validar?codigo=" + encodeURIComponent(code),
+    { type: "png", margin: 1, width: 280, errorCorrectionLevel: "M", color: { dark: "#1a1a1a", light: "#FFFFFF" } }
+  )
+  front.drawImage(await pdf.embedPng(qrPng), { x: 565, y: 53, width: 58, height: 58 })
+
+  // verso — áreas já vazias
+  const codeW = bold.widthOfTextAtSize(code, 16)
+  back.drawText(code, { x: 802 - codeW, y: 539, size: 16, font: bold, color: BURG })
+  const backNameW = bold.widthOfTextAtSize(name, 9)
+  back.drawText(name, { x: 802 - backNameW, y: 523, size: 9, font: bold, color: GREY })
 
   return pdf.save()
-              }
-    
+                       }
+  
