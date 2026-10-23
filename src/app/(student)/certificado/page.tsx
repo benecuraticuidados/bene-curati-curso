@@ -7,14 +7,15 @@ import Link from "next/link"
 import { Award, CheckCircle2, Lock, CreditCard, Download } from "lucide-react"
 import PayCertificateButton from "./PayCertificateButton"
 
-export default async function CertificadoPage() {
+export default async function CertificadoPage({ searchParams }: { searchParams?: { curso?: string } }) {
   const session = await getServerSession(authOptions)
   if (!session?.user) redirect("/login")
 
   const userId = (session.user as any).id as string
+  const courseId = searchParams?.curso === "socorros" ? "curso-socorros-01" : "curso-cuidador-01"
 
   const enrollment = await prisma.enrollment.findFirst({
-    where: { userId, status: { in: ["ACTIVE", "COMPLETED"] } },
+    where: { userId, status: { in: ["ACTIVE", "COMPLETED"] }, courseId },
     include: {
       course: {
         include: {
@@ -188,7 +189,7 @@ export default async function CertificadoPage() {
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
-                href={`/certificado/visualizar`}
+                href={courseId === "curso-socorros-01" ? "/certificado/visualizar?curso=socorros" : "/certificado/visualizar"}
                 className="btn-primary inline-flex items-center justify-center gap-2"
               >
                 <Download className="w-5 h-5" />
@@ -214,4 +215,5 @@ export default async function CertificadoPage() {
       </main>
     </div>
   )
-}
+                                    }
+            
