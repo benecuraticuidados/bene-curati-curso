@@ -17,8 +17,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Sessão inválida" }, { status: 401 })
   }
 
+  const body = await req.json().catch(() => ({}))
+  const courseId = typeof body.courseId === "string" ? body.courseId : ""
+  if (!courseId) {
+    return NextResponse.json({ error: "Informe o curso" }, { status: 400 })
+  }
+
   const enrollment = await prisma.enrollment.findFirst({
-    where: { userId, status: { in: ["ACTIVE", "COMPLETED"] } },
+    where: { userId, courseId, status: { in: ["ACTIVE", "COMPLETED"] } },
   })
   if (!enrollment) {
     return NextResponse.json({ error: "Matrícula não encontrada" }, { status: 404 })
@@ -266,4 +272,5 @@ export async function POST(req: Request) {
     amount,
     checkoutUrl: pref.init_point || pref.sandbox_init_point,
   })
-}
+        }
+      
