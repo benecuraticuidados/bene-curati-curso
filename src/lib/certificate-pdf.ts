@@ -86,5 +86,5 @@ export async function fillMasterCertificate(params: {
   back.drawText(name, { x: 802 - backNameW, y: 523, size: 9, font: bold, color: GREY })
 
   return pdf.save()
-                       }
-  
+    }
+                       
