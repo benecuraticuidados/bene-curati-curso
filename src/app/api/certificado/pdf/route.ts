@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { canReleaseCertificate } from "@/lib/certificate-guard"
 import { fillMasterCertificate, CERTIFICATE_TEMPLATE_VERSION } from "@/lib/certificate-pdf"
+import { resolveCertificateDates } from "@/lib/enrollment-dates"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
@@ -32,11 +33,16 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Certificado indisponível" }, { status: 403 })
   }
 
+  const dates = await resolveCertificateDates(raw.userId, raw.courseId)
+  if (!dates) {
+    return NextResponse.json({ error: "Requisitos de conclusão não registrados" }, { status: 403 })
+  }
+
   try {
     const bytes = await fillMasterCertificate({
       name: raw.user.name,
-      startedAt: raw.user.createdAt,
-      issuedAt: raw.issuedAt || raw.createdAt,
+      startedAt: dates.startedAt,
+      issuedAt: dates.requirementsCompletedAt,
       code: raw.code,
       courseId: raw.courseId,
     })
@@ -54,4 +60,3 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: message }, { status: 500 })
   }
 }
-  
