@@ -12,10 +12,12 @@ export default async function CertificadoPage({ searchParams }: { searchParams?:
   if (!session?.user) redirect("/login")
 
   const userId = (session.user as any).id as string
-  const courseId = searchParams?.curso === "socorros" ? "curso-socorros-01" : "curso-cuidador-01"
+  const socorros = searchParams?.curso === "socorros"
 
   const enrollment = await prisma.enrollment.findFirst({
-    where: { userId, status: { in: ["ACTIVE", "COMPLETED"] }, courseId },
+    where: socorros
+      ? { userId, status: { in: ["ACTIVE", "COMPLETED"] }, courseId: "curso-socorros-01" }
+      : { userId, status: { in: ["ACTIVE", "COMPLETED"] }, courseId: { not: "curso-socorros-01" } },
     include: {
       course: {
         include: {
@@ -30,6 +32,7 @@ export default async function CertificadoPage({ searchParams }: { searchParams?:
   if (!enrollment) redirect("/dashboard")
 
   const course = enrollment.course
+  const courseId = course.id
   const allLessons = course.modules.flatMap((m) => m.lessons)
   const totalLessons = allLessons.length
 
@@ -47,7 +50,6 @@ export default async function CertificadoPage({ searchParams }: { searchParams?:
 
   const allLessonsDone = progressPercent >= 100
 
-  // Verificar se passou na Prova Final
   const finalQuiz = await prisma.quiz.findFirst({
     where: { courseId: course.id, isFinal: true },
     include: {
@@ -79,87 +81,48 @@ export default async function CertificadoPage({ searchParams }: { searchParams?:
         courseId: course.id,
         code: generateCertificateCode(course.id),
         status: "PENDING_PAYMENT",
-        paymentAmount: fee,
       },
       include: { payments: true },
     })
   }
 
+  const viewHref = socorros
+    ? "/certificado/visualizar?curso=socorros"
+    : "/certificado/visualizar?curso=cuidador"
+
   return (
     <div className="min-h-screen bg-gray-50">
       <StudentHeader />
-
-      <main className="max-w-2xl mx-auto px-4 py-8">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-wine/10 mb-4">
-            <Award className="w-8 h-8 text-wine" />
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Certificado de Conclusão
-          </h1>
-          <p className="text-gray-500 mt-2">
-            {course.title}
-          </p>
+      <main className="max-w-3xl mx-auto px-4 py-8">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">Certificado</h1>
+          <p className="text-sm text-gray-500">{course.title}</p>
         </div>
 
-        {/* Ainda não concluiu aulas ou prova */}
-        {(!allLessonsDone || !finalPassed) && (
+        {!canRequestCertificate && (
           <div className="card text-center">
-            <Lock className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <h2 className="font-semibold text-gray-900 mb-2">
-              Certificado ainda não disponível
-            </h2>
-            <p className="text-sm text-gray-600 mb-4">
-              {!allLessonsDone
-                ? "Você precisa concluir 100% das aulas e ser aprovado na Prova Final."
-                : "Você concluiu as aulas, mas ainda precisa ser aprovado na Prova Final (70%)."}
+            <Lock className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+            <h2 className="font-semibold text-gray-900 mb-2">Certificado ainda bloqueado</h2>
+            <p className="text-sm text-gray-600">
+              Conclua todas as aulas e a avaliação final para liberar.
             </p>
-            <div className="bg-gray-100 rounded-full h-3 mb-2 overflow-hidden">
-              <div
-                className="bg-wine h-full rounded-full"
-                style={{ width: `${progressPercent}%` }}
-              />
-            </div>
-            <p className="text-sm text-gray-500 mb-6">
-              Progresso atual: {progressPercent}% ({completedLessons}/
-              {totalLessons} aulas)
-            </p>
-            <Link href="/curso" className="btn-primary inline-flex">
-              Continuar estudando
-            </Link>
+            <p className="text-sm text-wine mt-2">{progressPercent}% concluído</p>
           </div>
         )}
 
-        {/* Concluiu, mas precisa pagar */}
         {canRequestCertificate && certificate?.status === "PENDING_PAYMENT" && (
           <div className="card">
-            <div className="flex items-start gap-3 mb-6">
-              <CheckCircle2 className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
+            <div className="flex items-center justify-between">
               <div>
-                <h2 className="font-semibold text-gray-900">
-                  Parabéns! Você concluiu o curso
-                </h2>
-                <p className="text-sm text-gray-600 mt-1">
-                  Para emitir seu certificado digital oficial da Bene Curati
-                  Cuidados, é necessário o pagamento da taxa de manutenção.
-                </p>
+                <p className="text-sm text-gray-600">Taxa de manutenção</p>
+                <p className="text-2xl font-bold text-wine">{feeLabel}</p>
               </div>
+              <CreditCard className="w-10 h-10 text-wine/60" />
             </div>
-
-            <div className="bg-wine/5 border border-wine/20 rounded-xl p-5 mb-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Taxa de manutenção</p>
-                  <p className="text-2xl font-bold text-wine">{feeLabel}</p>
-                </div>
-                <CreditCard className="w-10 h-10 text-wine/60" />
-              </div>
-              <p className="text-xs text-gray-500 mt-3">
-                O valor cobre a emissão, armazenamento e validação pública do
-                certificado com código único e QR Code.
-              </p>
-            </div>
-
+            <p className="text-xs text-gray-500 mt-3">
+              O valor cobre a emissão, armazenamento e validação pública do
+              certificado com código único e QR Code.
+            </p>
             <PayCertificateButton amountLabel={feeLabel} />
           </div>
         )}
@@ -173,7 +136,6 @@ export default async function CertificadoPage({ searchParams }: { searchParams?:
           </div>
         )}
 
-        {/* Já emitido */}
         {certificate?.status === "ISSUED" && (
           <div className="card text-center">
             <CheckCircle2 className="w-14 h-14 text-green-600 mx-auto mb-4" />
@@ -186,10 +148,9 @@ export default async function CertificadoPage({ searchParams }: { searchParams?:
             <p className="font-mono font-semibold text-wine text-lg mb-6">
               {certificate.code}
             </p>
-
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
-                href={courseId === "curso-socorros-01" ? "/certificado/visualizar?curso=socorros" : "/certificado/visualizar"}
+                href={viewHref}
                 className="btn-primary inline-flex items-center justify-center gap-2"
               >
                 <Download className="w-5 h-5" />
@@ -203,7 +164,6 @@ export default async function CertificadoPage({ searchParams }: { searchParams?:
                 Validar autenticidade
               </Link>
             </div>
-
             <p className="text-xs text-gray-400 mt-6">
               Emitido em{" "}
               {certificate.issuedAt
@@ -215,5 +175,5 @@ export default async function CertificadoPage({ searchParams }: { searchParams?:
       </main>
     </div>
   )
-                                    }
-            
+    }
+        
