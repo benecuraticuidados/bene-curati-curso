@@ -14,7 +14,7 @@ import {
   TrendingUp,
 } from "lucide-react"
 
-export default async function DashboardPage() {
+export default async function DashboardPage({ searchParams }: { searchParams?: { curso?: string } }) {
   const session = await getServerSession(authOptions)
 
   if (!session?.user) {
@@ -61,9 +61,14 @@ export default async function DashboardPage() {
     )
   }
 
-  const enrollment = enrollments[0]
+  const wantSocorros = searchParams?.curso === "socorros"
+  const enrollment = wantSocorros
+    ? enrollments.find((e) => e.courseId === "curso-socorros-01") || enrollments[0]
+    : enrollments.find((e) => e.courseId !== "curso-socorros-01") || enrollments[0]
 
   const course = enrollment.course
+  const socorros = course.id === "curso-socorros-01"
+  const q = socorros ? "?curso=socorros" : ""
   const allLessons = course.modules.flatMap((m) => m.lessons)
   const totalLessons = allLessons.length
   const totalModules = course.modules.length
@@ -133,7 +138,7 @@ export default async function DashboardPage() {
         {enrollments.length > 1 && (
           <div className="grid sm:grid-cols-2 gap-3 mb-6">
             {enrollments.map((e) => (
-              <Link key={e.id} href={"/curso?curso=" + (e.courseId === "curso-socorros-01" ? "socorros" : "cuidador")} className="card border border-wine/20">
+              <Link key={e.id} href={"/dashboard?curso=" + (e.courseId === "curso-socorros-01" ? "socorros" : "cuidador")} className="card border border-wine/20">
                 <p className="text-xs uppercase tracking-wider text-wine font-medium">Matriculado</p>
                 <h3 className="font-semibold text-gray-900 mt-1">{e.course.title}</h3>
               </Link>
@@ -208,7 +213,7 @@ export default async function DashboardPage() {
         {/* Cards de atalho */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <Link
-            href="/curso"
+            href={"/curso" + q}
             className="card hover:shadow-md transition group"
           >
             <div className="w-11 h-11 rounded-lg bg-wine/10 flex items-center justify-center mb-3 group-hover:bg-wine/20 transition">
@@ -222,7 +227,7 @@ export default async function DashboardPage() {
           </Link>
 
           <Link
-            href="/curso"
+            href={"/curso" + q}
             className="card hover:shadow-md transition group"
           >
             <div className="w-11 h-11 rounded-lg bg-blue-50 flex items-center justify-center mb-3">
@@ -235,7 +240,7 @@ export default async function DashboardPage() {
           </Link>
 
           <Link
-            href="/avaliacoes"
+            href={"/avaliacoes" + q}
             className="card hover:shadow-md transition group"
           >
             <div className="w-11 h-11 rounded-lg bg-amber-50 flex items-center justify-center mb-3">
@@ -248,7 +253,7 @@ export default async function DashboardPage() {
           </Link>
 
           <Link
-            href="/certificado"
+            href={"/certificado" + q}
             className="card hover:shadow-md transition group"
           >
             <div className="w-11 h-11 rounded-lg bg-green-50 flex items-center justify-center mb-3">
@@ -277,7 +282,7 @@ export default async function DashboardPage() {
           </p>
           <div className="flex flex-wrap gap-4 text-sm text-gray-500 mb-4">
             <span>
-              Carga horária: {course.workloadHours || 210}h (204h teóricas + 6h práticas)
+              Carga horária: {socorros ? "40h" : `${course.workloadHours || 210}h (204h teóricas + 6h práticas)`}
             </span>
             <span>•</span>
             <span>{totalModules} módulos</span>
@@ -286,17 +291,20 @@ export default async function DashboardPage() {
             <span>•</span>
             <span>Nota mínima: {course.minScore * 10}%</span>
           </div>
-          <a
-            href="/apostila-oficial-bene-curati.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-wine hover:underline font-medium"
-          >
-            📄 Baixar Apostila Oficial (PDF 210h)
-          </a>
+          {!socorros && (
+            <a
+              href="/apostila-oficial-bene-curati.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-wine hover:underline font-medium"
+            >
+              📄 Baixar Apostila Oficial (PDF 210h)
+            </a>
+          )}
         </div>
       </main>
     </div>
   )
       }
-  
+
+      
