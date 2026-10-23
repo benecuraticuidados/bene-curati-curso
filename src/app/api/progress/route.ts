@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth"
 import { NextResponse } from "next/server"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { recordCourseStart, recordRequirementsIfComplete } from "@/lib/enrollment-dates"
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions)
@@ -56,6 +57,11 @@ export async function POST(req: Request) {
       lastAccess: new Date(),
     },
   })
+
+  if (completed) {
+    await recordCourseStart(userId, lesson.module.courseId)
+    await recordRequirementsIfComplete(userId, lesson.module.courseId)
+  }
 
   return NextResponse.json({ success: true, progress })
 }
