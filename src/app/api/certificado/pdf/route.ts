@@ -21,33 +21,37 @@ export async function GET(request: Request) {
   }
 
   const raw = await prisma.certificate.findFirst({
-    where: { userId, courseId },
+    where: { userId, courseId, status: "ISSUED" },
     include: { user: true, course: true },
     orderBy: { createdAt: "desc" },
   })
   if (!raw) return NextResponse.json({ error: "Certificado não encontrado" }, { status: 404 })
 
   const access = await canReleaseCertificate({ userId, certificateId: raw.id })
-  if (!access.ok || raw.status !== "ISSUED") {
+  if (!access.ok) {
     return NextResponse.json({ error: "Certificado indisponível" }, { status: 403 })
   }
 
-  const bytes = await fillMasterCertificate({
-    name: raw.user.name,
-    startedAt: raw.user.createdAt,
-    issuedAt: raw.issuedAt || raw.createdAt,
-    code: raw.code,
-    courseId: raw.courseId,
-  })
-
-  const filename = "certificado-bene-curati-" + raw.code + "-" + CERTIFICATE_TEMPLATE_VERSION + ".pdf"
-  return new NextResponse(Buffer.from(bytes), {
-    status: 200,
-    headers: {
-      "Content-Type": "application/pdf",
-      "Content-Disposition": `inline; filename="${filename}"`,
-      "Cache-Control": "private, no-store",
-    },
-  })
+  try {
+    const bytes = await fillMasterCertificate({
+      name: raw.user.name,
+      startedAt: raw.user.createdAt,
+      issuedAt: raw.issuedAt || raw.createdAt,
+      code: raw.code,
+      courseId: raw.courseId,
+    })
+    const filename = "certificado-bene-curati-" + raw.code + "-" + CERTIFICATE_TEMPLATE_VERSION + ".pdf"
+    return new NextResponse(Buffer.from(bytes), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `inline; filename="${filename}"`,
+        "Cache-Control": "private, no-store",
+      },
+    })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Falha ao gerar PDF"
+    return NextResponse.json({ error: message }, { status: 500 })
+  }
 }
   
