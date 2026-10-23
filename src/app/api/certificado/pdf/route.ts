@@ -10,57 +10,18 @@ export const dynamic = "force-dynamic"
 
 const SOCORROS = "curso-socorros-01"
 
-const SOCORROS_EIXOS = [
-  "Princípios e desmaio",
-  "Convulsão e sangramento",
-  "Queimadura e AVC",
-  "Engasgo e PCR",
-  "Quedas e fraturas",
-  "Intoxicação e peçonhentos",
-  "Afogamento e calor",
-  "Prevenção e 192",
-  "Crianças e DEA",
-  "Rua, escola e lazer",
-]
-
-const SOCORROS_AULAS = [
-  "01. Princípios do atendimento",
-  "02. Desmaio",
-  "03. Crises convulsivas",
-  "04. Sangramentos",
-  "05. Queimaduras",
-  "06. AVC",
-  "07. Engasgo",
-  "08. PCR e suporte básico",
-  "09. Quedas",
-  "10. Fraturas",
-  "11. Intoxicações",
-  "12. Animais peçonhentos",
-  "13. Afogamento",
-  "14. Extremos térmicos",
-  "15. Saúde mental",
-  "16. Gestação",
-  "17. Prevenção",
-  "18. Como acionar o 192",
-  "19. Kit de emergência",
-  "20. Bebês e crianças",
-  "21. DEA para qualquer pessoa",
-  "22. Rua e trânsito",
-  "23. Escola, trabalho e eventos",
-  "24. Cena com várias pessoas",
-  "25. Esporte, praia e lazer",
-  "26. Avaliação final",
-]
-
-export async function GET() {
+export async function GET(request: Request) {
   const session = await getServerSession(authOptions)
   if (!session?.user) {
     return NextResponse.json({ error: "Não autenticado" }, { status: 401 })
   }
 
   const userId = (session.user as { id?: string }).id as string
+  const url = new URL(request.url)
+  const courseId = url.searchParams.get("courseId") || undefined
+
   const raw = await prisma.certificate.findFirst({
-    where: { userId },
+    where: { userId, ...(courseId ? { courseId } : {}) },
     include: { user: true, course: true },
     orderBy: { createdAt: "desc" },
   })
@@ -77,17 +38,8 @@ export async function GET() {
     startedAt: raw.user.createdAt,
     issuedAt: raw.issuedAt || raw.createdAt,
     code: raw.code,
+    courseId: raw.courseId,
     courseTitle: socorros ? "PRIMEIROS SOCORROS E PREVENÇÃO DE ACIDENTES" : undefined,
-    courseSubtitle: socorros ? "Formação para o público geral: casa, rua, escola e trabalho" : undefined,
-    courseLine: socorros
-      ? "concluiu com aproveitamento o Curso de Primeiros Socorros e Prevenção de Acidentes, promovido pela Bene Curati Cuidados."
-      : undefined,
-    hoursMain: socorros ? "40 horas" : undefined,
-    hoursSub: socorros ? "34h + 6h" : undefined,
-    eixos: socorros ? SOCORROS_EIXOS : undefined,
-    aulas: socorros ? SOCORROS_AULAS : undefined,
-    carga: socorros ? "40h (34h teóricas + 6h práticas). Modalidade EAD. Prova 70%. Público geral." : undefined,
-    total: socorros ? "TOTAL: 40h (34h teóricas + 6h práticas)" : undefined,
   })
 
   const filename = "certificado-bene-curati-" + raw.code + "-" + CERTIFICATE_TEMPLATE_VERSION + ".pdf"
