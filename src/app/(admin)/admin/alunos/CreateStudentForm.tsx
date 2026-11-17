@@ -24,7 +24,7 @@ const [courseId, setCourseId] = useState("cuidador")
     const res = await fetch("/api/admin/alunos", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password, cpf, whatsapp }),
+      body: JSON.stringify({ name, email, password, cpf, whatsapp, courseId }),
     })
     const data = await res.json()
     setLoading(false)
