@@ -42,12 +42,13 @@ export async function POST(req: Request) {
   const bcrypt = (await import("bcryptjs")).default
   const passwordHash = await bcrypt.hash(password, 12)
 
-  const wantSocorros = body.courseId === "socorros"
+const wantSocorros = body.courseId === "socorros"
 const course = wantSocorros
   ? await prisma.course.findFirst({ where: { id: "curso-socorros-01" } })
   : await prisma.course.findFirst({
       where: { id: { not: "curso-socorros-01" } },
       orderBy: { createdAt: "asc" },
+    })
     })
   const user = await prisma.user.create({
     data: {
