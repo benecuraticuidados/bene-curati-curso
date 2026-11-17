@@ -14,6 +14,8 @@ export default function CreateStudentForm() {
   const [password, setPassword] = useState("")
   const [cpf, setCpf] = useState("")
   const [whatsapp, setWhatsapp] = useState("")
+const [courseId, setCourseId] = useState("cuidador")
+ 
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
