@@ -53,6 +53,10 @@ const [courseId, setCourseId] = useState("cuidador")
           <PasswordField label="Senha inicial" value={password} onChange={setPassword} autoComplete="new-password" />
           <input className="input-field" placeholder="CPF (opcional)" value={cpf} onChange={(e) => setCpf(e.target.value)} />
           <input className="input-field" placeholder="WhatsApp (opcional)" value={whatsapp} onChange={(e) => setWhatsapp(e.target.value)} />
+<select className="input-field" value={courseId} onChange={(e) => setCourseId(e.target.value)}>
+  <option value="cuidador">Curso de Cuidador</option>
+  <option value="socorros">Primeiros Socorros</option>
+</select>
           <div className="sm:col-span-2 flex items-center gap-3">
             <button type="submit" className="btn-primary text-sm" disabled={loading}>
               {loading ? "Salvando..." : "Salvar aluno"}
