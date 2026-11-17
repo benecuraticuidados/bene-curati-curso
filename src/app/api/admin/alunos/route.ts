@@ -49,7 +49,6 @@ const course = wantSocorros
       where: { id: { not: "curso-socorros-01" } },
       orderBy: { createdAt: "asc" },
     })
-    })
   const user = await prisma.user.create({
     data: {
       name,
