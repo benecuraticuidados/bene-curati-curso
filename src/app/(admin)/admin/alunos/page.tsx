@@ -1,21 +1,29 @@
 import { prisma } from "@/lib/prisma"
-import Link from "next/link"
 import { formatDate } from "@/lib/utils"
 import ToggleStudentButton from "./ToggleStudentButton"
 import DeleteUserButton from "./DeleteUserButton"
 import CreateStudentForm from "./CreateStudentForm"
 import EditStudentButton from "./EditStudentButton"
+import Link from "next/link"
+
+const SOCORROS_ID = "curso-socorros-01"
 
 export default async function AdminAlunosPage({
   searchParams,
 }: {
-  searchParams: { q?: string }
+  searchParams?: { q?: string; curso?: string }
 }) {
-  const q = searchParams.q?.trim() || ""
+  const q = searchParams?.q?.trim() || ""
+  const isSocorros = searchParams?.curso === "socorros"
+  const courseWhere = isSocorros
+    ? { courseId: SOCORROS_ID }
+    : { courseId: { not: SOCORROS_ID } }
+  const base = isSocorros ? "curso=socorros" : ""
 
   const students = await prisma.user.findMany({
     where: {
       role: "STUDENT",
+      enrollments: { some: courseWhere },
       ...(q
         ? {
             OR: [
@@ -29,11 +37,11 @@ export default async function AdminAlunosPage({
     orderBy: { createdAt: "desc" },
     include: {
       enrollments: {
+        where: courseWhere,
         include: { course: { select: { title: true } } },
-        take: 1,
       },
       certificates: {
-        where: { status: "ISSUED" },
+        where: { status: "ISSUED", ...courseWhere },
         take: 1,
       },
       progress: true,
@@ -43,7 +51,6 @@ export default async function AdminAlunosPage({
     },
   })
 
-  // Total de aulas para calcular progresso
   const totalLessons = await prisma.lesson.count()
 
   return (
@@ -52,10 +59,33 @@ export default async function AdminAlunosPage({
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Alunos</h1>
           <p className="text-gray-500 text-sm mt-1">
-            {students.length} aluno(s) encontrado(s)
+            {students.length} aluno(s) em {isSocorros ? "Primeiros Socorros" : "Cuidador"}
           </p>
+          <div className="mt-3 flex gap-2">
+            <Link
+              href="/admin/alunos"
+              className={`text-sm px-3 py-1.5 rounded-full border ${
+                !isSocorros
+                  ? "bg-wine text-white border-wine"
+                  : "bg-white text-gray-700 border-gray-200"
+              }`}
+            >
+              Cuidador
+            </Link>
+            <Link
+              href="/admin/alunos?curso=socorros"
+              className={`text-sm px-3 py-1.5 rounded-full border ${
+                isSocorros
+                  ? "bg-wine text-white border-wine"
+                  : "bg-white text-gray-700 border-gray-200"
+              }`}
+            >
+              Primeiros Socorros
+            </Link>
+          </div>
         </div>
         <form className="flex gap-2">
+          <input type="hidden" name="curso" value={isSocorros ? "socorros" : ""} />
           <input
             type="search"
             name="q"
@@ -97,9 +127,7 @@ export default async function AdminAlunosPage({
           </thead>
           <tbody className="divide-y divide-gray-50">
             {students.map((s) => {
-              const completedLessons = s.progress.filter(
-                (p) => p.completed
-              ).length
+              const completedLessons = s.progress.filter((p) => p.completed).length
               const pct =
                 totalLessons > 0
                   ? Math.round((completedLessons / totalLessons) * 100)
@@ -111,9 +139,7 @@ export default async function AdminAlunosPage({
                   <td className="py-3 px-4">
                     <p className="font-medium text-gray-900">{s.name}</p>
                     <p className="text-xs text-gray-500">{s.email}</p>
-                    {s.cpf && (
-                      <p className="text-xs text-gray-400">{s.cpf}</p>
-                    )}
+                    {s.cpf && <p className="text-xs text-gray-400">{s.cpf}</p>}
                   </td>
                   <td className="py-3 px-4 hidden md:table-cell text-gray-600">
                     {s.whatsapp || "—"}
@@ -144,44 +170,4 @@ export default async function AdminAlunosPage({
                   </td>
                   <td className="py-3 px-4">
                     <span
-                      className={`text-xs px-2 py-0.5 rounded-full ${
-                        s.isActive
-                          ? "bg-green-50 text-green-700"
-                          : "bg-red-50 text-red-600"
-                      }`}
-                    >
-                      {s.isActive ? "Ativo" : "Bloqueado"}
-                    </span>
-                  </td>
-                  <td className="py-3 px-4 text-right">
-                    <div className="flex justify-end gap-2 flex-wrap">
-                      <EditStudentButton
-                        userId={s.id}
-                        name={s.name}
-                        email={s.email}
-                        whatsapp={s.whatsapp || ""}
-                        cpf={s.cpf || ""}
-                      />
-                      <ToggleStudentButton
-                        userId={s.id}
-                        isActive={s.isActive}
-                        name={s.name}
-                      />
-                      <DeleteUserButton userId={s.id} name={s.name} />
-                    </div>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-
-        {students.length === 0 && (
-          <p className="text-center text-gray-500 py-10">
-            Nenhum aluno encontrado.
-          </p>
-        )}
-      </div>
-    </div>
-  )
-}
+                      className={`text-xs px-2 py-0
