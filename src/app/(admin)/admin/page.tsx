@@ -42,9 +42,7 @@ export default async function AdminDashboardPage({
     prisma.certificate.count({
       where: { status: "PENDING_PAYMENT", ...courseWhere },
     }),
-    prisma.lesson.count({
-      where: { module: { courseId: courseWhere.courseId } },
-    }),
+    prisma.lesson.count(),
     prisma.user.findMany({
       where: { role: "STUDENT", enrollments: { some: courseWhere } },
       orderBy: { createdAt: "desc" },
@@ -65,12 +63,7 @@ export default async function AdminDashboardPage({
         user: { select: { name: true, email: true } },
       },
     }),
-    prisma.quizAttempt.count({
-      where: {
-        passed: true,
-        quiz: { lesson: { module: { courseId: courseWhere.courseId } } },
-      },
-    }),
+    prisma.quizAttempt.count({ where: { passed: true } }),
   ])
 
   const base = isSocorros ? "?curso=socorros" : ""
