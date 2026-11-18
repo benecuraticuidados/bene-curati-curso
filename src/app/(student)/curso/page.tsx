@@ -6,12 +6,18 @@ import StudentHeader from "@/components/StudentHeader"
 import Link from "next/link"
 import { CheckCircle2, Circle, ChevronRight } from "lucide-react"
 
-export default async function CursoPage({ searchParams }: { searchParams?: { curso?: string } }) {
+export default async function CursoPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ curso?: string }> | { curso?: string }
+}) {
   const session = await getServerSession(authOptions)
   if (!session?.user) redirect("/login")
 
+  const params = searchParams instanceof Promise ? await searchParams : searchParams
+  const key = params?.curso
   const userId = (session.user as any).id as string
-  const key = searchParams?.curso
+
   const enrollment = await prisma.enrollment.findFirst({
     where: {
       userId,
@@ -23,112 +29,64 @@ export default async function CursoPage({ searchParams }: { searchParams?: { cur
         include: {
           modules: {
             orderBy: { order: "asc" },
-            include: {
-              lessons: { orderBy: { order: "asc" } },
-            },
+            include: { lessons: { orderBy: { order: "asc" } } },
           },
         },
       },
     },
   })
 
-  if (!enrollment) redirect("/dashboard")
+  if (!enrollment) redirect("/dashboard?curso=cuidador")
 
   const course = enrollment.course
-  const allLessonIds = course.modules.flatMap((m) => m.lessons.map((l) => l.id))
   const progressList = await prisma.progress.findMany({
-    where: { userId, lessonId: { in: allLessonIds } },
+    where: { userId, lessonId: { in: course.modules.flatMap((m) => m.lessons.map((l) => l.id)) } },
   })
-  const isLessonCompleted = (lessonId: string) =>
-    progressList.some((p) => p.lessonId === lessonId && p.completed)
+  const done = (id: string) => progressList.some((p) => p.lessonId === id && p.completed)
 
   return (
     <div className="min-h-screen bg-gray-50">
       <StudentHeader />
       <main className="max-w-4xl mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">{course.title}</h1>
-          <p className="text-gray-500 mt-1">{course.subtitle}</p>
-        </div>
+        <h1 className="text-2xl font-bold text-gray-900">{course.title}</h1>
+        <p className="text-gray-500 mt-1 mb-6">{course.subtitle}</p>
 
         <div className="space-y-4">
           {course.modules.map((mod) => {
-            const modLessons = mod.lessons
-            const completedInMod = modLessons.filter((l) => isLessonCompleted(l.id)).length
-            const allDone = modLessons.length > 0 && completedInMod === modLessons.length
-            const single = modLessons.length === 1 ? modLessons[0] : null
-            const nextLesson = modLessons.find((l) => !isLessonCompleted(l.id)) || modLessons[0]
+            const lessons = mod.lessons
+            const completed = lessons.filter((l) => done(l.id)).length
+            const allDone = lessons.length > 0 && completed === lessons.length
+            const target = lessons.find((l) => !done(l.id)) || lessons[0]
 
             return (
-              <div key={mod.id} className="card overflow-hidden">
+              <div key={mod.id} className="card">
                 <div className="flex items-start gap-3">
-                  <div
-                    className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                      allDone ? "bg-green-100 text-green-700" : "bg-wine/10 text-wine"
-                    }`}
-                  >
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${allDone ? "bg-green-100 text-green-700" : "bg-wine/10 text-wine"}`}>
                     {allDone ? <CheckCircle2 className="w-5 h-5" /> : String(mod.order).padStart(2, "0")}
                   </div>
-                  <div className="flex-1 min-w-0">
-                    {nextLesson ? (
-                      <Link href={`/aula/${nextLesson.id}`} className="group block">
-                        <h2 className="font-semibold text-gray-900 text-lg group-hover:text-wine">{mod.title}</h2>
+                  <div className="flex-1">
+                    {target ? (
+                      <Link href={`/aula/${target.id}`} className="font-semibold text-lg text-gray-900 hover:text-wine">
+                        {mod.title}
                       </Link>
                     ) : (
-                      <h2 className="font-semibold text-gray-900 text-lg">{mod.title}</h2>
+                      <h2 className="font-semibold text-lg">{mod.title}</h2>
                     )}
-                    <p className="text-sm text-gray-500 mt-0.5">
-                      {completedInMod}/{modLessons.length} aulas
-                      {mod.description ? ` • ${mod.description}` : ""}
-                    </p>
-
+                    <p className="text-sm text-gray-500 mt-1">{completed}/{lessons.length} aulas</p>
                     <ul className="mt-3 space-y-1">
-                      {single ? (
-                        <li>
-                          <Link
-                            href={`/aula/${single.id}`}
-                            className="flex items-center gap-2 py-2 px-2 -mx-2 rounded-lg hover:bg-gray-50 transition"
-                          >
-                            {allDone ? (
-                              <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
+                      {lessons.map((lesson) => (
+                        <li key={lesson.id}>
+                          <Link href={`/aula/${lesson.id}`} className="flex items-center gap-2 py-2">
+                            {done(lesson.id) ? (
+                              <CheckCircle2 className="w-4 h-4 text-green-600" />
                             ) : (
-                              <Circle className="w-4 h-4 text-gray-300 flex-shrink-0" />
+                              <Circle className="w-4 h-4 text-gray-300" />
                             )}
-                            <span className={`text-sm flex-1 ${allDone ? "text-green-700" : "text-gray-800"}`}>
-                              {allDone ? "Concluído" : "Em andamento"}
-                            </span>
-                            {single.durationMin && (
-                              <span className="text-xs text-gray-400">{single.durationMin} min</span>
-                            )}
+                            <span className="text-sm flex-1">{lessons.length === 1 ? (done(lesson.id) ? "Concluído" : "Em andamento") : lesson.title}</span>
                             <ChevronRight className="w-4 h-4 text-gray-300" />
                           </Link>
                         </li>
-                      ) : (
-                        modLessons.map((lesson) => {
-                          const done = isLessonCompleted(lesson.id)
-                          return (
-                            <li key={lesson.id}>
-                              <Link
-                                href={`/aula/${lesson.id}`}
-                                className="flex items-center gap-2 py-2 px-2 -mx-2 rounded-lg hover:bg-gray-50 transition group"
-                              >
-                                {done ? (
-                                  <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
-                                ) : (
-                                  <Circle className="w-4 h-4 text-gray-300 flex-shrink-0" />
-                                )}
-                                <span className={`text-sm flex-1 ${done ? "text-gray-500" : "text-gray-800"}`}>
-                                  {lesson.title}
-                                </span>
-                                <span className={`text-xs ${done ? "text-green-700" : "text-gray-400"}`}>
-                                  {done ? "Concluído" : "Em andamento"}
-                                </span>
-                                <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-wine transition" />
-                              </Link>
-                            </li>
-                          )
-                        })
-                      )}
+                      ))}
                     </ul>
                   </div>
                 </div>
