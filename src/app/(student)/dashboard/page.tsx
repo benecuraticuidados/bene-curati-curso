@@ -4,307 +4,138 @@ import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import StudentHeader from "@/components/StudentHeader"
 import Link from "next/link"
-import {
-  BookOpen,
-  Award,
-  PlayCircle,
-  CheckCircle2,
-  ClipboardList,
-  ArrowRight,
-  TrendingUp,
-} from "lucide-react"
+import { ClipboardList, CheckCircle2, AlertCircle, ArrowRight, ChevronRight } from "lucide-react"
 
-export default async function DashboardPage({ searchParams }: { searchParams?: { curso?: string } }) {
+export default async function AvaliacoesPage({ searchParams }: { searchParams?: { curso?: string } }) {
   const session = await getServerSession(authOptions)
-
-  if (!session?.user) {
-    redirect("/login")
-  }
+  if (!session?.user) redirect("/login")
 
   const userId = (session.user as any).id as string
+  const socorros = searchParams?.curso === "socorros"
 
-  // Buscar matrícula + curso
-  const enrollments = await prisma.enrollment.findMany({
-    where: { userId, status: { in: ["ACTIVE", "COMPLETED"] } },
+  const enrollment = await prisma.enrollment.findFirst({
+    where: socorros
+      ? { userId, status: { in: ["ACTIVE", "COMPLETED"] }, courseId: "curso-socorros-01" }
+      : { userId, status: { in: ["ACTIVE", "COMPLETED"] }, courseId: { not: "curso-socorros-01" } },
+    include: { course: true },
+  })
+
+  if (!enrollment) redirect("/dashboard")
+
+  const quizzes = await prisma.quiz.findMany({
+    where: { courseId: enrollment.courseId },
+    orderBy: { order: "asc" },
     include: {
-      course: {
-        include: {
-          modules: {
-            orderBy: { order: "asc" },
-            include: {
-              lessons: { orderBy: { order: "asc" } },
-            },
-          },
-        },
+      _count: { select: { questions: true } },
+      attempts: {
+        where: { userId },
+        orderBy: { attemptNum: "desc" },
       },
     },
-    orderBy: { enrolledAt: "desc" },
   })
-
-  if (enrollments.length === 0) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <StudentHeader />
-        <main className="max-w-3xl mx-auto px-4 py-16 text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            Olá, {session.user.name}!
-          </h1>
-          <p className="text-gray-600 mb-6">
-            Você ainda não está matriculado em nenhum curso.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/cadastro?curso=cuidador" className="btn-primary text-sm">Curso de Cuidador</Link>
-            <Link href="/cadastro?curso=socorros" className="btn-outline text-sm">Primeiros Socorros</Link>
-          </div>
-        </main>
-      </div>
-    )
-  }
-
-  const wantSocorros = searchParams?.curso === "socorros"
-  const enrollment = wantSocorros
-    ? enrollments.find((e) => e.courseId === "curso-socorros-01") || enrollments[0]
-    : enrollments.find((e) => e.courseId !== "curso-socorros-01") || enrollments[0]
-
-  const course = enrollment.course
-  const socorros = course.id === "curso-socorros-01"
-  const q = socorros ? "?curso=socorros" : ""
-  const allLessons = course.modules.flatMap((m) => m.lessons)
-  const totalLessons = allLessons.length
-  const totalModules = course.modules.length
-
-  // Progresso do aluno
-  const progressList = await prisma.progress.findMany({
-    where: { userId, lessonId: { in: allLessons.map((l) => l.id) } },
-  })
-
-  const completedLessons = progressList.filter((p) => p.completed).length
-  const progressPercent =
-    totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0
-
-  // Módulos concluídos (todos as aulas do módulo marcadas)
-  let completedModules = 0
-  for (const mod of course.modules) {
-    const modLessonIds = mod.lessons.map((l) => l.id)
-    if (modLessonIds.length === 0) continue
-    const done = modLessonIds.every((id) =>
-      progressList.some((p) => p.lessonId === id && p.completed)
-    )
-    if (done) completedModules++
-  }
-
-  // Última aula acessada ou próxima não concluída
-  const lastAccess = progressList
-    .slice()
-    .sort(
-      (a, b) =>
-        new Date(b.lastAccess).getTime() - new Date(a.lastAccess).getTime()
-    )[0]
-
-  let nextLesson = allLessons.find(
-    (l) => !progressList.some((p) => p.lessonId === l.id && p.completed)
-  )
-
-  // Se tiver lastAccess e a aula ainda não concluída, prioriza ela
-  if (lastAccess && !lastAccess.completed) {
-    const found = allLessons.find((l) => l.id === lastAccess.lessonId)
-    if (found) nextLesson = found
-  }
-
-  // Certificado
-  const certificate = await prisma.certificate.findFirst({
-    where: { userId, courseId: course.id, status: { not: "CANCELLED" } },
-    orderBy: { createdAt: "desc" },
-  })
-
-  const canRequestCertificate =
-    progressPercent >= 100 && enrollment.status === "ACTIVE"
 
   return (
     <div className="min-h-screen bg-gray-50">
       <StudentHeader />
 
-      <main className="max-w-6xl mx-auto px-4 py-8">
-        {/* Saudação */}
+      <main className="max-w-3xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
-            Olá, {session.user.name?.split(" ")[0]}!
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-900">Avaliações</h1>
           <p className="text-gray-500 mt-1">
-            Sua conta vale para os dois cursos. Cada um tem matrícula, progresso e certificado próprios.
+            {socorros
+              ? "Avaliação do curso de Primeiros Socorros e Prevenção de Acidentes"
+              : "Testes por módulo e Prova Final do Curso Profissional de Cuidador"}
           </p>
         </div>
 
-        {enrollments.length > 1 && (
-          <div className="grid sm:grid-cols-2 gap-3 mb-6">
-            {enrollments.map((e) => (
-              <Link key={e.id} href={"/dashboard?curso=" + (e.courseId === "curso-socorros-01" ? "socorros" : "cuidador")} className="card border border-wine/20">
-                <p className="text-xs uppercase tracking-wider text-wine font-medium">Matriculado</p>
-                <h3 className="font-semibold text-gray-900 mt-1">{e.course.title}</h3>
-              </Link>
-            ))}
+        <div className="space-y-4">
+          {quizzes.map((quiz) => {
+            const lastAttempt = quiz.attempts[0]
+            const attemptsUsed = quiz.attempts.length
+            const unlimited = quiz.maxAttempts <= 0
+            const canTry = unlimited || attemptsUsed < quiz.maxAttempts
+            const passed = lastAttempt?.passed
+
+            return (
+              <div key={quiz.id} className="card">
+                <div className="flex items-start gap-4">
+                  <div
+                    className={`w-11 h-11 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                      quiz.isFinal ? "bg-wine/10 text-wine" : "bg-amber-50 text-amber-600"
+                    }`}
+                  >
+                    <ClipboardList className="w-5 h-5" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <Link href={`/avaliacoes/${quiz.id}`} className="group block">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h2 className="font-semibold text-gray-900 text-lg group-hover:text-wine">
+                          {quiz.title}
+                        </h2>
+                        <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-wine" />
+                      </div>
+                    </Link>
+                    {quiz.isFinal && (
+                      <span className="text-xs font-medium bg-wine text-white px-2 py-0.5 rounded">
+                        OBRIGATÓRIA
+                      </span>
+                    )}
+                    <p className="text-sm text-gray-500 mt-2 mb-2">
+                      {quiz._count.questions} questões • Nota mínima:{" "}
+                      {(quiz.minScore * 10).toFixed(0)}% •{" "}
+                      {quiz.maxAttempts <= 0
+                        ? "Tentativas ilimitadas"
+                        : `Até ${quiz.maxAttempts} tentativa(s)`}
+                    </p>
+
+                    {lastAttempt && (
+                      <div className="flex items-center gap-2 text-sm mb-3">
+                        {passed ? (
+                          <>
+                            <CheckCircle2 className="w-4 h-4 text-green-600" />
+                            <span className="text-green-700 font-medium">
+                              Aprovado — {lastAttempt.score.toFixed(1)}/{lastAttempt.maxScore}
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <AlertCircle className="w-4 h-4 text-red-500" />
+                            <span className="text-red-600">
+                              Não aprovado — {lastAttempt.score.toFixed(1)}/{lastAttempt.maxScore}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    )}
+
+                    {passed ? (
+                      <p className="text-sm text-green-700 font-medium">Concluída</p>
+                    ) : canTry ? (
+                      <Link
+                        href={`/avaliacoes/${quiz.id}`}
+                        className="btn-primary inline-flex items-center gap-2 text-sm"
+                      >
+                        {attemptsUsed === 0 ? "Iniciar avaliação" : "Tentar novamente"}
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                    ) : (
+                      <p className="text-sm text-red-600">
+                        Número máximo de tentativas atingido. Entre em contato com a coordenação.
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
+        {quizzes.length === 0 && (
+          <div className="card text-center text-gray-500">
+            Nenhuma avaliação disponível no momento.
           </div>
         )}
-
-        {/* Progresso principal */}
-        <div className="card mb-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-            <div>
-              <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">
-                Progresso do Curso
-              </p>
-              <p className="text-3xl font-bold text-wine mt-1">
-                {progressPercent}%
-              </p>
-            </div>
-            <div className="flex gap-6 text-sm">
-              <div>
-                <p className="text-gray-500">Aulas concluídas</p>
-                <p className="font-semibold text-gray-900">
-                  {completedLessons}/{totalLessons}
-                </p>
-              </div>
-              <div>
-                <p className="text-gray-500">Módulos concluídos</p>
-                <p className="font-semibold text-gray-900">
-                  {completedModules}/{totalModules}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Barra de progresso */}
-          <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-            <div
-              className="bg-wine h-full rounded-full transition-all duration-500"
-              style={{ width: `${progressPercent}%` }}
-            />
-          </div>
-
-          {nextLesson && (
-            <div className="mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-gray-100">
-              <div>
-                <p className="text-sm text-gray-500">Próxima aula</p>
-                <p className="font-medium text-gray-900">{nextLesson.title}</p>
-              </div>
-              <Link
-                href={`/aula/${nextLesson.id}`}
-                className="btn-primary inline-flex items-center gap-2 justify-center"
-              >
-                <PlayCircle className="w-5 h-5" />
-                Continuar curso
-              </Link>
-            </div>
-          )}
-
-          {!nextLesson && progressPercent === 100 && (
-            <div className="mt-6 pt-4 border-t border-gray-100 text-center">
-              <CheckCircle2 className="w-10 h-10 text-green-600 mx-auto mb-2" />
-              <p className="font-semibold text-gray-900">
-                Parabéns! Você concluiu todas as aulas.
-              </p>
-              <p className="text-sm text-gray-500 mt-1">
-                Agora você pode solicitar seu certificado.
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* Cards de atalho */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <Link
-            href={"/curso" + q}
-            className="card hover:shadow-md transition group"
-          >
-            <div className="w-11 h-11 rounded-lg bg-wine/10 flex items-center justify-center mb-3 group-hover:bg-wine/20 transition">
-              <BookOpen className="w-5 h-5 text-wine" />
-            </div>
-            <h3 className="font-semibold text-gray-900">Meu Curso</h3>
-            <p className="text-sm text-gray-500 mt-1">
-              Ver módulos e aulas
-            </p>
-            <ArrowRight className="w-4 h-4 text-wine mt-3 opacity-0 group-hover:opacity-100 transition" />
-          </Link>
-
-          <Link
-            href={"/curso" + q}
-            className="card hover:shadow-md transition group"
-          >
-            <div className="w-11 h-11 rounded-lg bg-blue-50 flex items-center justify-center mb-3">
-              <TrendingUp className="w-5 h-5 text-blue-600" />
-            </div>
-            <h3 className="font-semibold text-gray-900">Progresso</h3>
-            <p className="text-sm text-gray-500 mt-1">
-              {progressPercent}% concluído
-            </p>
-          </Link>
-
-          <Link
-            href={"/avaliacoes" + q}
-            className="card hover:shadow-md transition group"
-          >
-            <div className="w-11 h-11 rounded-lg bg-amber-50 flex items-center justify-center mb-3">
-              <ClipboardList className="w-5 h-5 text-amber-600" />
-            </div>
-            <h3 className="font-semibold text-gray-900">Avaliações</h3>
-            <p className="text-sm text-gray-500 mt-1">
-              Testes e prova final
-            </p>
-          </Link>
-
-          <Link
-            href={"/certificado" + q}
-            className="card hover:shadow-md transition group"
-          >
-            <div className="w-11 h-11 rounded-lg bg-green-50 flex items-center justify-center mb-3">
-              <Award className="w-5 h-5 text-green-600" />
-            </div>
-            <h3 className="font-semibold text-gray-900">Certificado</h3>
-            <p className="text-sm text-gray-500 mt-1">
-              {certificate?.status === "ISSUED"
-                ? "Disponível para download"
-                : certificate?.status === "PENDING_PAYMENT"
-                ? "Aguardando pagamento (R$ 75)"
-                : canRequestCertificate
-                ? "Solicitar certificado"
-                : "Conclua o curso para liberar"}
-            </p>
-          </Link>
-        </div>
-
-        {/* Resumo do curso */}
-        <div className="card">
-          <h2 className="font-semibold text-gray-900 mb-4">
-            {course.title}
-          </h2>
-          <p className="text-sm text-gray-600 mb-4">
-            {course.subtitle}
-          </p>
-          <div className="flex flex-wrap gap-4 text-sm text-gray-500 mb-4">
-            <span>
-              Carga horária: {socorros ? "40h" : `${course.workloadHours || 210}h (204h teóricas + 6h práticas)`}
-            </span>
-            <span>•</span>
-            <span>{totalModules} módulos</span>
-            <span>•</span>
-            <span>{totalLessons} aulas</span>
-            <span>•</span>
-            <span>Nota mínima: {course.minScore * 10}%</span>
-          </div>
-          {!socorros && (
-            <a
-              href="/apostila-oficial-bene-curati.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-wine hover:underline font-medium"
-            >
-              📄 Baixar Apostila Oficial (PDF 210h)
-            </a>
-          )}
-        </div>
       </main>
     </div>
   )
-      }
-
-      
+}
