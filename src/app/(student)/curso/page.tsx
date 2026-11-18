@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import StudentHeader from "@/components/StudentHeader"
 import Link from "next/link"
-import { CheckCircle2, Circle, ChevronRight, PlayCircle } from "lucide-react"
+import { CheckCircle2, Circle, ChevronRight } from "lucide-react"
 
 export default async function CursoPage({ searchParams }: { searchParams?: { curso?: string } }) {
   const session = await getServerSession(authOptions)
@@ -70,6 +70,9 @@ export default async function CursoPage({ searchParams }: { searchParams?: { cur
             ).length
             const allDone =
               modLessons.length > 0 && completedInMod === modLessons.length
+            const single = modLessons.length === 1 ? modLessons[0] : null
+            const nextLesson =
+              modLessons.find((l) => !isLessonCompleted(l.id)) || modLessons[0]
 
             return (
               <div key={mod.id} className="card overflow-hidden">
@@ -88,44 +91,67 @@ export default async function CursoPage({ searchParams }: { searchParams?: { cur
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h2 className="font-semibold text-gray-900">{mod.title}</h2>
+                    {nextLesson ? (
+                      <Link href={`/aula/${nextLesson.id}`} className="group block">
+                        <h2 className="font-semibold text-gray-900 text-lg group-hover:text-wine">
+                          {mod.title}
+                        </h2>
+                      </Link>
+                    ) : (
+                      <h2 className="font-semibold text-gray-900 text-lg">{mod.title}</h2>
+                    )}
                     <p className="text-sm text-gray-500 mt-0.5">
-                      {completedInMod}/{modLessons.length} aulas •{" "}
-                      {mod.description}
+                      {completedInMod}/{modLessons.length} aulas
+                      {mod.description ? ` • ${mod.description}` : ""}
                     </p>
 
-                    {/* Lista de aulas */}
                     <ul className="mt-3 space-y-1">
-                      {modLessons.map((lesson) => {
-                        const done = isLessonCompleted(lesson.id)
-                        return (
-                          <li key={lesson.id}>
-                            <Link
-                              href={`/aula/${lesson.id}`}
-                              className="flex items-center gap-2 py-2 px-2 -mx-2 rounded-lg hover:bg-gray-50 transition group"
-                            >
-                              {done ? (
-                                <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
-                              ) : (
-                                <Circle className="w-4 h-4 text-gray-300 flex-shrink-0" />
-                              )}
-                              <span
-                                className={`text-sm flex-1 ${
-                                  done ? "text-gray-500" : "text-gray-800"
-                                }`}
+                      {single ? (
+                        <li>
+                          <Link
+                            href={`/aula/${single.id}`}
+                            className="flex items-center gap-2 py-2 px-2 -mx-2 rounded-lg hover:bg-gray-50 transition"
+                          >
+                            {allDone ? (
+                              <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
+                            ) : (
+                              <Circle className="w-4 h-4 text-gray-300 flex-shrink-0" />
+                            )}
+                            <span className={`text-sm flex-1 ${allDone ? "text-green-700" : "text-gray-800"}`}>
+                              {allDone ? "Concluído" : "Em andamento"}
+                            </span>
+                            {single.durationMin && (
+                              <span className="text-xs text-gray-400">{single.durationMin} min</span>
+                            )}
+                            <ChevronRight className="w-4 h-4 text-gray-300" />
+                          </Link>
+                        </li>
+                      ) : (
+                        modLessons.map((lesson) => {
+                          const done = isLessonCompleted(lesson.id)
+                          return (
+                            <li key={lesson.id}>
+                              <Link
+                                href={`/aula/${lesson.id}`}
+                                className="flex items-center gap-2 py-2 px-2 -mx-2 rounded-lg hover:bg-gray-50 transition group"
                               >
-                                {lesson.title}
-                              </span>
-                              {lesson.durationMin && (
-                                <span className="text-xs text-gray-400">
-                                  {lesson.durationMin} min
+                                {done ? (
+                                  <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
+                                ) : (
+                                  <Circle className="w-4 h-4 text-gray-300 flex-shrink-0" />
+                                )}
+                                <span className={`text-sm flex-1 ${done ? "text-gray-500" : "text-gray-800"}`}>
+                                  {lesson.title}
                                 </span>
-                              )}
-                              <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-wine transition" />
-                            </Link>
-                          </li>
-                        )
-                      })}
+                                <span className={`text-xs ${done ? "text-green-700" : "text-gray-400"}`}>
+                                  {done ? "Concluído" : "Em andamento"}
+                                </span>
+                                <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-wine transition" />
+                              </Link>
+                            </li>
+                          )
+                        })
+                      )}
                     </ul>
                   </div>
                 </div>
@@ -136,5 +162,4 @@ export default async function CursoPage({ searchParams }: { searchParams?: { cur
       </main>
     </div>
   )
-            }
-                      
+}
