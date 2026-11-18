@@ -12,10 +12,12 @@ export default async function CursoPage({ searchParams }: { searchParams?: { cur
 
   const userId = (session.user as any).id as string
   const key = searchParams?.curso
-  const courseId = key === "socorros" ? "curso-socorros-01" : undefined
-
   const enrollment = await prisma.enrollment.findFirst({
-    where: { userId, status: { in: ["ACTIVE", "COMPLETED"] }, ...(courseId ? { courseId } : {}) },
+    where: {
+      userId,
+      status: { in: ["ACTIVE", "COMPLETED"] },
+      courseId: key === "socorros" ? "curso-socorros-01" : { not: "curso-socorros-01" },
+    },
     include: {
       course: {
         include: {
@@ -30,72 +32,47 @@ export default async function CursoPage({ searchParams }: { searchParams?: { cur
     },
   })
 
-  if (!enrollment) {
-    redirect("/dashboard")
-  }
+  if (!enrollment) redirect("/dashboard")
 
   const course = enrollment.course
   const allLessonIds = course.modules.flatMap((m) => m.lessons.map((l) => l.id))
-
   const progressList = await prisma.progress.findMany({
     where: { userId, lessonId: { in: allLessonIds } },
   })
-
   const isLessonCompleted = (lessonId: string) =>
     progressList.some((p) => p.lessonId === lessonId && p.completed)
 
   return (
     <div className="min-h-screen bg-gray-50">
       <StudentHeader />
-
       <main className="max-w-4xl mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900">{course.title}</h1>
           <p className="text-gray-500 mt-1">{course.subtitle}</p>
-          <a
-            href="/apostila-oficial-bene-curati.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex mt-3 text-sm font-medium text-wine hover:underline"
-          >
-            Baixar apostila oficial (PDF)
-          </a>
         </div>
 
         <div className="space-y-4">
           {course.modules.map((mod) => {
             const modLessons = mod.lessons
-            const completedInMod = modLessons.filter((l) =>
-              isLessonCompleted(l.id)
-            ).length
-            const allDone =
-              modLessons.length > 0 && completedInMod === modLessons.length
+            const completedInMod = modLessons.filter((l) => isLessonCompleted(l.id)).length
+            const allDone = modLessons.length > 0 && completedInMod === modLessons.length
             const single = modLessons.length === 1 ? modLessons[0] : null
-            const nextLesson =
-              modLessons.find((l) => !isLessonCompleted(l.id)) || modLessons[0]
+            const nextLesson = modLessons.find((l) => !isLessonCompleted(l.id)) || modLessons[0]
 
             return (
               <div key={mod.id} className="card overflow-hidden">
                 <div className="flex items-start gap-3">
                   <div
                     className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                      allDone
-                        ? "bg-green-100 text-green-700"
-                        : "bg-wine/10 text-wine"
+                      allDone ? "bg-green-100 text-green-700" : "bg-wine/10 text-wine"
                     }`}
                   >
-                    {allDone ? (
-                      <CheckCircle2 className="w-5 h-5" />
-                    ) : (
-                      String(mod.order).padStart(2, "0")
-                    )}
+                    {allDone ? <CheckCircle2 className="w-5 h-5" /> : String(mod.order).padStart(2, "0")}
                   </div>
                   <div className="flex-1 min-w-0">
                     {nextLesson ? (
                       <Link href={`/aula/${nextLesson.id}`} className="group block">
-                        <h2 className="font-semibold text-gray-900 text-lg group-hover:text-wine">
-                          {mod.title}
-                        </h2>
+                        <h2 className="font-semibold text-gray-900 text-lg group-hover:text-wine">{mod.title}</h2>
                       </Link>
                     ) : (
                       <h2 className="font-semibold text-gray-900 text-lg">{mod.title}</h2>
