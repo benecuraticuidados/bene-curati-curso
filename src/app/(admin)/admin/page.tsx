@@ -9,7 +9,21 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 
-export default async function AdminDashboardPage() {
+const SOCORROS_ID = "curso-socorros-01"
+
+export default async function AdminDashboardPage({
+  searchParams,
+}: {
+  searchParams?: { curso?: string }
+}) {
+  const isSocorros = searchParams?.curso === "socorros"
+  const courseWhere = isSocorros
+    ? { courseId: SOCORROS_ID }
+    : { courseId: { not: SOCORROS_ID } }
+  const title = isSocorros
+    ? "Primeiros Socorros e Prevenção de Acidentes"
+    : "Curso Profissional de Cuidador"
+
   const [
     totalStudents,
     activeEnrollments,
@@ -20,13 +34,19 @@ export default async function AdminDashboardPage() {
     recentCertificates,
     quizPasses,
   ] = await Promise.all([
-    prisma.user.count({ where: { role: "STUDENT" } }),
-    prisma.enrollment.count({ where: { status: "ACTIVE" } }),
-    prisma.certificate.count({ where: { status: "ISSUED" } }),
-    prisma.certificate.count({ where: { status: "PENDING_PAYMENT" } }),
-    prisma.lesson.count(),
+    prisma.user.count({
+      where: { role: "STUDENT", enrollments: { some: courseWhere } },
+    }),
+    prisma.enrollment.count({ where: { status: "ACTIVE", ...courseWhere } }),
+    prisma.certificate.count({ where: { status: "ISSUED", ...courseWhere } }),
+    prisma.certificate.count({
+      where: { status: "PENDING_PAYMENT", ...courseWhere },
+    }),
+    prisma.lesson.count({
+      where: { module: { courseId: courseWhere.courseId } },
+    }),
     prisma.user.findMany({
-      where: { role: "STUDENT" },
+      where: { role: "STUDENT", enrollments: { some: courseWhere } },
       orderBy: { createdAt: "desc" },
       take: 5,
       select: {
@@ -38,58 +58,64 @@ export default async function AdminDashboardPage() {
       },
     }),
     prisma.certificate.findMany({
-      where: { status: "ISSUED" },
+      where: { status: "ISSUED", ...courseWhere },
       orderBy: { issuedAt: "desc" },
       take: 5,
       include: {
         user: { select: { name: true, email: true } },
       },
     }),
-    prisma.quizAttempt.count({ where: { passed: true } }),
+    prisma.quizAttempt.count({
+      where: {
+        passed: true,
+        quiz: { lesson: { module: { courseId: courseWhere.courseId } } },
+      },
+    }),
   ])
 
+  const base = isSocorros ? "?curso=socorros" : ""
   const cards = [
     {
       label: "Alunos cadastrados",
       value: totalStudents,
       icon: Users,
       color: "bg-blue-50 text-blue-600",
-      href: "/admin/alunos",
+      href: "/admin/alunos" + base,
     },
     {
       label: "Matrículas ativas",
       value: activeEnrollments,
       icon: BookOpen,
       color: "bg-green-50 text-green-600",
-      href: "/admin/alunos",
+      href: "/admin/alunos" + base,
     },
     {
       label: "Certificados emitidos",
       value: certificatesIssued,
       icon: Award,
       color: "bg-wine/10 text-wine",
-      href: "/admin/certificados",
+      href: "/admin/certificados" + base,
     },
     {
       label: "Aguardando pagamento",
       value: certificatesPending,
       icon: Clock,
       color: "bg-amber-50 text-amber-600",
-      href: "/admin/certificados",
+      href: "/admin/certificados" + base,
     },
     {
       label: "Aulas no curso",
       value: totalLessons,
       icon: TrendingUp,
       color: "bg-purple-50 text-purple-600",
-      href: "/admin/curso",
+      href: "/admin/curso" + base,
     },
     {
       label: "Aprovações em provas",
       value: quizPasses,
       icon: ClipboardCheck,
       color: "bg-teal-50 text-teal-600",
-      href: "/admin/curso",
+      href: "/admin/curso" + base,
     },
   ]
 
@@ -98,11 +124,32 @@ export default async function AdminDashboardPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
         <p className="text-gray-500 text-sm mt-1">
-          Visão geral do Curso Profissional de Cuidador — Bene Curati Cuidados
+          Visão geral do {title} — Bene Curati Cuidados
         </p>
+        <div className="mt-4 flex gap-2">
+          <Link
+            href="/admin"
+            className={`text-sm px-3 py-1.5 rounded-full border ${
+              !isSocorros
+                ? "bg-wine text-white border-wine"
+                : "bg-white text-gray-700 border-gray-200"
+            }`}
+          >
+            Cuidador
+          </Link>
+          <Link
+            href="/admin?curso=socorros"
+            className={`text-sm px-3 py-1.5 rounded-full border ${
+              isSocorros
+                ? "bg-wine text-white border-wine"
+                : "bg-white text-gray-700 border-gray-200"
+            }`}
+          >
+            Primeiros Socorros
+          </Link>
+        </div>
       </div>
 
-      {/* Cards */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
         {cards.map((c) => (
           <Link
@@ -128,12 +175,11 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Últimos alunos */}
         <div className="card">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-gray-900">Últimos alunos</h2>
             <Link
-              href="/admin/alunos"
+              href={"/admin/alunos" + base}
               className="text-sm text-wine hover:underline"
             >
               Ver todos
@@ -169,14 +215,13 @@ export default async function AdminDashboardPage() {
           )}
         </div>
 
-        {/* Últimos certificados */}
         <div className="card">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-gray-900">
               Últimos certificados emitidos
             </h2>
             <Link
-              href="/admin/certificados"
+              href={"/admin/certificados" + base}
               className="text-sm text-wine hover:underline"
             >
               Ver todos
