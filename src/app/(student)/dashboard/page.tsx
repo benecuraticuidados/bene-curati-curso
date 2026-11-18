@@ -6,6 +6,13 @@ import StudentHeader from "@/components/StudentHeader"
 import Link from "next/link"
 import { BookOpen, Award, PlayCircle, CheckCircle2, ClipboardList, TrendingUp } from "lucide-react"
 
+const SOCORROS_ID = "curso-socorros-01"
+const CUIDADOR_TITLE = "Curso de Cuidador Profissional"
+
+function courseTitle(id: string, title: string) {
+  return id === SOCORROS_ID ? title : CUIDADOR_TITLE
+}
+
 export default async function DashboardPage({ searchParams }: { searchParams?: { curso?: string } }) {
   const session = await getServerSession(authOptions)
   if (!session?.user) redirect("/login")
@@ -30,11 +37,12 @@ export default async function DashboardPage({ searchParams }: { searchParams?: {
 
   const socorros = searchParams?.curso === "socorros"
   const enrollment = socorros
-    ? enrollments.find((e) => e.courseId === "curso-socorros-01") || enrollments[0]
-    : enrollments.find((e) => e.courseId !== "curso-socorros-01") || enrollments[0]
+    ? enrollments.find((e) => e.courseId === SOCORROS_ID) || enrollments[0]
+    : enrollments.find((e) => e.courseId !== SOCORROS_ID) || enrollments[0]
 
   const course = enrollment.course
-  const isSocorros = course.id === "curso-socorros-01"
+  const isSocorros = course.id === SOCORROS_ID
+  const title = courseTitle(course.id, course.title)
   const q = isSocorros ? "?curso=socorros" : "?curso=cuidador"
   const allLessons = course.modules.flatMap((m) => m.lessons)
   const totalLessons = allLessons.length
@@ -70,18 +78,18 @@ export default async function DashboardPage({ searchParams }: { searchParams?: {
         <div className="grid sm:grid-cols-2 gap-3 mb-6">
           {enrollments.map((e) => {
             const selected = e.courseId === course.id
-            const href = e.courseId === "curso-socorros-01" ? "/dashboard?curso=socorros" : "/dashboard?curso=cuidador"
+            const href = e.courseId === SOCORROS_ID ? "/dashboard?curso=socorros" : "/dashboard?curso=cuidador"
             return (
               <Link key={e.id} href={href} className={`card border ${selected ? "border-wine bg-wine/5" : "border-gray-200"}`}>
                 <p className="text-xs uppercase tracking-wider text-wine font-medium">{selected ? "Aberto agora" : "Abrir este curso"}</p>
-                <h3 className="font-semibold text-gray-900 mt-1">{e.course.title}</h3>
+                <h3 className="font-semibold text-gray-900 mt-1">{courseTitle(e.course.id, e.course.title)}</h3>
               </Link>
             )
           })}
         </div>
 
         <div className="card mb-6">
-          <p className="text-sm text-gray-500 uppercase">Progresso de {course.title}</p>
+          <p className="text-sm text-gray-500 uppercase">Progresso de {title}</p>
           <p className="text-3xl font-bold text-wine mt-1">{progressPercent}%</p>
           <p className="text-sm text-gray-600 mt-2">{completedLessons}/{totalLessons} aulas • {completedModules}/{totalModules} módulos</p>
           <div className="w-full bg-gray-200 rounded-full h-3 mt-4 overflow-hidden">
