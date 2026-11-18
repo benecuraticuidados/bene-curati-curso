@@ -1,8 +1,18 @@
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 
-export default async function AdminCursoPage() {
+const SOCORROS_ID = "curso-socorros-01"
+
+export default async function AdminCursoPage({
+  searchParams,
+}: {
+  searchParams?: { curso?: string }
+}) {
+  const isSocorros = searchParams?.curso === "socorros"
   const course = await prisma.course.findFirst({
+    where: isSocorros
+      ? { id: SOCORROS_ID }
+      : { id: { not: SOCORROS_ID } },
     include: {
       modules: {
         orderBy: { order: "asc" },
@@ -35,17 +45,39 @@ export default async function AdminCursoPage() {
     (acc, m) => acc + m.lessons.length,
     0
   )
+  const title = isSocorros
+    ? "Primeiros Socorros e Prevenção de Acidentes"
+    : "Curso Profissional de Cuidador"
 
   return (
     <div>
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Curso</h1>
-        <p className="text-gray-500 text-sm mt-1">
-          Estrutura do Curso Profissional de Cuidador
-        </p>
+        <p className="text-gray-500 text-sm mt-1">Estrutura do {title}</p>
+        <div className="mt-4 flex gap-2">
+          <Link
+            href="/admin/curso"
+            className={`text-sm px-3 py-1.5 rounded-full border ${
+              !isSocorros
+                ? "bg-wine text-white border-wine"
+                : "bg-white text-gray-700 border-gray-200"
+            }`}
+          >
+            Cuidador
+          </Link>
+          <Link
+            href="/admin/curso?curso=socorros"
+            className={`text-sm px-3 py-1.5 rounded-full border ${
+              isSocorros
+                ? "bg-wine text-white border-wine"
+                : "bg-white text-gray-700 border-gray-200"
+            }`}
+          >
+            Primeiros Socorros
+          </Link>
+        </div>
       </div>
 
-      {/* Resumo */}
       <div className="card mb-6">
         <h2 className="font-semibold text-gray-900 text-lg">{course.title}</h2>
         {course.subtitle && (
@@ -53,7 +85,7 @@ export default async function AdminCursoPage() {
         )}
         <div className="flex flex-wrap gap-4 mt-4 text-sm text-gray-600">
           <span>
-            <strong>{course.workloadHours}h</strong> de carga horária (204h teóricas + 6h práticas)
+            <strong>{course.workloadHours}h</strong> de carga horária
           </span>
           <span>•</span>
           <span>
@@ -74,15 +106,11 @@ export default async function AdminCursoPage() {
         </div>
       </div>
 
-      {/* Módulos */}
       <div className="card mb-6">
         <h2 className="font-semibold text-gray-900 mb-4">Módulos e aulas</h2>
         <div className="space-y-3">
           {course.modules.map((mod) => (
-            <div
-              key={mod.id}
-              className="border border-gray-100 rounded-lg p-3"
-            >
+            <div key={mod.id} className="border border-gray-100 rounded-lg p-3">
               <div className="flex items-center justify-between">
                 <p className="font-medium text-gray-900 text-sm">{mod.title}</p>
                 <span className="text-xs text-gray-500">
@@ -107,7 +135,6 @@ export default async function AdminCursoPage() {
         </div>
       </div>
 
-      {/* Avaliações */}
       <div className="card">
         <h2 className="font-semibold text-gray-900 mb-4">Avaliações</h2>
         {course.quizzes.length === 0 ? (
@@ -115,10 +142,7 @@ export default async function AdminCursoPage() {
         ) : (
           <ul className="divide-y divide-gray-100">
             {course.quizzes.map((q) => (
-              <li
-                key={q.id}
-                className="py-3 flex items-center justify-between"
-              >
+              <li key={q.id} className="py-3 flex items-center justify-between">
                 <div>
                   <p className="font-medium text-sm text-gray-900">
                     {q.title}
