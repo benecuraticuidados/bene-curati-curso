@@ -18,7 +18,6 @@ export default async function AdminAlunosPage({
   const courseWhere = isSocorros
     ? { courseId: SOCORROS_ID }
     : { courseId: { not: SOCORROS_ID } }
-  const base = isSocorros ? "curso=socorros" : ""
 
   const students = await prisma.user.findMany({
     where: {
@@ -105,33 +104,18 @@ export default async function AdminAlunosPage({
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-gray-100 bg-gray-50">
-              <th className="text-left py-3 px-4 font-semibold text-gray-600">
-                Aluno
-              </th>
-              <th className="text-left py-3 px-4 font-semibold text-gray-600 hidden md:table-cell">
-                Contato
-              </th>
-              <th className="text-left py-3 px-4 font-semibold text-gray-600">
-                Progresso
-              </th>
-              <th className="text-left py-3 px-4 font-semibold text-gray-600 hidden lg:table-cell">
-                Cadastro
-              </th>
-              <th className="text-left py-3 px-4 font-semibold text-gray-600">
-                Status
-              </th>
-              <th className="text-right py-3 px-4 font-semibold text-gray-600">
-                Ações
-              </th>
+              <th className="text-left py-3 px-4 font-semibold text-gray-600">Aluno</th>
+              <th className="text-left py-3 px-4 font-semibold text-gray-600 hidden md:table-cell">Contato</th>
+              <th className="text-left py-3 px-4 font-semibold text-gray-600">Progresso</th>
+              <th className="text-left py-3 px-4 font-semibold text-gray-600 hidden lg:table-cell">Cadastro</th>
+              <th className="text-left py-3 px-4 font-semibold text-gray-600">Status</th>
+              <th className="text-right py-3 px-4 font-semibold text-gray-600">Ações</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">
             {students.map((s) => {
               const completedLessons = s.progress.filter((p) => p.completed).length
-              const pct =
-                totalLessons > 0
-                  ? Math.round((completedLessons / totalLessons) * 100)
-                  : 0
+              const pct = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0
               const hasCert = s.certificates.length > 0
 
               return (
@@ -152,17 +136,12 @@ export default async function AdminAlunosPage({
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-2">
                       <div className="w-20 h-2 bg-gray-100 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-wine rounded-full"
-                          style={{ width: `${pct}%` }}
-                        />
+                        <div className="h-full bg-wine rounded-full" style={{ width: `${pct}%` }} />
                       </div>
                       <span className="text-xs text-gray-600">{pct}%</span>
                     </div>
                     {hasCert && (
-                      <span className="text-xs text-green-600 font-medium">
-                        Certificado emitido
-                      </span>
+                      <span className="text-xs text-green-600 font-medium">Certificado emitido</span>
                     )}
                   </td>
                   <td className="py-3 px-4 hidden lg:table-cell text-gray-500 text-xs">
@@ -170,4 +149,36 @@ export default async function AdminAlunosPage({
                   </td>
                   <td className="py-3 px-4">
                     <span
-                      className={`text-xs px-2 py-0
+                      className={`text-xs px-2 py-0.5 rounded-full ${
+                        s.isActive ? "bg-green-50 text-green-700" : "bg-red-50 text-red-600"
+                      }`}
+                    >
+                      {s.isActive ? "Ativo" : "Bloqueado"}
+                    </span>
+                  </td>
+                  <td className="py-3 px-4 text-right">
+                    <div className="flex justify-end gap-2 flex-wrap">
+                      <EditStudentButton
+                        userId={s.id}
+                        name={s.name}
+                        email={s.email}
+                        whatsapp={s.whatsapp || ""}
+                        cpf={s.cpf || ""}
+                      />
+                      <ToggleStudentButton userId={s.id} isActive={s.isActive} name={s.name} />
+                      <DeleteUserButton userId={s.id} name={s.name} />
+                    </div>
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+
+        {students.length === 0 && (
+          <p className="text-center text-gray-500 py-10">Nenhum aluno encontrado.</p>
+        )}
+      </div>
+    </div>
+  )
+}
